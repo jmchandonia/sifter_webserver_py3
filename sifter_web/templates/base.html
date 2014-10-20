@@ -20,6 +20,7 @@
     <link href="theme.css" rel="stylesheet">
 
     <!-- Custom SIFTER CSS -->
+    <link href="/static/css/bootstrap-slider.css" rel="stylesheet">
     <link href="/static/css/custom.css" rel="stylesheet">
     
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -80,57 +81,106 @@
         <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
       </div>
 
+      <h4>
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#">Predict by protein</a></li>
+        <li><a href="#">Predict by species</a></li>
+        <li><a href="#">Predict by fuction</a></li>
+      </ul>
+      </h4>
+      
+      
+      
    <div class="container">
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-12">
-          <form role="form">
+          <form role="form" id="main_form">
 	    <div class="form-group">
-	      <label for="input_queries">Query Proteins </label>
-              <div><small>Paste or upload the Uniprot ID of your query proteins</small></div>
+	      <h2>Enter query proteins </h2>
+              <div>Paste or upload the Uniprot ID of your query proteins</div>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-9">
 		  <div class="text-right">
 		  <a id="example1" class="sample" href="javascript:setExample(1)">Example 1</a>
 		  <a id="example2" class="sample" href="javascript:setExample(2)">Example 2</a>
 		  <a id="example3" class="sample" href="javascript:setExample(3)">Example 3</a>
 		  </div>
-	          <textarea id="input_queries" class="form-control" rows="5" placeholder="Enter query proteins"></textarea>
-	          - OR - <label for="query_uploader">Upload the list of proteins as a text file:</label>
+	          <textarea id="input_queries" class="form-control" rows="3" placeholder="Enter query proteins"></textarea>
+                  <div class="row">
+                    <div class="col-md-9">
+		    - OR - <label for="query_uploader">Upload the list of proteins as a text file:</label>
+		    </div>
+                    <div class="col-md-3">
+	  	      <div class="text-right"><a id="clear_text" href="javascript:void(0)" title="clear_text">Clear</a></div>
+		    </div>
+		  </div>
 		  <input type="file" id="query_uploader">
                 </div>
               </div>
 	   </div>	    
+	  <div class="form-group">
+	  <p><a id="toggleOptions" href="javascript:void(0)" >Show advanced options</a></p>    
+	  <div  class="hideable-options" style="display: none"  >
+	  <fieldset >
+	  <h3>Scheme for incorporating current annotations</h3>
+	  <div class="c-input "> 
+	  <div class="radio">
+	    <label>
+	      <input type="radio" name="SIFTERApproach" id="EXP-Model" value="EXP-Model" checked>
+	      Only use experimental evidence (SIFTER EXP-Model).
+	    </label>
+	  </div>
+	  <div class="radio">
+	    <label>
+	      <input type="radio" name="SIFTERApproach" id="All-Model" value="All-Model">
+	      Use both experimental and non-experimental evidence (SIFTER ALL-Model).
+	    </label>
+	  </div>
+	  <span class="c-error"></span>
+	  </div> 
+	  
+	  <label>Balance between the experimental and non-experimental results:</label>
+	  <div class="c-input "> 
+	  <div>
+	  <div class="row">
+	    <div class="col-md-1">  </div>
+	    <div class="col-md-5">
+	    <input id="weight" data-slider-id='wSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step=".01" data-slider-value="0.7"/>
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-md-1">  </div>  
+	    <div class="col-md-2">
+	    <label><span id="ExpWeightValLabel" class='W_Exp'>Experimental weight<p id="ExpWeight">0.7</p></label>
+	    </div>
+	    <div class="col-md-3">
+	    <div class="text-right">    
+	    <label><span id="NExpWeightValLabel" class='W_NExp'>Non-experimental weight<p id="NExpWeight">0.3</p></label>
+	    </div>
+	    </div>
+	  </div>
+	  </div>
+	  <span class="c-error"></span>
+	  </div>
+	  </fieldset>
+	  </div>
+	  </div>
            <div class="form-group">
               <div class="row">
-                <div class="col-md-6">
-    	          <label for="InputEmail1">Your Email address (optional; recommended for large queries): </label>
-		  
-		    <input type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
-	   </div>
-		  <div class="checkbox">
-		    <label>
-		      <input type="checkbox"> Check me out
-		    </label>
-		  </div>
+                <div class="col-md-9">
+    	          <label for="InputEmail1">Your Email address (optional; recommended for retrieving your results): </label>
+                  <input type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
+	        </div>		
 	      </div>
-		  <button type="submit" class="btn btn-default">Submit</button>
+	   </div>	      
+	      <button type="submit" class="btn btn-primary">Submit</button>
+	      <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>	      
 	  </form>		
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div>
 	</div>   
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
       </div>
-
+    
       <hr>
 
       <footer>
@@ -707,9 +757,73 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/static/js/jquery.min.js"></script>
+    <script type='text/javascript' src="/static/js/bootstrap-slider.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+
+
+
+
+
+
+
+    <script type="text/javascript">
+      
+      $('#reset').click(function() { 
+	      $('#main_form')[0].reset(); 
+	      $('textarea').each(function(){ $(this).text(''); $(this).trigger('clearErrors'); $(this).trigger('keydown'); } ) 
+	      $('#form .box-error').hide()
+      });
+
+      $('#clear_text').click(function() { 
+	      $("#input_queries").val("");
+      });
+      
+      $(document).ready(function(){
+
+	
+	$('#weight').slider({
+		formatter: function(value) {
+		return 'Current value: ' + value;
+		}
+	});
+	
+	$("#weight").on("slide", function(slideEvt) {
+		$("#ExpWeight").text(slideEvt.value);
+		$("#NExpWeight").text(parseFloat(1-slideEvt.value).toFixed(2));
+	});
+	
+	$('#toggleOptions').click(function() {
+			$('.hideable-options').toggle( function() {
+				var status = $(this).is(':visible'); 
+				var label =  status ? 'Hide advanced options' : 'Show advanced options';
+				$('#toggleOptions').text(label);
+			});
+	});	   
+      });
+      
+      $('input:radio[name="SIFTERApproach"]').change(
+	  function(){
+      
+	      // checks that the clicked radio button is the one of value 'Yes'
+	      // the value of the element is the one that's checked (as noted by @shef in comments)
+	      if ($(this).val() == 'All-Model') {
+	       $("#weight").slider("enable");
+       
+	      }
+	      else {
+	       $("#weight").slider("disable");
+	       }
+	  });
+      
+    </script>
+    
   </body>
+  
 </html>
+
+
+
+

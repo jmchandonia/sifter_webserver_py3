@@ -7,3 +7,4 @@ function setExample(i){
             document.getElementById('input_queries').value = 'Q27239;11324234;234234;234234';            //code
         
 }
+

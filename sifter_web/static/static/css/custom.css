@@ -1,5 +1,38 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 .sample {
-  font-size: 12px;
     text-align: right;  
+}
+
+#wSlider .slider-selection {
+	background: #5bc0de;
+}
+
+#wSlider .slider-track {
+	background: #f0ad4e;
+}
+
+#wSlider .slider-handle {
+	background: #777;
+}
+
+.slider.slider-horizontal {
+  width: 100%;
+  height: 20px;
+}
+
+.W_Exp{
+    color: #5bc0de;
+    display:inline-block;
+    margin-bottom:5px;
+}
+
+.W_NExp{
+    color: #f0ad4e;
+    display:inline-block;
+    margin-bottom:5px;
+}
+
+
+.slider.slider-disabled .slider-selection {
+	background: #f0ad4e;
 }
