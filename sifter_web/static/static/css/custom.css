@@ -12,7 +12,7 @@
 }
 
 #wSlider .slider-handle {
-	background: #777;
+	background: #555;
 }
 
 .slider.slider-horizontal {
@@ -33,6 +33,55 @@
 }
 
 
-.slider.slider-disabled .slider-selection {
-	background: #f0ad4e;
+fieldset {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	padding: 0.8em;
+	padding-left: 6em;
+    	margin-left: 4em;
+	margin-right: 6em;
+	margin-top: 1.2em;
+	margin-bottom: 1.2em;
+
+	background-color: #f9f9f9;
+	webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+        moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+	
+}
+fieldset h2{
+    margin-left: -1.2em;
+    padding-bottom: .1em;
+}
+.custom-container p{
+    padding-left: 4em;
+}
+
+.navbar-inverse {
+  background-color: #003262; /* background color will be black for all browsers */
+  background-image: none;
+  background-repeat: no-repeat;
+  filter: none;
+}
+
+.navbar-inverse .navbar-brand {        
+    color: #ffffff;
+}
+
+.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>.active>a:focus{
+  color:#e7c254;
+  background-color:#778899;
+  background-image: none;
+}
+
+.navbar-inverse .navbar-nav>li>a{
+    color:#ffffff
+}
+.navbar-inverse .navbar-nav>li>a:hover,.navbar-inverse .navbar-nav>li>a:focus{
+    color:#e7c254;
+    background-color:transparent
+}
+
+.jumbotron {
+    background-color:#D3D5D6;
 }
