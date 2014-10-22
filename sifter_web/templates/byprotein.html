@@ -1,0 +1,25 @@
+<div class="form-group">
+  <fieldset >
+    
+  <h2>Enter query proteins </h2>
+  <div>Paste or upload the Uniprot ID(s) of your query protein(s)</div>
+  <div class="row">
+    <div class="col-md-11">
+      <div class="text-right">
+      <a id="example1" class="sample" href="javascript:setExample(1)">Example 1</a>
+      <a id="example2" class="sample" href="javascript:setExample(2)">Example 2</a>
+      </div>
+      <textarea id="input_queries" class="form-control" rows="3" placeholder="Enter query proteins"></textarea>
+      <div class="row">
+        <div class="col-md-9">
+        - OR - <label for="query_uploader">Upload the list of proteins as a text file:</label>
+        </div>
+        <div class="col-md-3">
+          <div class="text-right"><a id="clear_text" href="javascript:void(0)" title="clear_text">Clear</a></div>
+        </div>
+      </div>
+      <input type="file" id="query_uploader">
+    </div>
+  </div>
+</fieldset>
+</div>	    

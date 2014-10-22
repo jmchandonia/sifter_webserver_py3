@@ -50,7 +50,7 @@ fieldset {
 	
 }
 fieldset h2{
-    margin-left: -1.2em;
+    margin-bottom: 0.0em;
     padding-bottom: .1em;
 }
 .custom-container p{
@@ -70,8 +70,10 @@ fieldset h2{
 
 .navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>.active>a:focus{
   color:#e7c254;
-  background-color:#778899;
+  background-color:#2d6ca2;
   background-image: none;
+  box-shadow: none;
+  
 }
 
 .navbar-inverse .navbar-nav>li>a{
@@ -85,3 +87,4 @@ fieldset h2{
 .jumbotron {
     background-color:#D3D5D6;
 }
+

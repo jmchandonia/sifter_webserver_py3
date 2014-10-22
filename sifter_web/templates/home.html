@@ -1,6 +1,108 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h1> Hi </h1>
+{% block get_input %}
+    
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+  <h2>Phylogenetic-based Protein Function Prediction</h2>
+  <p>SIFTER (Statistical Inference of Function Through Evolutionary Relationships) is .</p>
+  <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+</div>
+
+<h4>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#by_protein" data-toggle="tab">Predict by protein</a></li>
+  <li><a href="#by_species" data-toggle="tab">Predict by species</a></li>
+  <li><a href="#by_function" data-toggle="tab">Predict by function</a></li>
+</ul>
+</h4>    
+
+
+<div class="container custom-container">
+   <!-- Example row of columns -->
+   <div class="row">
+     <div class="col-md-12">
+       <form role="form" id="main_form">
+           
+        <div class="tab-content">
+          <div id="by_protein" class="tab-pane active">
+            {% include 'byprotein.html' %}
+          </div>
+          <div id="by_species" class="tab-pane">
+            {% include 'byspecies.html' %}
+          </div>
+          <div id="by_function" class="tab-pane">
+            {% include 'byfunction.html' %}
+          </div>
+        </div><!-- /.tab-content -->
+
+       <div class="form-group">
+       <p><a id="toggleOptions" href="javascript:void(0)" >Show advanced options</a></p>    
+       <div  class="hideable-options" style="display: none"  >
+       <fieldset >
+       <h2>Scheme for incorporating current annotations</h2>
+       <div class="c-input "> 
+       <div class="radio">
+         <label>
+           <input type="radio" name="SIFTERApproach" id="EXP-Model" value="EXP-Model" checked>
+           Only use experimental evidence (SIFTER EXP-Model).
+         </label>
+       </div>
+       <div class="radio">
+         <label>
+           <input type="radio" name="SIFTERApproach" id="All-Model" value="All-Model">
+           Use both experimental and non-experimental evidence (SIFTER ALL-Model).
+         </label>
+       </div>
+       <span class="c-error"></span>
+       </div> 
+       <div  class="hideable-options2" style="display: none"  >
+       <label>Balance between the experimental and non-experimental results:</label>
+       <div class="c-input "> 
+       <div>
+       <div class="row">
+         <div class="col-md-1">  </div>
+         <div class="col-md-6">
+         <input id="weight" data-slider-id='wSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step=".01" data-slider-value="0.7"/>
+         </div>
+       </div>
+       <div class="row">
+         <div class="col-md-1">  </div>  
+         <div class="col-md-3">
+         <label><span id="ExpWeightValLabel" class='W_Exp'>Experimental weight<p id="ExpWeight">0.7</p></label>
+         </div>
+         <div class="col-md-3">
+         <div class="text-right">    
+         <label><span id="NExpWeightValLabel" class='W_NExp'>Non-experimental weight<p id="NExpWeight">0.3</p></label>
+         </div>
+         </div>
+       </div>
+       </div>
+       <span class="c-error"></span>
+       </div>
+       </div>
+       </fieldset>
+       </div>
+       </div>
+        <div class="form-group">
+           <fieldset>
+           <div class="row">
+             <div class="col-md-11">
+               <label for="InputEmail1">Your Email address (optional; recommended for retrieving your results): </label>
+               <input type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
+             </div>		
+           </div>
+           </fieldset>	      
+        </div>
+        <p>
+           <button type="submit" class="btn btn-primary">Submit</button>
+           <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>
+        </p>
+       </form>		
+     </div>
+     </div>
+</div>
+
+
 
 {% endblock %}
