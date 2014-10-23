@@ -6,10 +6,10 @@ function setExample(i){
         else if (i==3) 
             document.getElementById('InputSpecies').value = '9606';            //code
         else if (i==4) 
-            document.getElementById('InputSpecies').value = '9606';            //code
+            document.getElementById('input_function').value = 'GO:0008377';            //code
         else if (i==5) 
-            document.getElementById('InputSpecies').value = '9606';            //code
+            document.getElementById('input_function').value = 'GO:0008377;GO:0008377;GO:0008377';            //code
         else if (i==6) 
-            document.getElementById('InputSpecies').value = '9606';            //code
+            document.getElementById('input_function_sp').value = '9606';            //code
 }
 
