@@ -41,6 +41,13 @@
     {% include 'navbar.html' %}
     
     <div class="container theme-showcase" role="main">
+
+	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div class="jumbotron">
+	  <h2>Phylogeny-based Protein Function Prediction</h2>
+	  <p><b>SIFTER</b> (<b>S</b>tatistical <b>I</b>nference of <b>F</b>unction <b>T</b>hrough <b>E</b>volutionary <b>R</b>elationships) is a statistical approach to predicting protein function that uses a protein family's phylogenetic tree, as the natural structure for representing protein relationships.</p>
+	  <p><a class="btn btn-primary" role="button">Learn more &raquo;</a></p>
+	</div>
       
     {% block get_input %}
     {% endblock %}
@@ -127,8 +134,21 @@
 				var label =  status ? 'Hide advanced options' : 'Show advanced options';
 				$('#toggleOptions').text(label);
 			});
-	});	   
-      });
+	});
+	
+	
+	$('.nav-tabs > li > a').click(function(event){
+	      $('#main_form')[0].reset();	      
+	      $('textarea').each(function(){ $(this).text(''); $(this).trigger('clearErrors'); $(this).trigger('keydown'); } )
+	      $('#form .box-error').hide()
+	      $('.hideable-options').hide();
+	      $('.hideable-options2').hide();
+	      $("#weight").slider('setValue',0.7);
+	      $("#ExpWeight").text(0.7);
+              $("#NExpWeight").text(0.3);
+	});
+
+     });
       
       $('input:radio[name="SIFTERApproach"]').change(
 	  function(){
@@ -145,6 +165,9 @@
 		$("#NExpWeight").text(0.3);
 	       }
 	  });
+      
+      
+	
      
     </script>
     
