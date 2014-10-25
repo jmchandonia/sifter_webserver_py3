@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="highcharts.js"></script>
+    {% load chartit %}
+    {{ hist|load_charts:"container" }}
+
+  </head>
+  <body>
+    <div id="container" style="width:100%; height:400px;"></div>
+  </body>
+</html>

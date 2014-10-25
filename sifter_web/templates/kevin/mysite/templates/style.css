@@ -1,0 +1,19 @@
+body {
+    font-size: 24px;
+}
+
+button {
+    font-size: 18px;
+}
+
+input {
+    font-size: 20px;
+}
+
+table, td, th {
+    text-align: center;
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
