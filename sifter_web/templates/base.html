@@ -95,7 +95,7 @@
 	      $("#input_queries").val("");
       });
       $('#clear_text_species').click(function() { 
-	      $("#InputSpecies").val("");
+	      $("#input_species").val("");
       });
       $('#clear_text_function').click(function() { 
 	      $("#input_function").val("");
@@ -150,12 +150,12 @@
 
      });
       
-      $('input:radio[name="SIFTERApproach"]').change(
+      $('input:radio[name="sifter_choices"]').change(
 	  function(){
       
 	      // checks that the clicked radio button is the one of value 'Yes'
 	      // the value of the element is the one that's checked (as noted by @shef in comments)
-	      if ($(this).val() == 'All-Model') {
+	      if ($(this).val() == 'ALL-Model') {
 		$('.hideable-options2').show();
 	       }
 	      else {

@@ -18,17 +18,18 @@
    <!-- Example row of columns -->
    <div class="row">
      <div class="col-md-12">
-       <form role="form" id="main_form">
+        <form action="/your-name/" method="post" role="form" id="main_form">
+            {% csrf_token %}
            
         <div class="tab-content">
           <div id="by_protein" class="tab-pane active">
-            {% include 'byprotein.html' %}
+            {% include 'byp.html' %}
           </div>
           <div id="by_species" class="tab-pane">
-            {% include 'byspecies.html' %}
+            {% include 'bys.html' %}
           </div>
           <div id="by_function" class="tab-pane">
-            {% include 'byfunction.html' %}
+            {% include 'byf.html' %}
           </div>
         </div><!-- /.tab-content -->
 
@@ -37,19 +38,14 @@
        <div  class="hideable-options" style="display: none"  >
        <fieldset >
        <h2>Scheme for incorporating current annotations</h2>
-       <div class="c-input "> 
+       <div class="c-input ">       
+        {% for choice in form.sifter_choices %}
        <div class="radio">
-         <label>
-           <input type="radio" name="SIFTERApproach" id="EXP-Model" value="EXP-Model" checked>
-           Only use experimental evidence (SIFTER EXP-Model).
-         </label>
+        {{choice}}
        </div>
-       <div class="radio">
-         <label>
-           <input type="radio" name="SIFTERApproach" id="All-Model" value="All-Model">
-           Use both experimental and non-experimental evidence (SIFTER ALL-Model).
-         </label>
-       </div>
+       {% endfor %}
+              
+       
        <span class="c-error"></span>
        </div> 
        <div  class="hideable-options2" style="display: none"  >
@@ -84,8 +80,8 @@
            <fieldset>
            <div class="row">
              <div class="col-md-11">
-               <label for="InputEmail1">Your Email address (optional; recommended for retrieving your results): </label>
-               <input type="email" class="form-control" id="InputEmail1" placeholder="Enter email">
+               <label for="input_email">Your Email address (optional; recommended for retrieving your results): </label>
+                {{form.input_email}}
              </div>		
            </div>
            </fieldset>	      

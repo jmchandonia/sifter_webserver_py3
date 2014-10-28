@@ -4,14 +4,13 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from sifter_web.views import home, get_name
+from sifter_web.views import home, get_name,get_input
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', home,name='home'),
+    url(r'^$', get_input,name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^query/$', get_name),
 )
 
 if settings.DEBUG:
