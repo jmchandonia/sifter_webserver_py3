@@ -2,37 +2,35 @@
 
 {% block get_input %}
     
-
 <h4>
 <div id="mytab">
 <ul class="nav nav-tabs" role="tablist">
-  <li class="active" id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by protein</a></li>
-  <li  id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict by species</a></li>
-  <li  id="byfunction_tab"><a href="#by_function" data-toggle="tab">Predict by function</a></li>
+  <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by protein</a></li>
+  <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict by species</a></li>
+  <li {% if form.active_tab_hidden.value == 'by_function' %} class ="active" {% endif %} id="byfunction_tab"><a href="#by_function" data-toggle="tab">Predict by function</a></li>
 </ul>
 </div>
 </h4>    
-
-
 <div class="container custom-container">
    <!-- Example row of columns -->
    <div class="row">
      <div class="col-md-12">
-        <form action="/your-name/" method="post" role="form" id="main_form">
+        <form method="post" role="form" id="main_form">
             {% csrf_token %}
-           
         <div class="tab-content">
-          <div id="by_protein" class="tab-pane active">
+          <div id="by_protein" class="tab-pane {% if form.active_tab_hidden.value == 'by_protein' %} active{% endif %}">
             {% include 'byp.html' %}
           </div>
-          <div id="by_species" class="tab-pane">
+          <div id="by_species" class="tab-pane {% if form.active_tab_hidden.value == 'by_species' %} active{% endif %}">
             {% include 'bys.html' %}
           </div>
-          <div id="by_function" class="tab-pane">
+          <div id="by_function" class="tab-pane {% if form.active_tab_hidden.value == 'by_function' %} active{% endif %}">
             {% include 'byf.html' %}
           </div>
         </div><!-- /.tab-content -->
-
+        {{ form.active_tab_hidden }}
+        
+        
        <div class="form-group">
        <p><a id="toggleOptions" href="javascript:void(0)" >Show advanced options</a></p>    
        <div  class="hideable-options" style="display: none"  >
@@ -88,6 +86,7 @@
         </div>
         <p>
            <button type="submit" class="btn btn-primary">Submit</button>
+           <button type="submit" class="btn btn-primary">Submit2</button>
            <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>
         </p>
        </form>		
@@ -95,6 +94,7 @@
      </div>
 </div>
 
+<p>{{ response }}</p>
 
 
 {% endblock %}

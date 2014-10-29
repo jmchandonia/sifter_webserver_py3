@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from sifter_web.views import home, get_name,get_input
+from sifter_web.views import get_input
 
 urlpatterns = patterns('',
     # Examples:

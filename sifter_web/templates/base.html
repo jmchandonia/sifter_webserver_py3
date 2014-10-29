@@ -146,6 +146,9 @@
 	      $("#weight").slider('setValue',0.7);
 	      $("#ExpWeight").text(0.7);
               $("#NExpWeight").text(0.3);
+	      var id = $(event.target).attr("href").substr(1);
+              $("#active_tab_hidden").val(id);
+	      
 	});
 
      });
