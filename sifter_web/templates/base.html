@@ -81,18 +81,13 @@
     <script type="text/javascript">
       
       $('#reset').click(function() { 
-	      $('#main_form')[0].reset();	      
-	      $('textarea').each(function(){ $(this).text(''); $(this).trigger('clearErrors'); $(this).trigger('keydown'); } )
-	      $('#form .box-error').hide()
-	      $('.hideable-options2').hide();
-	      $("#weight").slider('setValue',0.7);
-	      $("#ExpWeight").text(0.7);
-              $("#NExpWeight").text(0.3);
-	      
+	reset_forms();
       });
+
 
       $('#clear_text').click(function() { 
 	      $("#input_queries").val("");
+	      $("#ssss").text(val = $('input:radio[name=sifter_choices]:checked').val());	      
       });
       $('#clear_text_species').click(function() { 
 	      $("#input_species").val("");
@@ -105,8 +100,9 @@
       });
 
       $(document).ready(function(){
-
 	
+	fix_weight($("#ExpWeight_hidden").val())
+    
 	$('#weight').slider({
 		formatter: function(value) {
 		return 'Current value: ' + value;
@@ -114,18 +110,10 @@
 	});
 	
 	$("#weight").on("slideStart", function(slideEvt) {
-		$("#ExpWeight").text(slideEvt.value);
-		if (Math.abs(parseFloat(1-slideEvt.value).toFixed(1)-parseFloat(1-slideEvt.value).toFixed(2))<1e-3)
-			$("#NExpWeight").text(parseFloat(1-slideEvt.value).toFixed(1));
-		else
-			$("#NExpWeight").text(parseFloat(1-slideEvt.value).toFixed(2));
+	  	fix_weight(slideEvt.value)
 	});
 	$("#weight").on("slide", function(slideEvt) {
-		$("#ExpWeight").text(slideEvt.value);
-		if (Math.abs(parseFloat(1-slideEvt.value).toFixed(1)-parseFloat(1-slideEvt.value).toFixed(2))<1e-3)
-			$("#NExpWeight").text(parseFloat(1-slideEvt.value).toFixed(1));
-		else
-			$("#NExpWeight").text(parseFloat(1-slideEvt.value).toFixed(2));
+	  	fix_weight(slideEvt.value)			
 	});
 	
 	$('#toggleOptions').click(function() {
@@ -133,29 +121,25 @@
 				var status = $(this).is(':visible'); 
 				var label =  status ? 'Hide advanced options' : 'Show advanced options';
 				$('#toggleOptions').text(label);
+				if ($("#more_options_hidden").val()=='True'){
+				  $("#more_options_hidden").val('False');
+				}else{
+				  $("#more_options_hidden").val('True');				  
+				}
+				
+				
 			});
 	});
 	
 	
 	$('.nav-tabs > li > a').click(function(event){
-	      $('#main_form')[0].reset();	      
-	      $('textarea').each(function(){ $(this).text(''); $(this).trigger('clearErrors'); $(this).trigger('keydown'); } )
-	      $('#form .box-error').hide()
-	      $('.hideable-options').hide();
-	      $('.hideable-options2').hide();
-	      $("#weight").slider('setValue',0.7);
-	      $("#ExpWeight").text(0.7);
-              $("#NExpWeight").text(0.3);
-	      var id = $(event.target).attr("href").substr(1);
-              $("#active_tab_hidden").val(id);
-	      
+	  reset_forms();
 	});
 
      });
       
       $('input:radio[name="sifter_choices"]').change(
-	  function(){
-      
+	  function(){      
 	      // checks that the clicked radio button is the one of value 'Yes'
 	      // the value of the element is the one that's checked (as noted by @shef in comments)
 	      if ($(this).val() == 'ALL-Model') {
@@ -163,12 +147,43 @@
 	       }
 	      else {
 		$('.hideable-options2').hide();
-		$("#weight").slider('setValue',0.7);
-		$("#ExpWeight").text(0.7);
-		$("#NExpWeight").text(0.3);
+		set_default_weight();
 	       }
 	  });
+      var set_default_weight= function() {
+	      $("#weight").slider('setValue',0.7);
+	      $("#ExpWeight").text(0.7);
+              $("#NExpWeight").text(0.3);
+	      $("#ExpWeight_hidden").val($("#ExpWeight").text().substr());	      	      	
+      }
+
+
+      var set_default= function() {
+	      set_default_weight();
+	      $('input:radio[name=sifter_choices]')[0].checked = true;	      
+              $("#more_options_hidden").val('False');
+	      $('#toggleOptions').text("Show advanced options");
+	      var id = $(event.target).attr("href").substr(1);
+              $("#active_tab_hidden").val(id);
+      }
+
+      var reset_forms= function() {
+	      $('#main_form')[0].reset();	      
+	      $('textarea').each(function(){ $(this).text(''); $(this).trigger('clearErrors'); $(this).trigger('keydown'); } )
+	      $('#main_form .bg-danger').hide()
+	      $('.hideable-options').hide();
+	      $('.hideable-options2').hide();
+	      set_default()	      
+      }
       
+      var fix_weight= function(wExp) {
+	  $("#ExpWeight").text(wExp);
+	  if (Math.abs(parseFloat(1-wExp).toFixed(1)-parseFloat(1-wExp).toFixed(2))<1e-3)
+	    $("#NExpWeight").text(parseFloat(1-wExp).toFixed(1));
+	  else
+	    $("#NExpWeight").text(parseFloat(1-wExp).toFixed(2));
+	  $("#ExpWeight_hidden").val($("#ExpWeight").text().substr());	      	      	
+      }
       
 	
      

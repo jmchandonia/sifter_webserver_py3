@@ -1,4 +1,5 @@
-<div class="form-group">
+ <div class="bg-danger">{{ form.input_species.errors }}</div>
+<div class="form-group {%if form.input_species.errors %} has-error {% endif %}" >
   <fieldset >
     
   <h3>Enter species</h3>

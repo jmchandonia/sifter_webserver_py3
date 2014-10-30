@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block get_input %}
-    
+<p id="ssss">0.3</p></label>    
 <h4>
 <div id="mytab">
 <ul class="nav nav-tabs" role="tablist">
@@ -15,7 +15,7 @@
    <!-- Example row of columns -->
    <div class="row">
      <div class="col-md-12">
-        <form method="post" role="form" id="main_form">
+        <form method="post" role="form" id="main_form" enctype="multipart/form-data">
             {% csrf_token %}
         <div class="tab-content">
           <div id="by_protein" class="tab-pane {% if form.active_tab_hidden.value == 'by_protein' %} active{% endif %}">
@@ -29,31 +29,27 @@
           </div>
         </div><!-- /.tab-content -->
         {{ form.active_tab_hidden }}
-        
+        {{ form.ExpWeight_hidden }}
+        {{ form.more_options_hidden }}                
         
        <div class="form-group">
        <p><a id="toggleOptions" href="javascript:void(0)" >Show advanced options</a></p>    
-       <div  class="hideable-options" style="display: none"  >
+       <div  class="hideable-options" {%if not form.more_options_hidden.value %} style="display: none" {% endif %}>
        <fieldset >
-       <h2>Scheme for incorporating current annotations</h2>
-       <div class="c-input ">       
+       <h3>Scheme for incorporating current annotations</h3>
         {% for choice in form.sifter_choices %}
        <div class="radio">
         {{choice}}
        </div>
        {% endfor %}
               
-       
-       <span class="c-error"></span>
-       </div> 
-       <div  class="hideable-options2" style="display: none"  >
+       <div  class="hideable-options2" {%if form.sifter_choices.value == 'EXP-Model'%} style="display: none" {% endif %}>
        <label>Balance between the experimental and non-experimental results:</label>
-       <div class="c-input "> 
        <div>
        <div class="row">
          <div class="col-md-1">  </div>
          <div class="col-md-6">
-         <input id="weight" data-slider-id='wSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step=".01" data-slider-value="0.7"/>
+         <input id="weight" data-slider-id='wSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step=".01" data-slider-value="{{form.ExpWeight_hidden.value}}"/>
          </div>
        </div>
        <div class="row">
@@ -67,8 +63,6 @@
          </div>
          </div>
        </div>
-       </div>
-       <span class="c-error"></span>
        </div>
        </div>
        </fieldset>
@@ -86,7 +80,6 @@
         </div>
         <p>
            <button type="submit" class="btn btn-primary">Submit</button>
-           <button type="submit" class="btn btn-primary">Submit2</button>
            <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>
         </p>
        </form>		
