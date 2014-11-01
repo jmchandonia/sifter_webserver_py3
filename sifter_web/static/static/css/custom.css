@@ -104,3 +104,36 @@ body {
 font-size: 16px;
 }
 
+
+
+.alert-danger {
+    padding: 5px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 4em;
+    margin-right: 6em;
+    margin-top: 1.2em;
+    margin-bottom: 1.2em;   
+}
+
+
+.alert-info {
+    background-image: linear-gradient(to bottom,#e9f5fa 0,#d9edf7 100%);
+    border-top-width: 0px;
+    margin-top: -.75em;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus{
+    background-image: linear-gradient(to bottom,#f9fcfe 0,#e9f5fa 100%);
+    border-bottom-width: 0px;
+    border-color: #9acfea;
+    color: #31708f;
+}
+
+.nav-tabs{
+    border-color: #9acfea;
+    
+}

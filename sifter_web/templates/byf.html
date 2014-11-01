@@ -1,5 +1,5 @@
-<div class="bg-danger">{{ form.input_function.errors }}</div>
-<div class="bg-danger">{{ form.input_function_sp.errors }}</div>
+<div class="alert alert-danger {%if not form.input_function.errors %} hidden {% endif %}">{{ form.input_function.errors }}</div>
+<div class="alert alert-danger {%if not form.input_function_sp.errors %} hidden {% endif %}">{{ form.input_function_sp.errors }}</div>
 
 <div class="form-group {%if form.input_function.errors %} has-error {% endif %}" >
   <fieldset >
@@ -15,7 +15,7 @@
       {{form.input_function}}
       <div class="row">
         <div class="col-md-9">
-        - OR - <label for="function_uploader">Upload the list of functions as a text file:</label>
+        - OR - <label for="function_uploader">Upload the list of your functions as a text file:</label>
         </div>
         <div class="col-md-3">
           <div class="text-right"><a id="clear_text_function" href="javascript:void(0)" title="clear_text_function">Clear</a></div>
@@ -38,7 +38,7 @@
       {{form.input_function_sp}}
       <div class="row">
         <div class="col-md-9">
-        - OR - <label for="function_sp_uploader">Upload the list of species as a text file:</label>
+        - OR - <label for="function_sp_uploader">Upload the list of your species as a text file:</label>
         </div>
         <div class="col-md-3">
           <div class="text-right"><a id="clear_text_function_sp" href="javascript:void(0)" title="clear_text_function_sp">Clear</a></div>

@@ -98,10 +98,14 @@
       $('#clear_text_function_sp').click(function() { 
 	      $("#input_function_sp").val("");
       });
+      $('#clear_text_sequence').click(function() { 
+	      $("#input_sequence").val("");
+      });
 
       $(document).ready(function(){
 	
 	fix_weight($("#ExpWeight_hidden").val())
+	update_hint()
     
 	$('#weight').slider({
 		formatter: function(value) {
@@ -165,6 +169,7 @@
 	      $('#toggleOptions').text("Show advanced options");
 	      var id = $(event.target).attr("href").substr(1);
               $("#active_tab_hidden").val(id);
+	      update_hint();
       }
 
       var reset_forms= function() {
@@ -185,6 +190,18 @@
 	  $("#ExpWeight_hidden").val($("#ExpWeight").text().substr());	      	      	
       }
       
+      var update_hint= function() {
+	if ($("#active_tab_hidden").val()=="by_protein") {
+	  $("#hint_quering").text("ppp");
+	}else if ($("#active_tab_hidden").val()=="by_species") {
+	  $("#hint_quering").text("sss");
+	}else if ($("#active_tab_hidden").val()=="by_function") {
+	  $("#hint_quering").text("fff");
+	}else if ($("#active_tab_hidden").val()=="by_sequence") {
+	  $("#hint_quering").text("sss");
+	}
+
+      }
 	
      
     </script>

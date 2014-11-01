@@ -1,4 +1,5 @@
- <div class="bg-danger">{{ form.input_species.errors }}</div>
+ <div class="alert alert-danger {%if not form.input_species.errors %} hidden {% endif %}">{{ form.input_species.errors }}</div>
+
 <div class="form-group {%if form.input_species.errors %} has-error {% endif %}" >
   <fieldset >
     

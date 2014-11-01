@@ -14,6 +14,8 @@ class InputForm(forms.Form):
     function_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'function_uploader'}),required=False)
     input_function_sp = forms.CharField(widget=forms.Textarea(attrs={'rows':2, 'placeholder':'Enter query functions','class':'form-control','id':'input_function_sp'}),label='Input Function Sp', max_length=100000,required=False)
     function_sp_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'function_sp_uploader'}),required=False)
+    input_sequence = forms.CharField(widget=forms.Textarea(attrs={'rows':10, 'placeholder':'Enter query sequences','class':'form-control','id':'input_sequence'}),label='Input Sequences', max_length=100000,required=False)
+    sequence_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'sequence_uploader'}),required=False)
     input_email = forms.CharField(widget=forms.EmailInput(attrs={'id':'input_email','placeholder':'Enter email','class':'form-control',}),label='Input Email', max_length=100,required=False)
     sifter_choices = forms.ChoiceField(widget=forms.RadioSelect, choices=(('EXP-Model', 'Only use experimental evidence (SIFTER EXP-Model)',)
         , ('ALL-Model', 'Use both experimental and non-experimental evidence (SIFTER ALL-Model)',)),initial='EXP-Model',required=False)
@@ -45,6 +47,8 @@ class InputForm(forms.Form):
         elif active_tab=='by_function':
             self.check(cleaned_data,['input_function','function_sp_uploader'],'GO term IDs are not entered.')
             self.check(cleaned_data,['input_function_sp','function_sp_uploader'],'Species IDs are not entered.')            
+        elif active_tab=='by_sequence':
+            self.check(cleaned_data,['input_sequence','sequence_uploader'],'Query sequences are not entered.')
 
 
         #if self.cleaned_data['input_queries']!='1':

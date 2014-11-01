@@ -5,12 +5,19 @@
 <h4>
 <div id="mytab">
 <ul class="nav nav-tabs" role="tablist">
-  <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by protein</a></li>
+  <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by protein ID</a></li>
   <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict by species</a></li>
   <li {% if form.active_tab_hidden.value == 'by_function' %} class ="active" {% endif %} id="byfunction_tab"><a href="#by_function" data-toggle="tab">Predict by function</a></li>
+  <li {% if form.active_tab_hidden.value == 'by_sequence' %} class ="active" {% endif %} id="bysequence_tab"><a href="#by_sequence" data-toggle="tab">Predict by sequence</a></li>
 </ul>
 </div>
-</h4>    
+</h4>
+
+<div class="alert alert-info" role="alert">
+<p id="hint_quering">Retrive SIFTER predictions for a set of query proteins. Currently, SIFTER has predictions for 1000000 proteins.
+If your protein is not in our current results, you can try <a href="#by_sequence">"Predict by seqences"</a> to find the predictions for the set of closest homologs in our database.</p>
+</div>
+
 <div class="container custom-container">
    <!-- Example row of columns -->
    <div class="row">
@@ -26,6 +33,9 @@
           </div>
           <div id="by_function" class="tab-pane {% if form.active_tab_hidden.value == 'by_function' %} active{% endif %}">
             {% include 'byf.html' %}
+          </div>
+          <div id="by_sequence" class="tab-pane {% if form.active_tab_hidden.value == 'by_sequence' %} active{% endif %}">
+            {% include 'byseq.html' %}
           </div>
         </div><!-- /.tab-content -->
         {{ form.active_tab_hidden }}
