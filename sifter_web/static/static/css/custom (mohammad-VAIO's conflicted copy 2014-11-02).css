@@ -118,13 +118,11 @@ font-size: 16px;
 }
 
 .query-info {
+    background-image: linear-gradient(to bottom,#f6f6f6 0,#f6f6f6 100%);
     font-size: 16px;
-    padding: 5px;
-    margin-left: 2em;
-    margin-right: 2em;
-    border-style: solid;
-    border-width: 1px 0 1px 0;
-    border-color: #ddd;
+    padding: 15px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
 }
 
 
