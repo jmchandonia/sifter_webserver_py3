@@ -5,7 +5,11 @@ from django import forms
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
-from scripts.sqlite_query import find_results 
+from scripts.sqlite_query import find_results
+from results.models import SIFTER_Output
+import datetime
+import random
+
 class InputForm(forms.Form):
     input_queries = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'placeholder':'Enter query proteins','class':'form-control','id':'input_queries'}),label='Input Queries', max_length=100000,required=False)
     query_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'query_uploader'}),required=False)
@@ -79,8 +83,18 @@ def get_input(request):
             form.set_default('more_options_hidden',more_options)
             sifter_choices_val=form.cleaned_data['sifter_choices']
             form.set_default('sifter_choices',sifter_choices_val)
+            
+            my_id=random.randint(1000000,9999999)
+            while SIFTER_Output.objects.filter(job_id=my_id):
+                my_id=random.randint(1000000,9999999)
+            print my_id
+            P=SIFTER_Output(job_id=my_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
+                            query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
+                            n_proteins=0,n_species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
+                            result_date=datetime.date.today(),input_file='',output_file='')
+            P.save()
             r=find_results(form)                        
-            return HttpResponseRedirect('/results/', {'results':r})
+            return HttpResponseRedirect('/results-id=%s'%my_id, {'results':r})
         else:
             active_tab=form.cleaned_data['active_tab_hidden']
             form.set_default('active_tab_hidden',active_tab)
@@ -98,8 +112,8 @@ def get_input(request):
     return render(request, 'home.html', {'form': form,'response': 'Hi'})
 
 
-def show_results(request):
-    return render(request, 'results.html', {'results':'AA'})
+def show_results(request,job_id):
+    return render(request, 'results.html', {'results':job_id})
     
         
     

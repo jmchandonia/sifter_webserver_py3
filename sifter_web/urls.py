@@ -9,7 +9,7 @@ from sifter_web.views import get_input,show_results
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', get_input,name='home'),
-    url(r'^results/', show_results,name='results'),
+    url(r'^results-id=(\d{7})$', show_results,name='results'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
