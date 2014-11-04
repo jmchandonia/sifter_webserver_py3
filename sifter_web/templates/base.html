@@ -192,18 +192,40 @@
       var update_hint= function() {
 	if ($("#active_tab_hidden").val()=="by_protein") {
 	  $("#hint_quering").text("");
-	  $("#hint_quering").append("Find SIFTER predictions for your query proteins. Currently, SIFTER has predictions for 1000000 proteins. If any of your queries are not in our current results, you can try ");
+	  $("#hint_quering").append($('<p>'));	  
+	  $("#hint_quering").append("Find SIFTER predictions for your query proteins.")
+	  $("#hint_quering").append($('</p>'));
+	  $("#hint_quering").append($('<p>'));	  	  
+	  $("#hint_quering").append("If any of your queries are not in our current results, you can try ");
 	  $("#hint_quering").append($('<a href="#" id="goto_by_sequence">'+"Predict by seqence"+'</a>'));
 	  $("#hint_quering").append(" to find SIFTER predictions for the closest homologs in our database to your query proteins.");
+	  $("#hint_quering").append($('</p>'));	  
 	}else if ($("#active_tab_hidden").val()=="by_species") {
 	  $("#hint_quering").text("");
-	  $("#hint_quering").append("Find SIFTER predictions for proteins in your query species. Currently, SIFTER has predictions for proteins in 1000 species. If any of your queries are not in our current results, you can try ");
+	  $("#hint_quering").append($('<p>'));	  
+	  $("#hint_quering").append("Find SIFTER predictions for proteins in your query species.")
+	  $("#hint_quering").append($('</p>'));
+	  $("#hint_quering").append($('<p>'));	  	  
+	  $("#hint_quering").append("If any of your queries are not in our current results, you can try ");
 	  $("#hint_quering").append($('<a href="#" id="goto_by_sequence">'+"Predict by seqence"+'</a>'));
 	  $("#hint_quering").append(" to find SIFTER predictions for the closest homologs in our database to your query proteins.");
+	  $("#hint_quering").append($('</p>'));
 	}else if ($("#active_tab_hidden").val()=="by_function") {
-	  $("#hint_quering").text("For a set of query functions, find proteins with high probability of having those functions. This options search across the given species to identify proteins that are predicted by SIFTER to have any of the query functions as their top functions.");
+	  $("#hint_quering").text("");
+	  $("#hint_quering").append($('<p>'));	  
+	  $("#hint_quering").append("For a set of query functions, find proteins with high probability of having those functions.")
+	  $("#hint_quering").append($('</p>'));
+	  $("#hint_quering").append($('<p>'));	  	  
+	  $("#hint_quering").append("This options search across the given species to identify proteins that are predicted by SIFTER to have any of the query functions as their top functions.");
+	  $("#hint_quering").append($('</p>'));
 	}else if ($("#active_tab_hidden").val()=="by_sequence") {
-	  $("#hint_quering").text("Find SIFTER predictions fo the closest homologs of the query sequences. We BLAST search across 1000000 proteins (wihich already has SIFTER predictions) to identify close homologs to the query sequences.");
+	  $("#hint_quering").text("");
+	  $("#hint_quering").append($('<p>'));	  
+	  $("#hint_quering").append("Find SIFTER predictions fo the closest homologs of the query sequences.")
+	  $("#hint_quering").append($('</p>'));
+	  $("#hint_quering").append($('<p>'));	  	  
+	  $("#hint_quering").append("We BLAST search across 1000000 proteins (wihich already has SIFTER predictions) to identify close homologs to the query sequences.");
+	  $("#hint_quering").append($('</p>'));
 	}
 
       $('#goto_by_sequence').click(function(){

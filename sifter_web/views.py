@@ -5,7 +5,7 @@ from django import forms
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
-
+from scripts.sqlite_query import find_results 
 class InputForm(forms.Form):
     input_queries = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'placeholder':'Enter query proteins','class':'form-control','id':'input_queries'}),label='Input Queries', max_length=100000,required=False)
     query_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'query_uploader'}),required=False)
@@ -79,8 +79,8 @@ def get_input(request):
             form.set_default('more_options_hidden',more_options)
             sifter_choices_val=form.cleaned_data['sifter_choices']
             form.set_default('sifter_choices',sifter_choices_val)
-
-            return render(request, 'home.html', {'form': form, 'response':form.cleaned_data['ExpWeight_hidden']})
+            r=find_results(form)                        
+            return HttpResponseRedirect('/results/', {'results':r})
         else:
             active_tab=form.cleaned_data['active_tab_hidden']
             form.set_default('active_tab_hidden',active_tab)
@@ -96,3 +96,10 @@ def get_input(request):
         form = InputForm()
 
     return render(request, 'home.html', {'form': form,'response': 'Hi'})
+
+
+def show_results(request):
+    return render(request, 'results.html', {'results':'AA'})
+    
+        
+    

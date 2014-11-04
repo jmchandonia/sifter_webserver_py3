@@ -7,11 +7,15 @@
   <h3>Enter query molecular functions </h3>
   <div>Paste or upload the GO term ID(s) of your query molecular function(s)</div>
   <div class="row">
-    <div class="col-md-11">
+    <div class="col-md-10">
       <div class="text-right">
       <a id="example4" class="sample" href="javascript:setExample(4)">Example 1</a>
       <a id="example5" class="sample" href="javascript:setExample(5)">Example 2</a>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10">
       {{form.input_function}}
       <div class="row">
         <div class="col-md-9">
@@ -23,6 +27,11 @@
       </div>
       {{form.function_uploader}}
     </div>
+    <div class="col-md-2">
+      <div class="text-left">	
+	<small>separate IDs by a space or comma</small>
+      </div>
+    </div>        
   </div>
 </fieldset>
 </div>
@@ -31,10 +40,14 @@
   <h3>Enter list of species IDs</h3>
   <div>Paste or upload the NCBI Taxonomy ID(s) of species to look in for above functions</div>
   <div class="row">
-    <div class="col-md-11">
+    <div class="col-md-10">
       <div class="text-right">
       <a id="example6" class="sample" href="javascript:setExample(6)">Example</a>
       </div>
+    </div>
+  </div>
+  <div class="row">     
+    <div class="col-md-10">
       {{form.input_function_sp}}
       <div class="row">
         <div class="col-md-9">
@@ -45,7 +58,12 @@
         </div>
       </div>
       {{form.function_sp_uploader}}
-    </div>    
+    </div>
+    <div class="col-md-2">
+      <div class="text-left">	
+	<small>separate IDs by a space or comma</small>
+      </div>
+    </div>               
   </div>
 </fieldset>
 </div>	    
