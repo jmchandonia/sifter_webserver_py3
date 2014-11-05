@@ -5,6 +5,7 @@ from django import forms
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
+from django.contrib import messages
 from scripts.sqlite_query import find_results
 from results.models import SIFTER_Output
 import datetime
@@ -113,7 +114,20 @@ def get_input(request):
 
 
 def show_results(request,job_id):
-    return render(request, 'results.html', {'results':job_id})
     
-        
+    my_object=SIFTER_Output.objects.filter(job_id=job_id)
+    if not len(my_object)==1:
+        messages.success(request,'Error in the job_id. Number of hits=%s'%(len(my_object)))       
+        return render(request, 'results.html', {'my_object':'','result':'','pending':False})
+    my_object=my_object[0]
+    if my_object.output_file=='':
+        messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
+        #return render(request, 'results.html', {'my_object':my_object,'result':'','pending':True})
+        result=[['FRDA_HUMAN','GO:0008198', 'ferrous iron binding','0'],
+            ['FRDA_HUMAN','GO:0034986', 'iron chaperone activity','1'],
+            ['FRDA_HUMAN','GO:0008199', 'iron, 2 sulfur cluster binding','2'],
+            ['A4_HUMAN','GO:0033130', 'acetylcholine receptor binding','3'],
+            ['A4_HUMAN','GO:0008198', 'PTB domain binding','0.39'],
+            ['A4_HUMAN','GO:0008198', 'growth factor receptor binding','4']]
+        return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False,'colormap':{'1':'#428bca','2':'#5bc0de','3':'#f0ad4e','4':'#d9534f','5':'#5cb85c'}})
     

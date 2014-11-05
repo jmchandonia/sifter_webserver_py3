@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 
 {% block get_input %}
-<p id="ssss">0.3</p></label>    
+<p id="ssss">0.3</p>  
 <h4>
 <div id="mytab">
+<label>
 <ul class="nav nav-tabs" role="tablist">
   <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by protein ID</a></li>
   <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict by species</a></li>
   <li {% if form.active_tab_hidden.value == 'by_function' %} class ="active" {% endif %} id="byfunction_tab"><a href="#by_function" data-toggle="tab">Predict by function</a></li>
   <li {% if form.active_tab_hidden.value == 'by_sequence' %} class ="active" {% endif %} id="bysequence_tab"><a href="#by_sequence" data-toggle="tab">Predict by sequence</a></li>
 </ul>
+</label>
 </div>
 </h4>
 

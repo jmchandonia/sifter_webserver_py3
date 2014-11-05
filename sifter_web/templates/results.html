@@ -6,6 +6,104 @@
 
 <div class="container custom-container">
    <!-- Example row of columns -->
-  {{results}}
+  {% if messages %}
+  <div class="row">
+    <div class="col-md-offset-1 col-md-10">
+      {% for message in messages %}
+        <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if my_object.output_file == ' '%}
+  <div class="row">
+    <meta http-equiv='refresh' content='15'>      
+    <div class="col-md-offset-1 col-md-10">
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          <h3 class="panel-title">SIFTER Querying in Progress for Job ID: {{my_object.job_id}}</h3>
+        </div>
+        <div class="panel-body">
+        <p>You may check here or the following address to see your SIFTER results once it is ready:</p>
+        <p><a href="/results-id={{my_object.job_id}}">/results-id={{my_object.job_id}}</a></p>
+        <p>This page is reloaded every 5 seconds.</p>
+        <p>If you have provided your email address, the result will be send to you once it is ready. </p>
+        <p>The SIFTER predictions for your query can be accessed through the above link for the next 15 days.</p>                      
+        </div>
+      </div>
+    </div>
+  </div>
+  {%endif%}
+
+
+  <div class="row">
+    <div class="col-md-offset-2 col-md-8">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">Submission Info: </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-6">
+              <ul>
+                <li><label>Job ID:</label> {{my_object.job_id}}</li>
+                <li><label>Query Mode:</label> {{my_object.query_method}}</li>
+                {% if my_object.query_method == 'by_protein'%}<li><label>Number of Query Proteins:</label> {{my_object.n_proteins}}</li>{%endif%}
+                {% if my_object.query_method == 'by_species'%}<li><label>Species_ID:</label> {{my_object.n_species}}</li>{%endif%}
+                {% if my_object.query_method == 'by_function'%}<li><label>Number of Query Functions:</label> {{my_object.n_functions}}</li>
+                <li><label>Species_ID:</label> {{my_object.n_species}}</li>{%endif%}
+                {% if my_object.query_method == 'by_sequence'%}<li><label>Number of Query Sequences:</label> {{my_object.n_sequences}}</li>{%endif%}
+              </ul>                      
+            </div>
+            <div class="col-md-6">
+              <ul>
+                <li><label>SIFTER Scheme:</label> {% if my_object.sifter_EXP_choices %} EXP-Model {% else %} ALL-Model {%endif%}</li>
+                {% if my_object.sifter_EXP_choices%}<li><label>Experiment Weight:</label> {{my_object.exp_weight}}</li>{%endif%}
+                {% if my_object.email%}<li><label>Your Email Address:</label> {{my_object.email}}</li>{%endif%}
+                <li><label>Submission Date:</label> {{my_object.submission_date}}</li>            
+              </ul>                      
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  {% if my_object.output_file == ''%}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">SIFTER Predictions for Job ID: {{my_object.job_id}}</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table">
+          <thead>
+            <tr>
+              <th>Protein ID</th>
+              <th>GO Identifier</th>
+              <th>GO Term Name</th>
+              <th>Confidence Score</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            {% for row in result %}
+              {% with cnf='3'%}
+              <tr style="background-color: {{colormap.1}};">
+              {%endwith%}
+              {% for col in row %}
+                <td >{{cnf}}</td>
+              {%endfor%}
+            </tr>
+           {%endfor%}
+          </tbody>
+      </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}
