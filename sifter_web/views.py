@@ -126,11 +126,11 @@ def show_results(request,job_id):
         messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
         #return render(request, 'results.html', {'my_object':my_object,'result':'','pending':True})
         result=[['FRDA_HUMAN','GO:0008198', 'ferrous iron binding','0.98'],
-            ['FRDA_HUMAN','GO:0034986', 'iron chaperone activity','.81'],
-            ['FRDA_HUMAN','GO:0008199', 'iron, 2 sulfur cluster binding','.8'],
-            ['A4_HUMAN','GO:0033130', 'acetylcholine receptor binding','.9'],
-            ['A4_HUMAN','GO:0008198', 'PTB domain binding','0.48'],
-            ['A4_HUMAN','GO:0008198', 'growth factor receptor binding','.14']]
+            ['FRDA_HUMAN','GO:0034986', 'iron chaperone activity','0.81'],
+            ['FRDA_HUMAN','GO:0008199', 'iron, 2 sulfur cluster binding','0.55'],
+            ['A4_HUMAN','GO:0033130', 'acetylcholine receptor binding','0.90'],
+            ['A4_HUMAN','GO:0008198', 'PTB domain binding','0.40'],
+            ['A4_HUMAN','GO:0008198', 'growth factor receptor binding','0.14']]
         return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
     
 
