@@ -11,6 +11,7 @@ from results.models import SIFTER_Output
 import datetime
 import random
 
+
 class InputForm(forms.Form):
     input_queries = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'placeholder':'Enter query proteins','class':'form-control','id':'input_queries'}),label='Input Queries', max_length=100000,required=False)
     query_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'query_uploader'}),required=False)
@@ -94,7 +95,8 @@ def get_input(request):
                             n_proteins=0,n_species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
                             result_date=datetime.date.today(),input_file='',output_file='')
             P.save()
-            r=find_results(form)                        
+            r=find_results(form)
+            print r
             return HttpResponseRedirect('/results-id=%s'%my_id, {'results':r})
         else:
             active_tab=form.cleaned_data['active_tab_hidden']
@@ -123,11 +125,12 @@ def show_results(request,job_id):
     if my_object.output_file=='':
         messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
         #return render(request, 'results.html', {'my_object':my_object,'result':'','pending':True})
-        result=[['FRDA_HUMAN','GO:0008198', 'ferrous iron binding','0'],
-            ['FRDA_HUMAN','GO:0034986', 'iron chaperone activity','1'],
-            ['FRDA_HUMAN','GO:0008199', 'iron, 2 sulfur cluster binding','2'],
-            ['A4_HUMAN','GO:0033130', 'acetylcholine receptor binding','3'],
-            ['A4_HUMAN','GO:0008198', 'PTB domain binding','0.39'],
-            ['A4_HUMAN','GO:0008198', 'growth factor receptor binding','4']]
-        return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False,'colormap':{'1':'#428bca','2':'#5bc0de','3':'#f0ad4e','4':'#d9534f','5':'#5cb85c'}})
+        result=[['FRDA_HUMAN','GO:0008198', 'ferrous iron binding','0.98'],
+            ['FRDA_HUMAN','GO:0034986', 'iron chaperone activity','.81'],
+            ['FRDA_HUMAN','GO:0008199', 'iron, 2 sulfur cluster binding','.8'],
+            ['A4_HUMAN','GO:0033130', 'acetylcholine receptor binding','.9'],
+            ['A4_HUMAN','GO:0008198', 'PTB domain binding','0.48'],
+            ['A4_HUMAN','GO:0008198', 'growth factor receptor binding','.14']]
+        return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
     
+

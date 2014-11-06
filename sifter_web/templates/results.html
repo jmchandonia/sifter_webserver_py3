@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load results_tags %}
+
 {% block get_input %}
  
 
@@ -71,9 +73,13 @@
   </div>
  
   {% if my_object.output_file == ''%}
+
   <div class="row">
+    <div class="col-md-offset-3 col-md-6">
+    <img src="/media/colorbar.svg" style="width:100%">
+    </div>
     <div class="col-md-12">
-      <div class="panel panel-default">
+      <div class="panel panel-warning">
         <div class="panel-heading">
           <h3 class="panel-title">SIFTER Predictions for Job ID: {{my_object.job_id}}</h3>
         </div>
@@ -90,11 +96,9 @@
           
           <tbody>
             {% for row in result %}
-              {% with cnf='3'%}
-              <tr style="background-color: {{colormap.1}};">
-              {%endwith%}
+              <tr style="background-color:rgba{{row.3|get_color_rgba}};">
               {% for col in row %}
-                <td >{{cnf}}</td>
+                <td >{{col}}</td>
               {%endfor%}
             </tr>
            {%endfor%}
