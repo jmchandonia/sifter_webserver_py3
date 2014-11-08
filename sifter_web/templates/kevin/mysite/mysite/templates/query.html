@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Estimated SIFTER processing time</title>
+	<style>
+		body {
+			font-size: 24px;
+		}
+
+		button {
+			font-size: 18px;
+		}
+
+		input {
+			font-size: 20px;
+		}
+
+		table, td, th {
+			text-align: center;
+			border: 1px solid black;
+			border-collapse: collapse;
+			padding: 5px;
+		}
+	</style>
+    <script type="text/javascript" src="/static/jquery.js"></script>
+    <script type="text/javascript" src="/static/highcharts.js"></script>
+    {% load chartit %}
+    {% if displayHist %}
+        {{ histogram|load_charts:"container" }}
+    {% endif %}
+</head>
+<body>
+
+<h3 id="title">Estimated SIFTER processing time</h3>
+
+<form method="post">
+	{% csrf_token %}
+	{{ form }}
+	<input type="submit" value="Submit" />
+</form>
+
+<p>{{ response }}</p>
+
+<table>
+	<tr>
+	{% for cell in tableHeader %}
+		<th>{{ cell }}</th>
+	{% endfor %}
+	</tr>
+	{% for row in tableBody %}
+		<tr>
+		{% for cell in row %}
+			<td>{{ cell }}</td>
+		{% endfor %}
+		</tr>
+	{% endfor %}
+</table>
+
+<div id="container" style="width:800px; height:600px;" ></div>
+
+<script>
+    function test() {
+        var chart = Highcharts.charts[0];
+        var ren = chart.renderer;
+        var arrow = ['M', 0, 0, 'L', -5, -5, 'M', 5, -5, 'L', 0, 0, 'L', 0, -100];
+        ren.path(arrow)
+            .attr({
+                'stroke-width': 2,
+                'stroke': '#000000',
+            })
+            .translate(100, 100)
+            .add();
+    }
+</script>
+
+</body>
+</html>

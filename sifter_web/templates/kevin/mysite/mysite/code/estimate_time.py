@@ -1,10 +1,14 @@
+import matplotlib.pyplot as plt
+import numpy as np
 import os
 import pickle
+import sqlite3
 from math import log10
 from numpy import array, linalg, ones
 from scipy import misc, stats
 
-import matplotlib.pyplot as plt
+from chartit import DataPool, Chart
+from graphs.models import ErrorHistogramBarsTmp
 
 # Paths to various files
 runningTimeFile = '/lab/app/python/python_mohammad/SIFTER_jobs/CAFA/running_time.pickle'
@@ -261,7 +265,68 @@ def calc_upper_bounds(pers):
             errs.extend([err,] * famSize)
         for per in pers:
             percentileDict[cat][per] = stats.scoreatpercentile(errs, per)
+            
+def store_hist_bars_old():
+    if len(ErrorHistogramBarsTmp.objects.all()) == 0:
+        low = 0
+        numBins = 50
+        for cat in errDict:
+            errs = []
+            for (err, famSize) in errDict[cat]:
+                errs.extend([err,] * famSize)
+            high = max(errs) + (max(errs) - min(errs)) * 0.02
+            fig, ax = plt.subplots()
+            n, bins, patches = plt.hist(errs, bins=np.linspace(low, high, numBins))
+            for i in range(numBins - 1):
+                h = ErrorHistogramBarsTmp.objects.create(numelCat=cat[0], famSizeCat=cat[1], bin=bins[i], barHeight=n[i])
+                h.save()
 
+
+### Adapt to ErrorHistogramBars
+def create_my_db(db_file):
+    conn = sqlite3.connect(db_file)
+    c = conn.cursor()
+
+    # Create table
+    c.execute('''CREATE TABLE mytable(ancestor_id integer, descendant_id integer, PRIMARY KEY(ancestor_id, descendant_id))''')
+   
+    # Save (commit) the changes
+    conn.commit()
+    
+    # We can also close the connection if we are done with it.
+    # Just be sure any changes have been committed or they will be lost.
+    conn.close()
+
+def store_my_db(db_file,data):
+        
+    conn = sqlite3.connect(db_file)
+    c = conn.cursor()
+ 
+    c.executemany("INSERT INTO descendants VALUES (?,?)",data)
+    conn.commit()
+    
+    # We can also close the connection if we are done with it.
+    # Just be sure any changes have been committed or they will be lost.
+    conn.close()
+
+                
+def store_hist_bars():
+    data = []
+    low = 0
+    numBins = 50
+    for cat in errDict:
+        errs = []
+        for (err, famSize) in errDict[cat]:
+            errs.extend([err,] * famSize)
+        high = max(errs) + (max(errs) - min(errs)) * 0.02
+        fig, ax = plt.subplots()
+        n, bins, patches = plt.hist(errs, bins=np.linspace(low, high, numBins))
+        binWidth = bins[1] - bins[0]
+        bins = array([x + binWidth / 2 for x in bins[:-1]])
+        for i in range(numBins):
+            data.append([cat[0], cat[1], bins[i], n[i]])
+        # Connect to db
+            
 # Returns the PERth confidence upper bound of the estimated time ETIME, in minutes.
 # The formula is ETIME * X, where X is the PERth percentile of the distribution of errors
 # corresponding to the category CAT.
@@ -296,6 +361,7 @@ else:
     pickle.dump([errDict], open(errDictFile, 'wb'))
     pickle.dump([percentileDict], open(percentileDictFile, 'wb'))
     
+store_hist_bars_old() ###
     
 # Returns the times in TIMES, given in minutes, in consistent units, rounded to EST decimal places.
 def format_times(times):
@@ -312,7 +378,75 @@ def format_times(times):
         return ['%.1f days' % (t / 60 / 24) for t in times]
     else:
         return ['%.1f years' % (t / 60 / 24 / 365) for t in times]
+
+def plot_histogram(eTime, cat):
+    def xScale(err):
+        return round(eTime * err, 1)
+
+    # Step 1: Create a DataPool with the data we want to retrieve
+    histData = DataPool(
+        series = [{
+            'options': {
+                'source': ErrorHistogramBarsTmp.objects.filter(numelCat=cat[0]).filter(famSizeCat=cat[1]),
+            },
+            'terms': ['bin', 'barHeight'],
+        }]
+    )
     
+    # Step 2: Create the Chart object
+    histogram = Chart(
+        datasource = histData,
+        series_options = [{
+            'options': {
+                'type': 'column',
+                'pointPadding': 0,
+                'borderWidth': 0,
+                'groupPadding': 0,
+                'shadow': False,
+                'stacking': False,
+            },
+            'terms':{
+                'bin': ['barHeight',],
+            },
+        }],
+        chart_options = {
+            'title': {
+                'style': {'color': '#000000', 'font-size': '40px'},
+                'text': 'Distribution of estimated time',
+            },
+            'xAxis': {
+                'labels': {
+                    'style': {'color': '#000000', 'font-size': '20px'},
+                },
+                'plotLines': [{
+                    'color': 'orange',
+                    'value': 14,
+                    'width': 2,
+                    'zIndex': 5,
+                }],
+                'tickColor': '#000000',
+                'tickInterval': 5,
+                'tickmarkPlacement': 'between',
+                'title': {
+                    'style': {'color': '#000000', 'font-size': '30px'},
+                    'text': 'Estimated time',
+                },
+            },
+            'yAxis': {
+                'gridLineColor': '#FFFFFF',
+                'labels': {
+                    'enabled': False,
+                },
+                'title': {
+                    'style': {'color': '#000000', 'font-size': '30px'},
+                    'text': 'Probability',
+                },
+            },
+        },
+        x_sortf_mapf_mts = (None, xScale, False)
+    )
+    return histogram
+        
 def estimate_time(numTerms, famSize):
     tableHeader = ['Truncation factor', 'Estimated time (hours)', 'Estimated time',
                    '95% Confidence upper bound', '99.9% Confidence upper bound']
@@ -333,7 +467,9 @@ def estimate_time(numTerms, famSize):
             times.append(upper)
         row.extend(format_times(times))
         tableBody.append(row)
-    return (tableHeader, tableBody)
+
+    histogram = plot_histogram(eTime, cat)
+    return (tableHeader, tableBody, histogram)
     
 def get_processing_time(pfam):
     if pfam in dataDict['reg']:
@@ -341,17 +477,4 @@ def get_processing_time(pfam):
         famSize = dataDict['reg'][pfam]['famSize']
         return estimate_time(numTerms, famSize)
     else:
-        return ([], [[]])
-
-        
-
-def test_graph():
-    xs = [1, 5, 3, 4, 6]
-    ys = [2, 7, 4, 1, 3]
-    cs = ['red', 'blue', 'yellow', 'orange', 'green']
-
-    fig, ax = plt.subplots(figsize = [12, 10])
-    data = ax.scatter(xs, ys, 100, c=cs, alpha=0.5)
-    return data
-
-test_data = test_graph()
+        return ([], [[]], None)
