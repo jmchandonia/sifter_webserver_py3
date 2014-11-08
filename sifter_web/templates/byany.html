@@ -1,0 +1,30 @@
+<div class="query-info">
+<h2>Jump to SIFTER</h2>
+<h4>Find SIFTER predictions for your proteins, species, or functions.</h4>
+<ul class="list-unstyled">
+    <li>Try more advanced search from the right menu.</li>
+</ul>
+</div>
+<div class="alert alert-danger {%if not form.input_any.errors %} hidden {% endif %}">{{ form.input_any.errors }}</div>
+<div class="form-group {%if form.input_any.errors %} has-error {% endif %}" >
+  <fieldset >
+  <h3>Enter any type of input:</h3>
+  Uniprot ID or Accession, Go term ID, Function name, Species Name or ID, etc.
+  <div class="row">
+    <div class="col-md-12">
+      {{form.input_any}}      
+      <div class="row">
+	<div class="col-md-9">
+	  <a id="example1" class="sample" href="javascript:setExample(1)">Example 1</a>
+	  <a id="example2" class="sample" href="javascript:setExample(2)">Example 2</a>
+	  <a id="example3" class="sample" href="javascript:setExample(3)">Example 3</a>
+	  <a id="example4" class="sample" href="javascript:setExample(4)">Example 4</a>
+	</div>
+	<div class=" col-md-3">
+	  <div class="text-right"><a id="clear_text_any" href="javascript:void(0)" title="clear_text_any">Clear</a></div>
+	</div>
+      </div>
+    </div>
+  </div>
+</fieldset>
+</div>	    

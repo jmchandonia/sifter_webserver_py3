@@ -1,112 +1,122 @@
 {% extends 'base.html' %}
 
 {% block get_input %}
-<p id="ssss">0.3</p>  
-<h4>
-<div id="mytab">
-<label>
-<ul class="nav nav-tabs" role="tablist">
-  <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by protein ID</a></li>
-  <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict by species</a></li>
-  <li {% if form.active_tab_hidden.value == 'by_function' %} class ="active" {% endif %} id="byfunction_tab"><a href="#by_function" data-toggle="tab">Predict by function</a></li>
-  <li {% if form.active_tab_hidden.value == 'by_sequence' %} class ="active" {% endif %} id="bysequence_tab"><a href="#by_sequence" data-toggle="tab">Predict by sequence</a></li>
-</ul>
-</label>
-</div>
-</h4>
-
-<div class="bs-callout bs-callout-primary">
-<div id="hint_quering"></div>
-</div>
-
-
-<!--<div class="query-info">
-<p><div id="hint_quering"></div></p>
-</div>
--->    
-
-
-
 <div class="container custom-container">
-   <!-- Example row of columns -->
-   <div class="row">
-     <div class="col-md-12">
-        <form method="post" role="form" id="main_form" enctype="multipart/form-data">
-            {% csrf_token %}
-        <div class="tab-content">
-          <div id="by_protein" class="tab-pane {% if form.active_tab_hidden.value == 'by_protein' %} active{% endif %}">
-            {% include 'byp.html' %}
-          </div>
-          <div id="by_species" class="tab-pane {% if form.active_tab_hidden.value == 'by_species' %} active{% endif %}">
-            {% include 'bys.html' %}
-          </div>
-          <div id="by_function" class="tab-pane {% if form.active_tab_hidden.value == 'by_function' %} active{% endif %}">
-            {% include 'byf.html' %}
-          </div>
-          <div id="by_sequence" class="tab-pane {% if form.active_tab_hidden.value == 'by_sequence' %} active{% endif %}">
-            {% include 'byseq.html' %}
-          </div>
-        </div><!-- /.tab-content -->
-        {{ form.active_tab_hidden }}
-        {{ form.ExpWeight_hidden }}
-        {{ form.more_options_hidden }}                
-        
-       <div class="form-group">
-       <p><a id="toggleOptions" href="javascript:void(0)" >Show advanced options</a></p>    
-       <div  class="hideable-options" {%if not form.more_options_hidden.value %} style="display: none" {% endif %}>
-       <fieldset >
-       <h3>Scheme for incorporating current annotations</h3>
-        {% for choice in form.sifter_choices %}
-       <div class="radio">
-        {{choice}}
-       </div>
-       {% endfor %}
-              
-       <div  class="hideable-options2" {%if form.sifter_choices.value == 'EXP-Model'%} style="display: none" {% endif %}>
-       <label>Balance between the experimental and non-experimental results:</label>
-       <div>
-       <div class="row">
-         <div class="col-md-1">  </div>
-         <div class="col-md-6">
-         <input id="weight" data-slider-id='wSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step=".01" data-slider-value="{{form.ExpWeight_hidden.value}}"/>
-         </div>
-       </div>
-       <div class="row">
-         <div class="col-md-1">  </div>  
-         <div class="col-md-3">
-         <label><span id="ExpWeightValLabel" class='W_Exp'>Experimental weight<p id="ExpWeight">0.7</p></label>
-         </div>
-         <div class="col-md-3">
-         <div class="text-right">    
-         <label><span id="NExpWeightValLabel" class='W_NExp'>Non-experimental weight<p id="NExpWeight">0.3</p></label>
-         </div>
-         </div>
-       </div>
-       </div>
-       </div>
-       </fieldset>
-       </div>
-       </div>
-        <div class="form-group">
-           <fieldset>
-           <div class="row">
-             <div class="col-md-11">
-               <label for="input_email">Your Email address (optional; recommended for retrieving your results): </label>
-                {{form.input_email}}
-             </div>		
-           </div>
-           </fieldset>	      
+    <div class="row">
+        <div class="col-md-9">        
+               <!-- Example row of columns -->
+               <div class="row">
+                 <div class="col-md-12">
+                    <form method="post" role="form" id="main_form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                    <div class="tab-content">
+                      <div id="by_any" class="tab-pane {% if form.active_tab_hidden.value == 'by_any' %} active{% endif %}">
+                        {% include 'byany.html' %}
+                      </div>                        
+                      <div id="by_protein" class="tab-pane {% if form.active_tab_hidden.value == 'by_protein' %} active{% endif %}">
+                        {% include 'byp.html' %}
+                      </div>
+                      <div id="by_species" class="tab-pane {% if form.active_tab_hidden.value == 'by_species' %} active{% endif %}">
+                        {% include 'bys.html' %}
+                      </div>
+                      <div id="by_function" class="tab-pane {% if form.active_tab_hidden.value == 'by_function' %} active{% endif %}">
+                        {% include 'byf.html' %}
+                      </div>
+                      <div id="by_sequence" class="tab-pane {% if form.active_tab_hidden.value == 'by_sequence' %} active{% endif %}">
+                        {% include 'byseq.html' %}
+                      </div>
+                    </div><!-- /.tab-content -->
+                    {{ form.active_tab_hidden }}
+                    {{ form.ExpWeight_hidden }}
+                    {{ form.more_options_hidden }}                
+                    
+                   <div  class="hideable-options0" {%if form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>                    
+                    <div class="form-group">
+                    <a id="toggleOptions" href="javascript:void(0)">Show advanced options</a>
+                    <div  class="hideable-options" {%if not form.more_options_hidden.value %} style="display: none" {% endif %}>
+                    <fieldset >
+                    <h3>Scheme for incorporating current annotations</h3>
+                     {% for choice in form.sifter_choices %}
+                    <div class="radio">
+                     {{choice}}
+                    </div>
+                    {% endfor %}
+                           
+                    <div  class="hideable-options2" {%if form.sifter_choices.value == 'EXP-Model'%} style="display: none" {% endif %}>
+                    <label>Balance between the experimental and non-experimental results:</label>
+                    <div>
+                    <div class="row">
+                      <div class="col-md-1">  </div>
+                      <div class="col-md-6">
+                      <input id="weight" data-slider-id='wSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step=".01" data-slider-value="{{form.ExpWeight_hidden.value}}"/>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-1">  </div>  
+                      <div class="col-md-3">
+                      <label><span id="ExpWeightValLabel" class='W_Exp'>Experimental weight<p id="ExpWeight">0.7</p></label>
+                      </div>
+                      <div class="col-md-3">
+                      <div class="text-right">    
+                      <label><span id="NExpWeightValLabel" class='W_NExp'>Non-experimental weight<p id="NExpWeight">0.3</p></label>
+                      </div>
+                      </div>
+                    </div>
+                    </div>
+                    </div>
+                    </fieldset>
+                    </div>
+                    </div>
+                     <div class="form-group">
+                        <fieldset>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <label for="input_email">Your Email address (optional; recommended for retrieving your results): </label>
+                             {{form.input_email}}
+                          </div>		
+                        </div>
+                        </fieldset>	      
+                     </div>
+                   </div>
+                    <div class="text-center">
+                    <p>
+                       <button type="submit" class="btn btn-primary">Submit</button>
+                       <div  class="hideable-options0" {%if form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>
+                        <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>
+                       </div>
+                       
+                    </p>
+                    </div>
+                   </form>
+                    
+                    <div class="query-info endpage">
+                    <ul class="list-unstyled">
+                        <li>Currently SIFTER has predictions for 1000000 proteins across 10000 species.</li>
+                        <li>For queries not in our current results, try <a href="#" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
+                    </ul>
+                    </div>
+                    
+                 </div>
+            </div>
+        </div>    
+        <div class="col-md-3">
+            <div id="mytab">
+                <ul class="nav nav-pills nav-stacked my_sidebar">
+                  <li class="nav-header">Quick Search</li>
+                  <li {% if form.active_tab_hidden.value == 'by_any' %} class ="active" {% endif %} id="byany_tab"><a href="#by_any" data-toggle="tab">Jump to SIFTER</a></li>
+                  <li class="nav-header">Advanced Search</li>
+                  <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by protein ID</a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict by species</a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_function' %} class ="active" {% endif %} id="byfunction_tab"><a href="#by_function" data-toggle="tab">Predict by function</a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_sequence' %} class ="active" {% endif %} id="bysequence_tab"><a href="#by_sequence" data-toggle="tab">Predict by sequence</a></li>
+                </ul>
+            </div>
         </div>
-        <p>
-           <button type="submit" class="btn btn-primary">Submit</button>
-           <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>
-        </p>
-       </form>		
-     </div>
-     </div>
+    </div>
 </div>
 
 <p>{{ response }}</p>
 
+<p id="ssss">0.3</p>
 
 {% endblock %}

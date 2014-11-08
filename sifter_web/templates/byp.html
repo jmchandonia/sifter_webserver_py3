@@ -1,13 +1,18 @@
+<div class="query-info">
+<h2>Predict by Protein ID</h2>
+<h4>Find SIFTER predictions for your query proteins.</h4>
+</div>
+            
 <div class="alert alert-danger {%if not form.input_queries.errors %} hidden {% endif %}">{{ form.input_queries.errors }}</div>
 <div class="form-group {%if form.input_queries.errors %} has-error {% endif %}" >
   <fieldset >
   <h3>Enter query proteins </h3>
-  <div>Paste or upload the Uniprot ID(s) of your query protein(s)</div>
+  <div>Paste or upload the Uniprot IDs or Accession numbers of your query proteins</div>
   <div class="row">
     <div class="col-md-10">
       <div class="text-right">
-      <a id="example1" class="sample" href="javascript:setExample(1)">Example 1</a>
-      <a id="example2" class="sample" href="javascript:setExample(2)">Example 2</a>
+      <a id="example5" class="sample" href="javascript:setExample(5)">Example 1</a>
+      <a id="example6" class="sample" href="javascript:setExample(6)">Example 2</a>
       </div>
     </div>
   </div>	  

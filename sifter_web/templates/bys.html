@@ -1,25 +1,27 @@
- <div class="alert alert-danger {%if not form.input_species.errors %} hidden {% endif %}">{{ form.input_species.errors }}</div>
+<div class="query-info">
+<h2>Predict by Species</h2>
+<h4>Find SIFTER predictions for proteins in your query species.</h4>
+</div>
 
+<div class="alert alert-danger {%if not form.input_species.errors %} hidden {% endif %}">{{ form.input_species.errors }}</div>
 <div class="form-group {%if form.input_species.errors %} has-error {% endif %}" >
   <fieldset >
     
   <h3>Enter species</h3>
-  <div>Paste the NCBI Taxonomy ID of your query species</div>
+  <div>Paste the name or NCBI taxonomy ID of your query species</div>
   <div class="row">
-    <div class="col-md-10">
-       <div class="text-right"><a id="example3" class="sample" href="javascript:setExample(3)">Example</a></div>      
+    <div class="col-md-12">
+      <div class="text-right">
+      <a id="example7" class="sample" href="javascript:setExample(7)">Example 1</a>
+      <a id="example8" class="sample" href="javascript:setExample(8)">Example 2</a>
+      </div>
     </div>
-  </div>
+  </div>	  
   <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-12">
       {{form.input_species}}
       <div class="text-right"><a id="clear_text_species" href="javascript:void(0)" title="clear_text_species">Clear</a></div>
     </div>
-    <div class="col-md-2">
-      <div class="text-left">	
-        <small>separate IDs by a space or comma</small>
-      </div>
-    </div>                   
   </div>
 </fieldset>
 </div>	    

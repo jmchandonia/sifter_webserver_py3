@@ -82,10 +82,12 @@
 	reset_forms();
       });
 
+      $('#clear_text_any').click(function() { 
+	      $("#input_any").val("");
+      });
 
       $('#clear_text').click(function() { 
 	      $("#input_queries").val("");
-	      $("#ssss").text(val = $('input:radio[name=sifter_choices]:checked').val());	      
       });
       $('#clear_text_species').click(function() { 
 	      $("#input_species").val("");
@@ -103,7 +105,6 @@
       $(document).ready(function(){
 	
 	fix_weight($("#ExpWeight_hidden").val())
-	update_hint()
     
 	$('#weight').slider({
 		formatter: function(value) {
@@ -134,7 +135,7 @@
 	});
 	
 	
-	$('.nav-tabs > li > a').click(function(event){
+	$('.nav-stacked > li > a').click(function(event){
 	  reset_forms();
 	});
 
@@ -167,7 +168,10 @@
 	      $('#toggleOptions').text("Show advanced options");
 	      var id = $(event.target).attr("href").substr(1);
               $("#active_tab_hidden").val(id);
-	      update_hint();
+	      $("#ssss").text($("#active_tab_hidden").val());
+	      if ($("#active_tab_hidden").val()=="by_any"){
+		$('.hideable-options0').hide();
+		}else{$('.hideable-options0').show();}	      
       }
 
       var reset_forms= function() {
@@ -189,44 +193,6 @@
 	  $("#ExpWeight_hidden").val($("#ExpWeight").text().substr());	      	      	
       }
       
-      var update_hint= function() {
-	if ($("#active_tab_hidden").val()=="by_protein") {
-	  $("#hint_quering").text("");
-	  $("#hint_quering").append($('<p>'));	  
-	  $("#hint_quering").append("Find SIFTER predictions for your query proteins.")
-	  $("#hint_quering").append($('</p>'));
-	  $("#hint_quering").append($('<p>'));	  	  
-	  $("#hint_quering").append("If any of your queries are not in our current results, you can try ");
-	  $("#hint_quering").append($('<a href="#" id="goto_by_sequence">'+"Predict by seqence"+'</a>'));
-	  $("#hint_quering").append(" to find SIFTER predictions for the closest homologs in our database to your query proteins.");
-	  $("#hint_quering").append($('</p>'));	  
-	}else if ($("#active_tab_hidden").val()=="by_species") {
-	  $("#hint_quering").text("");
-	  $("#hint_quering").append($('<p>'));	  
-	  $("#hint_quering").append("Find SIFTER predictions for proteins in your query species.")
-	  $("#hint_quering").append($('</p>'));
-	  $("#hint_quering").append($('<p>'));	  	  
-	  $("#hint_quering").append("If any of your queries are not in our current results, you can try ");
-	  $("#hint_quering").append($('<a href="#" id="goto_by_sequence">'+"Predict by seqence"+'</a>'));
-	  $("#hint_quering").append(" to find SIFTER predictions for the closest homologs in our database to your query proteins.");
-	  $("#hint_quering").append($('</p>'));
-	}else if ($("#active_tab_hidden").val()=="by_function") {
-	  $("#hint_quering").text("");
-	  $("#hint_quering").append($('<p>'));	  
-	  $("#hint_quering").append("For a set of query functions, find proteins with high probability of having those functions.")
-	  $("#hint_quering").append($('</p>'));
-	  $("#hint_quering").append($('<p>'));	  	  
-	  $("#hint_quering").append("This options search across the given species to identify proteins that are predicted by SIFTER to have any of the query functions as their top functions.");
-	  $("#hint_quering").append($('</p>'));
-	}else if ($("#active_tab_hidden").val()=="by_sequence") {
-	  $("#hint_quering").text("");
-	  $("#hint_quering").append($('<p>'));	  
-	  $("#hint_quering").append("Find SIFTER predictions fo the closest homologs of the query sequences.")
-	  $("#hint_quering").append($('</p>'));
-	  $("#hint_quering").append($('<p>'));	  	  
-	  $("#hint_quering").append("We BLAST search across 1000000 proteins (wihich already has SIFTER predictions) to identify close homologs to the query sequences.");
-	  $("#hint_quering").append($('</p>'));
-	}
 
       $('#goto_by_sequence').click(function(){
 	activaTab("by_sequence");
@@ -235,10 +201,7 @@
         $('#mytab a[href="#' + tab + '"]').tab('show');
 	reset_forms();
 	$("#active_tab_hidden").val(tab);
-	update_hint();	
       };
-
-      }
 	
      
     </script>
