@@ -1,5 +1,5 @@
 from sifter_results_db.models import SifterResults
-from term_db.models import Term
+from termdb.models import Term
 from results.models import SIFTER_Output
 from django.db import connection
 def map_scores_goa(res):

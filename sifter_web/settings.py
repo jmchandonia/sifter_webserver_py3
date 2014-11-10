@@ -39,7 +39,8 @@ INSTALLED_APPS = (
     'results',
     'term_db',
     'weight_db',
-    'sifter_results_db'
+    'sifter_results_db',
+    'termdb',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -76,7 +77,11 @@ DATABASES = {
     'sifter_results_db': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, "my_dbs","sifter_results_cmp_small.sqlite3"),
-    }        
+    },
+    'termdb': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, "my_dbs","term_db.sqlite3"),
+    }
 }
 
 # Internationalization
