@@ -81,16 +81,14 @@
                     <div class="text-center">
                     <p>
                        <button type="submit" class="btn btn-primary">Submit</button>
-                       <div  class="hideable-options0" {%if form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>
-                        <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>
-                       </div>
-                       
+                        <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>                       
                     </p>
                     </div>
                    </form>
                     
                     <div class="query-info endpage">
                     <ul class="list-unstyled">
+                        <li>Try advanced search from the right menu.</li>
                         <li>Currently SIFTER has predictions for 1000000 proteins across 10000 species.</li>
                         <li>For queries not in our current results, try <a href="#" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
                     </ul>

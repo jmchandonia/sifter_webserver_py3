@@ -1,246 +1,8 @@
-def find_results(form):
-    active_tab=form.cleaned_data['active_tab_hidden']
-    if active_tab=='by_protein':
-        return "HHHHHiiiii"
-    
-    
-    
-import _mysql as mysql
-import _mysql_exceptions as mysql_exceptions
-import MySQLdb.cursors
-import csv
-import numpy as np
-import pickle
-import os
-import operator
-import sqlite3
-import cPickle
-import zlib
-
-params_brenner = {'db_address': 'ultra.berkeley.edu',
-'db_username': 'root',
-'db_password': '',
-'db_name': 'sifter_db_2'
-}
-db_brenner = MySQLdb.connect(host=params_brenner['db_address'],
-                   user=params_brenner['db_username'],
-                   passwd=params_brenner['db_password'],
-                   db=params_brenner['db_name'],
-                   cursorclass=MySQLdb.cursors.DictCursor)
-
-def msql(query, db=db_brenner):
-    c = db.cursor()
-    c.execute(query)
-    results = c.fetchall()
-    c.close()
-    return results
-
-# In[4]:
-
-evidence_constraints_exp = {
-    # Experimental
-    'EXP': 0.9,  # Experiment
-    'IDA': 0.9,  # Direct Assay
-    'IPI': 0.8,  # Physical Interaction
-    'IMP': 0.8,  # Mutant Phenotype
-    'IGI': 0.8,  # Genetic Interaction
-    'IEP': 0.4,  # Expression Pattern
-    # Author Statements
-    'TAS': 0.9,  # Traceable Author Statement
-    'NAS': 0.3,  # Non-traceable Author Statement
-    # Computational Analysis Evidence Codes
-    'ISS': -1,  # Sequence/Structural Similarity
-    'ISO': -1, # Sequence Orthology
-    'ISA': -1, # Sequence Alignment
-    'ISM': -1, # Sequence Model
-    'IGC': -1, # Genomic Context
-    'IBA': -1, # Biological aspect of ancestor
-    'IBD': -1, # Biological aspect of descendant
-    'IKR': -1, # Key Residues
-    'IRD': -1, # Rapid Divergence
-    'RCA': -1,  # Reviews Computational Analysis
-    # Curator Statement
-    'IC' : -1,  # Curator
-    'ND' : -1,  # No biological data available
-    # Automatically assigned
-    'IEA': -1,  # Electronic Annotation
-    # Obsolete
-    'NR' : -1,  # Not recorded
-    # Mystery stuff Barbara included:
-    'P'  : -1.0,  # No clue what this is.
-    'GOR': -1.0,  # "From reading papers"
-    'E'  : -1.0   # No clue what this is.
-}
-allowed_codes = [p for p,v in evidence_constraints_exp.iteritems() if v > 0]
-
-# In[6]:
-db_files = ['/data/mohammad/sifter_data/sifter_webserver/sifter_results_cmp.db']
-
-def run_cmd(db_file,cmd):
-    conn = sqlite3.connect(db_file)
-    c = conn.cursor()
-    c.execute(cmd)
-    
-    result = c.fetchall()
-
-    # We can also close the connection if we are done with it.
-    # Just be sure any changes have been committed or they will be lost.
-    conn.close()
-    #return cPickle.loads(result[0].encode('ascii','ignore'))
-    return result
-
-
-# In[7]:
-
-def get_results(db_file,my_id):
-    conn = sqlite3.connect(db_file)
-    c = conn.cursor()
-    c.execute("select preds,conf_code,start_pos,end_pos,pfam from sifter_results where uniprot_id=?", [my_id])
-    
-    result = c.fetchall()
-
-    # We can also close the connection if we are done with it.
-    # Just be sure any changes have been committed or they will be lost.
-    conn.close()
-    #return cPickle.loads(result[0].encode('ascii','ignore'))
-    result2=[]
-    for res in result:
-        res2=list(res)
-        res2[0]=cPickle.loads(zlib.decompress(res[0]).encode('ascii','ignore'))
-        result2.append(res2)
-    return result2
-
-# In[8]:
-
-def get_go_name(goid):
-    sql="""SELECT
-      term.name 
-     FROM   term
-     WHERE
-       term.acc ='%s'
-    """%(goid)
-    seq_anns = msql(sql, db_brenner)
-    return seq_anns[0]['name']
-get_go_name('GO:0005515')
-
-
-# In[9]:
-
-def Map_id_2_unip(my_id):
-    sql="""SELECT
-        uniprot_id,
-        second_id
-     FROM   uniprot_id_map_2
-     WHERE
-       second_id = '%s'
-       AND db = 'UniProtKB-ID'
-    """%(my_id)
-    #print sql
-    # http://wiki.geneontology.org/index.php/Example_Queries
-    seq_anns = msql(sql, db_brenner)
-    return seq_anns
-
-# In[10]:
-
-def Map_id_2_unip_any(my_id):
-    sql="""SELECT
-        uniprot_id,
-        second_id
-     FROM   uniprot_id_map_2
-     WHERE
-       second_id = '%s'
-    """%(my_id)
-    #print sql
-    # http://wiki.geneontology.org/index.php/Example_Queries
-    seq_anns = msql(sql, db_brenner)
-    return seq_anns
-
-# In[11]:
-
-def Map_unip_to_any(unip_id):
-    sql="""SELECT
-        second_id,db
-     FROM   uniprot_id_map_2
-     WHERE
-       uniprot_id = '%s'
-    """%(unip_id)
-    #print sql
-    # http://wiki.geneontology.org/index.php/Example_Queries
-    seq_anns = msql(sql, db_brenner)
-    return seq_anns
-
-# In[12]:
-
-def Map_unip_to_acc(unip_id):
-    sql="""SELECT
-        second_id,db
-     FROM   uniprot_id_map_2
-     WHERE
-       uniprot_id = '%s'
-       AND db = 'UniProtKB-ID'
-    """%(unip_id)
-    #print sql
-    # http://wiki.geneontology.org/index.php/Example_Queries
-    seq_anns = msql(sql, db_brenner)
-    return seq_anns
-
-
-# In[14]:
-
-go_to_idx_file='/lab/app/python/python_mohammad/SIFTER_jobs/webserver/go_to_idx.pickle'
-go_file='/lab/app/python/python_mohammad/SIFTER_jobs/workspace/go_daily-termdb.obo-xml'
-if not os.path.exists(go_to_idx_file):
-    G = readGOoboXML(go_file)
-    go_ids=[]
-    for i,spec in G.GONameSpace.iteritems():
-        if spec=='molecular_function':
-            go_ids.append(G.get_goid(i))
-    print len(go_ids)
-    go_to_idx={go_id:i for i,go_id in enumerate(go_ids)}
-    idx_to_go={i:go_id for i,go_id in enumerate(go_ids)}
-    pickle.dump([go_to_idx,idx_to_go],open(go_to_idx_file,'w'))   
-else:
-    [go_to_idx,idx_to_go]=pickle.load(open(go_to_idx_file,'r'))       
-
-def find_processed_results(q_results):
-    bads_rn=[]
-    q_genes=q_results.keys()
-    my_res={}
-    for q_gene in q_genes:
-        my_res[q_gene]={}
-        for res in q_results[q_gene]:
-            fam=res[4]
-            pos='%s-%s'%(res[2],res[3])
-            conf_code=res[1]
-            if fam not in my_res[q_gene]:
-                my_res[q_gene][fam]={}
-            if conf_code not in my_res[q_gene][fam]:
-                my_res[q_gene][fam][conf_code]={}
-            if pos not in my_res[q_gene][fam][conf_code]:
-                my_res[q_gene][fam][conf_code][pos]={}            
-            for goid,score in res[0].iteritems():
-                if not score is None:
-                    my_res[q_gene][fam][conf_code][pos][goid]=score
-    return my_res
-
-def find_db_results(db_files,q_genes):
-    q_results={}
-    for q_gene in q_genes:
-        q_res=[]
-        for db_file in db_files:
-            q_res.extend(get_results(db_file,q_gene))
-        q_results[q_gene]=q_res
-    my_res=find_processed_results(q_results)
-    return my_res
-
-            
-def find_results(form):
-    input_queries_cleared=form.cleaned_data['input_queries']
-    my_genes=input_queries_cleared.split(',')
-    my_res=find_db_results(db_files,my_genes)
-    return my_res
-
-'''def map_scores_goa(res):
+from sifter_results_db.models import SifterResults
+from term_db.models import Term
+from results.models import SIFTER_Output
+from django.db import connection
+def map_scores_goa(res):
     bad_flag=0
     mn=min(res.values())    
     if mn<0:
@@ -288,8 +50,6 @@ def find_results(form):
         res[t]=1+(eps[t]-1)*np.prod(1-np.array(ps))
     return {k:v for k,v in res.iteritems()}
 
-# In[34]:
-
 def merge_results(results):
     final_res={}
     for res in results:
@@ -299,10 +59,6 @@ def merge_results(results):
                 final_res[term]=0
             final_res[term]+=score*w
     return final_res
-            
-
-
-# In[35]:
 
 def find_res_multidomain(results):
     n_domain=len(results)
@@ -333,8 +89,8 @@ def filter_results(input_res,real_terms):
             output_res[gene]=filtered_res
     return output_res
 
-# In[36]:
-def find_db_results(db_files,q_genes):
+def find_db_results(q_genes):
+
     q_results={}
     for q_gene in q_genes:
         q_res=[]
@@ -343,8 +99,6 @@ def find_db_results(db_files,q_genes):
         q_results[q_gene]=q_res
     return q_results
 
-
-# In[37]:
 def find_processed_results(q_results):
     bads_rn=[]
     q_genes=q_results.keys()
@@ -427,8 +181,6 @@ def find_processed_results(q_results):
     return my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms
 
 
-# In[39]:
-
 def find_Model1_results(SIFTER_results2,real_terms,we=0.7,wr=0.95,wc=0.55):
     SIFTER_results_merged_MODEL1={}
     for gene in SIFTER_results2.keys():
@@ -509,9 +261,6 @@ def find_Model1_results(SIFTER_results2,real_terms,we=0.7,wr=0.95,wc=0.55):
 
 
 
-
-# In[40]:
-
 def find_Model2_results(SIFTER_results2,real_terms,wc=0.55):
     SIFTER_results_merged_MODEL2={}
     for gene in SIFTER_results2.keys():
@@ -558,34 +307,35 @@ def find_Model2_results(SIFTER_results2,real_terms,wc=0.55):
     MODEL2_my_results_filtered=filter_results(MODEL2_my_results,real_terms)
     
     return SIFTER_results_merged_MODEL2,MODEL2_my_results,MODEL2_my_results_filtered
-   
-def find_top_preds(pred_mat,p_genes,thr):
+
+def find_top_preds(preds,thr):
     top_preds={}
-    for i in range(pred_mat.shape[0]):
-        terms=pred_mat[i,:].nonzero()[1]
-        if not terms.tolist():
-            print p_genes[i]
-            continue
+    for g,pred in preds.iteritems():
+        terms=pred.keys()
         leaves=[w for w in terms if not(set(descendants[w])&(set(terms)-set([w])))]
-        prd=pred_mat[i,leaves]
-        mx=max(prd.data)
-        prdss=sklearn.preprocessing.binarize(prd, threshold=(mx*thr), copy=True)
-        ii=prdss.nonzero()[1]
-        leaves=np.array(leaves)[ii]
-        top_preds[p_genes[i]]={w:pred_mat[i,w] for w in leaves}
-        #ancs=set([v for w in leaves for v in ancestors[w]])-set([rootidx])
+        tp={w:pred[w] for w in leaves}
+        mx=max(tp.values())*thr
+        top_preds[g]={w:round(tp[w],2) for w in tp if tp[w]>mx}
+        
     return top_preds
-# In[45]:
 
 def find_sifter_preds(q_genes,thr):
-    q_results=find_db_results(db_files,q_genes)
+    q_results=find_db_results(q_genes)
     my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
     SIFTER_results_merged_MODEL1,MODEL1_my_results,MODEL1_my_results_filtered=find_Model1_results(SIFTER_results2,real_terms)
     SIFTER_results_merged_MODEL2,MODEL2_my_results,MODEL2_my_results_filtered=find_Model2_results(SIFTER_results2,real_terms)
-    predictions_mat_1,p_genes=find_pred_matrix(MODEL1_my_results_filtered)
-    predictions_mat_2,p_genes=find_pred_matrix(MODEL2_my_results_filtered)
-
-    top_preds_1=find_top_preds(predictions_mat_1,p_genes,thr)
-    top_preds_2=find_top_preds(predictions_mat_2,p_genes,thr)    
+    top_preds_1=find_top_preds(MODEL1_my_results_filtered,thr)
+    top_preds_2=find_top_preds(MODEL2_my_results_filtered,thr)    
     return top_preds_1,top_preds_2
-'''    
+
+
+def find_results(form):
+    my_genes=['A8WRK7_CAEBR']
+    tables = connection.introspection.table_names()
+    print tables
+
+    print len(SIFTER_Output.objects.filter(n_species=0))
+    print len(Term.objects.filter(term_id=11))
+    #aa=find_sifter_preds(my_genes,0.75)
+    if active_tab=='by_protein':            
+            return aa

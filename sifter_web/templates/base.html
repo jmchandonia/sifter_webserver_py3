@@ -143,6 +143,8 @@
 	
 	
 	$('.nav-stacked > li > a').click(function(event){
+	  var id = $(event.target).attr("href").substr(1);
+	  $("#active_tab_hidden").val(id);
 	  reset_forms();
 	});
 
@@ -173,9 +175,7 @@
 	      $('input:radio[name=sifter_choices]')[0].checked = true;	      
               $("#more_options_hidden").val('False');
 	      $('#toggleOptions').text("Show advanced options");
-	      var id = $(event.target).attr("href").substr(1);
-              $("#active_tab_hidden").val(id);
-	      $("#ssss").text($("#active_tab_hidden").val());
+	      $("#ssss").text($("#active_tab_hidden").val());	      
 	      if ($("#active_tab_hidden").val()=="by_any"){
 		$('.hideable-options0').hide();
 		}else{$('.hideable-options0').show();}	      

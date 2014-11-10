@@ -37,6 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'results',
+    'term_db',
+    'weight_db',
+    'sifter_results_db'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,6 +64,18 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },        
+    'term_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, "my_dbs","term_db.sqlite3"),
+    },
+    'weight_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, "my_dbs","weight_db.sqlite3"),
+    },
+    'sifter_results_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, "my_dbs","sifter_results_cmp_small.sqlite3"),
     }        
 }
 
@@ -84,7 +99,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS= (os.path.join(BASE_DIR,"sifter_web","templates"),)
-
 
 if DEBUG:
     MEDIA_URL='/media/'
