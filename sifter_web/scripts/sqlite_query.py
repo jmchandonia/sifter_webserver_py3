@@ -1,7 +1,24 @@
 from sifter_results_db.models import SifterResults
-from termdb.models import Term
+from term_db.models import Term
 from results.models import SIFTER_Output
 from django.db import connection
+import cPickle,zlib
+
+
+def find_go_descs(db_file,ts):
+    cmd="""SELECT id,descendants
+        FROM
+         term
+        WHERE
+        term.id in ('%s')
+        """%("','".join(ts))
+    results = run_cmd(db_file, cmd)
+    results0=[]
+    for w in results:
+        results0.append([w[0],cPickle.loads(zlib.decompress(w[1]).encode('ascii','ignore'))])
+    return results0
+
+            
 def map_scores_goa(res):
     bad_flag=0
     mn=min(res.values())    
@@ -92,11 +109,8 @@ def filter_results(input_res,real_terms):
 def find_db_results(q_genes):
 
     q_results={}
-    for q_gene in q_genes:
-        q_res=[]
-        for db_file in db_files:
-            q_res.extend(get_results(db_file,q_gene))
-        q_results[q_gene]=q_res
+    q_results=SifterResults.objects.filter(uniprot_id=q_genes)
+    print q_results
     return q_results
 
 def find_processed_results(q_results):
@@ -106,16 +120,17 @@ def find_processed_results(q_results):
     for q_gene in q_genes:
         my_res[q_gene]={}
         for res in q_results[q_gene]:
-            fam=res[4]
-            pos='%s-%s'%(res[2],res[3])
-            conf_code=res[1]
+            fam=res.pfam
+            pos='%s-%s'%(res.start_pos,res.end_pos)
+            conf_code=res.conf_code
             if fam not in my_res[q_gene]:
                 my_res[q_gene][fam]={}
             if conf_code not in my_res[q_gene][fam]:
                 my_res[q_gene][fam][conf_code]={}
             if pos not in my_res[q_gene][fam][conf_code]:
-                my_res[q_gene][fam][conf_code][pos]={}            
-            for goid,score in res[0].iteritems():
+                my_res[q_gene][fam][conf_code][pos]={}
+            pred=cPickle.loads(zlib.decompress(res.preds).encode('ascii','ignore'))
+            for goid,score in pred.iteritems():
                 if not score is None:
                     my_res[q_gene][fam][conf_code][pos][goid]=score
             
@@ -331,11 +346,9 @@ def find_sifter_preds(q_genes,thr):
 
 def find_results(form):
     my_genes=['A8WRK7_CAEBR']
-    tables = connection.introspection.table_names()
-    print tables
+    print Term.objects.filter(term_id=1)
 
-    print len(SIFTER_Output.objects.filter(n_species=0))
-    print len(Term.objects.filter(term_id=11))
-    #aa=find_sifter_preds(my_genes,0.75)
+    aa=find_sifter_preds(my_genes,0.75)
     if active_tab=='by_protein':            
             return aa
+

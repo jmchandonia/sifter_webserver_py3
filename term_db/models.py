@@ -24,6 +24,9 @@ class Term(models.Model):
     class Meta:
         managed = False
         db_table = 'term'
+    
+    def __unicode__(self):
+        return '%s'%self.term_id
 
 
 class Term2Term(models.Model):
@@ -33,3 +36,6 @@ class Term2Term(models.Model):
     class Meta:
         managed = False
         db_table = 'term2term'
+
+    def __unicode__(self):
+        return '%s-%s'%(self.parent_id,self.child_id)

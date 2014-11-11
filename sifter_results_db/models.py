@@ -27,3 +27,6 @@ class SifterResults(models.Model):
     class Meta:
         managed = False
         db_table = 'sifter_results'
+    
+    def __unicode__(self):
+        return '%s'%self.uniprot_id

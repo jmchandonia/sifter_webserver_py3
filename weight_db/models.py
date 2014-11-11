@@ -20,3 +20,6 @@ class Weight(models.Model):
     class Meta:
         managed = False
         db_table = 'weight'
+    
+    def __unicode__(self):
+        return '%s'%self.pfam

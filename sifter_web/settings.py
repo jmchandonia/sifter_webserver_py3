@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'term_db',
     'weight_db',
     'sifter_results_db',
-    'termdb',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,7 +82,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, "my_dbs","term_db.sqlite3"),
     }
 }
-
+DATABASE_ROUTERS = ['term_db.routers.term_db_router','weight_db.routers.weight_db_router','sifter_results_db.routers.sifter_results_db_router']
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
