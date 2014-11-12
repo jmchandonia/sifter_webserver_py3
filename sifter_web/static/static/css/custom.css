@@ -147,3 +147,12 @@ font-size: 18px;
 .nav-pills > li.active > a, .nav-pills>li.active > a:hover {
     background-color: #4e93ce;
 }
+
+tr.row_seperator td {
+  border-bottom:3pt solid black;
+  border-top:3pt solid black;  
+}
+
+.result_table a{
+  color:#333;
+}

@@ -14,8 +14,8 @@ class SIFTER_Output(models.Model):
     n_sequences = models.PositiveIntegerField()
     submission_date = models.DateField()
     result_date = models.DateField()
-    input_file=models.FileField()
-    output_file=models.FileField()    
+    input_file=models.FilePathField()
+    output_file=models.FilePathField()    
     def __unicode__(self):
         return '%s'%self.job_id
     

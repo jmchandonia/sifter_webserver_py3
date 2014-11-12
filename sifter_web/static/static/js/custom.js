@@ -2,25 +2,25 @@ function setExample(i){
 	if (i==1)
 	    document.getElementById('input_any').value = 'Q27238;Q3234';
 	else if (i==2)
-	    document.getElementById('input_any').value = 'GO:0008377;GO:0004227;GO:0442427';
+	    document.getElementById('input_any').value = 'GO:0019911;GO:0015349;GO:0000978';
 	else if (i==3)
 	    document.getElementById('input_any').value = 'Saccharomyces cerevisiae';
 	else if (i==4)
 	    document.getElementById('input_any').value = '9606';
 	else if (i==5)
-	    document.getElementById('input_queries').value = 'Q27237';
+	    document.getElementById('input_queries').value = 'A8WRK7_CAEBR';
 	else if (i==6) 
-            document.getElementById('input_queries').value= 'Q27238;Q3234';
+            document.getElementById('input_queries').value= 'A8WRK7_CAEBR,I1FF21_AMPQE,F6SFJ8_ORNAN,H2XWZ2_CIOIN,G5BJ45_HETGA,B7P3S5_IXOSC,B7P3S5_IXOSC,B7P3S5_IXOSC,G3NKK4_GASAC,F1SLA4_PIG,F1NEX3_CHICK,H0ZDV3_TAEGU,B4KXF0_DROMO,H2T322_TAKRU,H0YGD2_HUMAN,E1FV67_LOALO,G7PC00_MACFA,G1KDM6_ANOCA,B4KJ36_DROMO,E3WL16_ANODA,C3Y4F8_BRAFL,C3Y4F8_BRAFL,SO1A6_RAT,H0VF80_CAVPO,H3IYT3_STRPU,H3IYT3_STRPU,H3IYT3_STRPU,F7I0Q4_CALJA,G1TI46_RABIT,B7Q7F9_IXOSC,F7FQD4_CALJA,C3Y4U1_BRAFL,C3Y4U1_BRAFL,H2TWS4_TAKRU,H0WWR0_OTOGA,E4YN72_OIKDI,Q3B7Q4_DANRE,B7ZAD4_HUMAN,D3YY31_MOUSE,H3DF25_TETNG,H2LWA1_ORYLA,H2WEQ3_CAEJA,H2WEQ3_CAEJA,F1PII7_CANFA,E1BC23_BOVIN,F6X5N8_CIOIN,Q5JAR4_HUMAN,Q5JAR4_HUMAN,G3R1F3_GORGO,G3R1F3_GORGO,F6X587_XENTR,D2HW96_AILME,G2HJC6_PANTR,E0W488_PEDHC,H2TWS2_TAKRU,F4WZT5_ACREC,F7C2I8_MACMU,F6SNS4_XENTR,C9JHU9_HUMAN,H2ME23_ORYLA,B0W4W5_CULQU,B0W4W5_CULQU,A8WJB0_CAEBR,H2YTS1_CIOSA,G1QU38_NOMLE,C3YC54_BRAFL,C3YC54_BRAFL,C3YC54_BRAFL,C3YC54_BRAFL,B4GHI4_DROPE,SO1A4_MOUSE,Q7PI57_ANOGA,B3RLK6_TRIAD,A2ACT3_MOUSE,H9GK46_ANOCA,Q148W1_MOUSE,E2BWD4_HARSA,B3KUC7_HUMAN,B4HYY3_DROSE,B4N049_DROWI,G3WUN1_SARHA,G3TF40_LOXAF,A7T5W1_NEMVE,A7T5W1_NEMVE,F1RN62_PIG,H3J4I4_STRPU,Q8K4K9_RAT,H3IQD9_STRPU,H3B9U6_LATCH,SO4A1_MOUSE,G3UKL3_LOXAF,A7SWE4_NEMVE,H2YEL7_CIOSA,H2Q5K4_PANTR,G3QGZ3_GORGO,H3INQ6_STRPU,H3INQ6_STRPU,D3YXA8_MOUSE,H2LI10_ORYLA,G8F3I8_MACFA';
         else if (i==7) 
             document.getElementById('input_species').value = '9606';            //code
         else if (i==8) 
             document.getElementById('input_species').value = 'Saccharomyces cerevisiae';            //code
         else if (i==9) 
-            document.getElementById('input_function').value = 'GO:0008377';            //code
+            document.getElementById('input_function').value = 'GO:0019911';            //code
         else if (i==10) 
-            document.getElementById('input_function').value = 'GO:0008377;GO:0004227;GO:0442427';            //code
+            document.getElementById('input_function').value = 'GO:0019911,GO:0015349,GO:0000978';            //code
         else if (i==11) 
-            document.getElementById('input_function_sp').value = '9606';            //code
+            document.getElementById('input_function_sp').value = '9823';            //code
         else if (i==12) 
             document.getElementById('input_function_sp').value = 'Saccharomyces cerevisiae';            //code
         else if (i==13) 

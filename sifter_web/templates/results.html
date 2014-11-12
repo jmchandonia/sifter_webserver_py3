@@ -18,7 +18,7 @@
   </div>
   {% endif %}
 
-  {% if my_object.output_file == ' '%}
+  {% if my_object.output_file == ''%}
   <div class="row">
     <meta http-equiv='refresh' content='15'>      
     <div class="col-md-offset-1 col-md-10">
@@ -61,7 +61,7 @@
             <div class="col-md-6">
               <ul>
                 <li><label>SIFTER Scheme:</label> {% if my_object.sifter_EXP_choices %} EXP-Model {% else %} ALL-Model {%endif%}</li>
-                {% if my_object.sifter_EXP_choices%}<li><label>Experiment Weight:</label> {{my_object.exp_weight}}</li>{%endif%}
+                {% if not my_object.sifter_EXP_choices%}<li><label>Experiment Weight:</label> {{my_object.exp_weight}}</li>{%endif%}
                 {% if my_object.email%}<li><label>Your Email Address:</label> {{my_object.email}}</li>{%endif%}
                 <li><label>Submission Date:</label> {{my_object.submission_date}}</li>            
               </ul>                      
@@ -72,7 +72,7 @@
     </div>
   </div>
  
-  {% if my_object.output_file == ''%}
+  {% if not my_object.output_file == ''%}
 
   <div class="row">
     <div class="col-md-offset-3 col-md-6">
@@ -87,20 +87,32 @@
           <table class="table">
           <thead>
             <tr>
-              <th>Protein ID</th>
+              <th>#</th>
+              <th>UniProt ID</th>
+              <th>UniProt ACC</th>
+              <th>Taxon</th>
               <th>GO Identifier</th>
               <th>GO Term Name</th>
               <th>Confidence Score</th>
             </tr>
           </thead>
           
-          <tbody>
+          
+          <tbody class='result_table'> 
             {% for row in result %}
-              <tr style="background-color:rgba{{row.3|get_color_rgba}};">
-              {% for col in row %}
-                <td >{{col}}</td>
-              {%endfor%}
-            </tr>
+              {% if row.7 == 1%}
+                <tr class="row_seperator" style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+              {% else %}
+                <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+              {% endif %}
+                <td >{{row.0}}</td>              
+                <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://www.uniprot.org/uniprot/{{row.2}}">{{row.1}}</a></td>
+                <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://www.uniprot.org/uniprot/{{row.2}}">{{row.2}}</a></td>
+                <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{row.3}}">{{row.3}}</a></td>                
+                <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.4}}</a></td>                
+                <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.5}}</a></td>                
+                <td >{{row.6}}</td>                
+              </tr>                
            {%endfor%}
           </tbody>
       </table>

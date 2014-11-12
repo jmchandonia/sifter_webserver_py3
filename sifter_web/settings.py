@@ -10,7 +10,14 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import djcelery
+djcelery.setup_loader()
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 
 # Quick-start development settings - unsuitable for production
@@ -40,6 +47,7 @@ INSTALLED_APPS = (
     'term_db',
     'weight_db',
     'sifter_results_db',
+    'djcelery',
 )
 
 MIDDLEWARE_CLASSES = (

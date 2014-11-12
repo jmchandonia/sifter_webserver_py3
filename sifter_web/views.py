@@ -10,7 +10,12 @@ from scripts.sqlite_query import find_results
 from results.models import SIFTER_Output
 import datetime
 import random
+import pickle
+from term_db.models import Term
+import os
+import operator
 
+INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
 
 class InputForm(forms.Form):
     input_any = forms.CharField(widget=forms.Textarea(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control','id':'input_any'}),label='Input Any Queries', max_length=100000,required=False)
@@ -86,18 +91,28 @@ def get_input(request):
             sifter_choices_val=form.cleaned_data['sifter_choices']
             form.set_default('sifter_choices',sifter_choices_val)
             
-            my_id=random.randint(1000000,9999999)
-            while SIFTER_Output.objects.filter(job_id=my_id):
-                my_id=random.randint(1000000,9999999)
-            print my_id
-            P=SIFTER_Output(job_id=my_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
+            job_id=random.randint(1000000,9999999)
+            while SIFTER_Output.objects.filter(job_id=job_id):
+                job_id=random.randint(1000000,9999999)
+            print job_id
+            
+            infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
+            if active_tab=='by_protein':
+                data={'proteins':[w for w in form.cleaned_data['input_queries'].split(',')]}
+            elif active_tab=='by_species':
+                data={'species':form.cleaned_data['input_species']}                
+            elif active_tab=='by_function':
+                data={'species':form.cleaned_data['input_function_sp'],'functions':[w for w in form.cleaned_data['input_function'].split(',')]}                
+            elif active_tab=='by_sequence':
+                data={'species':form.cleaned_data['input_sequence']}                
+            pickle.dump(data,open(infile,'w'))
+            P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                             query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
                             n_proteins=0,n_species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
-                            result_date=datetime.date.today(),input_file='',output_file='')
+                            result_date=datetime.date.today(),input_file=infile,output_file='')
             P.save()
-            r=find_results(form)
-            print r
-            return HttpResponseRedirect('/results-id=%s'%my_id, {'results':r})
+            r=find_results(form,job_id)
+            return HttpResponseRedirect('/results-id=%s'%job_id, {'results':r})
         else:
             active_tab=form.cleaned_data['active_tab_hidden']
             form.set_default('active_tab_hidden',active_tab)
@@ -115,6 +130,14 @@ def get_input(request):
     return render(request, 'home.html', {'form': form,'response': 'Hi'})
 
 
+
+def find_go_name_acc(ts):
+    res0=Term.objects.filter(term_id__in=ts).values('term_id','name','acc')
+    idx_to_go_name={}
+    for w in res0:
+        idx_to_go_name[w['term_id']]=[w['acc'],w['name']]
+    return idx_to_go_name
+
 def show_results(request,job_id):
     
     my_object=SIFTER_Output.objects.filter(job_id=job_id)
@@ -122,15 +145,30 @@ def show_results(request,job_id):
         messages.success(request,'Error in the job_id. Number of hits=%s'%(len(my_object)))       
         return render(request, 'results.html', {'my_object':'','result':'','pending':False})
     my_object=my_object[0]
-    if my_object.output_file=='':
-        messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
+    print my_object.output_file
+    if not my_object.output_file=='':
+        #messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
+        messages.success(request,'Your SIFTER query is ready.')        
         #return render(request, 'results.html', {'my_object':my_object,'result':'','pending':True})
-        result=[['FRDA_HUMAN','GO:0008198', 'ferrous iron binding','0.98'],
+        '''result=[['FRDA_HUMAN','GO:0008198', 'ferrous iron binding','0.98'],
             ['FRDA_HUMAN','GO:0034986', 'iron chaperone activity','0.81'],
             ['FRDA_HUMAN','GO:0008199', 'iron, 2 sulfur cluster binding','0.55'],
             ['A4_HUMAN','GO:0033130', 'acetylcholine receptor binding','0.90'],
             ['A4_HUMAN','GO:0008198', 'PTB domain binding','0.40'],
-            ['A4_HUMAN','GO:0008198', 'growth factor receptor binding','0.14']]
+            ['A4_HUMAN','GO:0008198', 'growth factor receptor binding','0.14']]'''
+        res,taxids,unip_accs=pickle.load(open(my_object.output_file))
+        terms=set([v for w in res.values() for v in w])                
+        idx_to_go_name=find_go_name_acc(terms)
+        result=[]
+        for j,gene in enumerate(res):
+            res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
+            for i, pred, in enumerate(res_sorted):
+                term,score=pred
+                num=j+1 if i==0 else ''
+                if i<len(res_sorted)-1:                    
+                    result.append([num,gene,unip_accs[gene],taxids[gene],idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+                else:
+                    result.append([num,gene,unip_accs[gene],taxids[gene],idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])        
         return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
     
 

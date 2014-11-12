@@ -32,7 +32,10 @@ class Term(models.Model):
 class Term2Term(models.Model):
     parent_id = models.IntegerField(primary_key=True, blank=True)
     child_id = models.IntegerField(primary_key=True, blank=True)
-
+    #parent_id = models.ForeignKey(Term, related_name='term2term_parent_id')
+    #child_id = models.ForeignKey(Term, related_name='term2term_child_id')
+    
+    parent_id
     class Meta:
         managed = False
         db_table = 'term2term'
