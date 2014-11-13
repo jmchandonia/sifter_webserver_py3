@@ -83,7 +83,7 @@ DATABASES = {
     },
     'sifter_results_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, "my_dbs","sifter_results_cmp_small.sqlite3"),
+        'NAME': '/lab/app/python/python_mohammad/SIFTER_jobs/webserver/sifter_results_cmp.db',
     },
     'termdb': {
         'ENGINE': 'django.db.backends.sqlite3',

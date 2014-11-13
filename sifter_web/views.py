@@ -148,7 +148,7 @@ def show_results(request,job_id):
     print my_object.output_file
     if not my_object.output_file=='':
         #messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
-        messages.success(request,'Your SIFTER query is ready.')        
+        messages.success(request,'Your SIFTER query results are ready.')        
         #return render(request, 'results.html', {'my_object':my_object,'result':'','pending':True})
         '''result=[['FRDA_HUMAN','GO:0008198', 'ferrous iron binding','0.98'],
             ['FRDA_HUMAN','GO:0034986', 'iron chaperone activity','0.81'],
@@ -169,6 +169,9 @@ def show_results(request,job_id):
                     result.append([num,gene,unip_accs[gene],taxids[gene],idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
                 else:
                     result.append([num,gene,unip_accs[gene],taxids[gene],idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])        
+            result.append(['','','','','','','',2])        
+
         return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
+    
     
 
