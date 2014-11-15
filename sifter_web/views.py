@@ -162,14 +162,34 @@ def show_results(request,job_id):
         result=[]
         for j,gene in enumerate(res):
             res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
-            for i, pred, in enumerate(res_sorted):
-                term,score=pred
-                num=j+1 if i==0 else ''
-                if i<len(res_sorted)-1:                    
-                    result.append([num,gene,unip_accs[gene],taxids[gene],idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+            result.append([j+1,gene,unip_accs[gene],taxids[gene],'','','',3])
+            if len(res_sorted)<=2:
+                end_i=len(res)
+            else:
+                end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
+                if end_i:
+                   end_i=end_i[-1]
                 else:
-                    result.append([num,gene,unip_accs[gene],taxids[gene],idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])        
+                   end_i=1
+
+            for i, pred  in enumerate(res_sorted):
+                term,score=pred
+                if i<end_i:                    
+                    result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+                else:
+                    result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
+                    break
             result.append(['','','','','','','',2])        
+        print my_object.query_method
+        if my_object.query_method == 'by_protein':
+            data=pickle.load(open(my_object.input_file))
+            my_genes=data['proteins']
+            rest=set(my_genes)-set(res.keys())
+            print len(set(my_genes))
+            for j,gene in enumerate(rest):
+                result.append([j+len(res)+1,gene,'?','?','','','',3])
+                result.append(['','','','','','','',2])        
+    
 
         return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
     

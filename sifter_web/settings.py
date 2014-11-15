@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'term_db',
     'weight_db',
     'sifter_results_db',
+    'taxid_db',
     'djcelery',
 )
 
@@ -83,9 +84,13 @@ DATABASES = {
     },
     'sifter_results_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/lab/app/python/python_mohammad/SIFTER_jobs/webserver/sifter_results_cmp.db',
+        'NAME': os.path.join(BASE_DIR, "my_dbs","sifter_results_cmp_small.sqlite3"),
     },
-    'termdb': {
+    'term_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, "my_dbs","term_db.sqlite3"),
+    },
+    'taxid_db': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, "my_dbs","term_db.sqlite3"),
     }

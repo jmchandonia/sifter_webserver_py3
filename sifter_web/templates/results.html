@@ -89,7 +89,6 @@
             <tr>
               <th>#</th>
               <th>UniProt ID</th>
-              <th>UniProt ACC</th>
               <th>Taxon</th>
               <th>GO Identifier</th>
               <th>GO Term Name</th>
@@ -107,21 +106,29 @@
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
                   <td></td>                  
               {% else %}
-                {% if row.7 == 1%}
-                  <tr class="row_seperator" style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                {% if row.7 == 3%}
+                    <tr class="row_seperator">
+                    <td >{{row.0}}</td>              
+                    <td ><a href="http://www.uniprot.org/uniprot/{{row.2}}">{{row.1}}</a></td>
+                    <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{row.3}}">{{row.3}}</a></td>                
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 {% else %}
-                  <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
-                {% endif %}             
-                  <td >{{row.0}}</td>              
-                  <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://www.uniprot.org/uniprot/{{row.2}}">{{row.1}}</a></td>
-                  <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://www.uniprot.org/uniprot/{{row.2}}">{{row.2}}</a></td>
-                  <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{row.3}}">{{row.3}}</a></td>                
-                  <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.4}}</a></td>                
-                  <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.5}}</a></td>                
-                  <td >{{row.6}}</td>
+                  {% if row.7 == 1%}
+                    <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                  {% else %}
+                    <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                  {% endif %}             
+                    <td ></td>              
+                    <td ></td>
+                    <td ></td>                
+                    <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.4}}</a></td>                
+                    <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.5}}</a></td>                
+                    <td >{{row.6}}</td>
+                {% endif %}
               {% endif %}
               </tr>                
            {%endfor%}

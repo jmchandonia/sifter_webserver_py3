@@ -149,6 +149,11 @@ font-size: 18px;
 }
 
 tr.row_seperator td {
-  border-bottom:0pt solid #333;
+  background-color: #065872;
+  color: #fff;
 }
+tr.row_seperator td >a {
+  color: #fff;
+}
+
 
