@@ -8,6 +8,7 @@ import pickle
 import numpy as np
 import math
 import os
+import datetime
 
 OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
 
@@ -451,42 +452,42 @@ def find_leave_preds(preds):
     return leaves
     
         
-def find_sifter_preds_byprotein(q_genes,form):
-    sifter_choices=form.cleaned_data['sifter_choices']
+def find_sifter_preds_byprotein(q_genes,my_form_data):
+    sifter_choices=my_form_data['sifter_choices']
     q_results,taxids,unip_accs=find_db_results('by_protein',q_genes=q_genes)
     my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
     if sifter_choices=='EXP-Model':
         res_filtered=find_Model2_results(SIFTER_results2,real_terms)
     else:
-        ExpWeight_hidden=form.cleaned_data['ExpWeight_hidden']
+        ExpWeight_hidden=my_form_data['ExpWeight_hidden']
         res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
     trimmed_res=trim_results(res_filtered)
     leaves=find_leave_preds(trimmed_res)
     res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
     return res,taxids,unip_accs
 
-def find_sifter_preds_byspecies(species,form):
-    sifter_choices=form.cleaned_data['sifter_choices']
+def find_sifter_preds_byspecies(species,my_form_data):
+    sifter_choices=my_form_data['sifter_choices']
     q_results,taxids,unip_accs=find_db_results('by_species',species=species)
     my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
     if sifter_choices=='EXP-Model':
         res_filtered=find_Model2_results(SIFTER_results2,real_terms)
     else:
-        ExpWeight_hidden=form.cleaned_data['ExpWeight_hidden']
+        ExpWeight_hidden=my_form_data['ExpWeight_hidden']
         res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
     trimmed_res=trim_results(res_filtered)
     leaves=find_leave_preds(trimmed_res)
     res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
     return res,taxids,unip_accs
 
-def find_sifter_preds_byfunction(species,functions,form):
-    sifter_choices=form.cleaned_data['sifter_choices']
+def find_sifter_preds_byfunction(species,functions,my_form_data):
+    sifter_choices=my_form_data['sifter_choices']
     q_results,taxids,unip_accs=find_db_results('by_species',species=species)
     my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
     if sifter_choices=='EXP-Model':
         res_filtered=find_Model2_results(SIFTER_results2,real_terms)
     else:
-        ExpWeight_hidden=form.cleaned_data['ExpWeight_hidden']
+        ExpWeight_hidden=my_form_data['ExpWeight_hidden']
         res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
     trimmed_res=trim_results(res_filtered)
     leaves=find_leave_preds(trimmed_res)
@@ -501,38 +502,41 @@ def find_sifter_preds_byfunction(species,functions,form):
     unip_accs={k:v for k,v in unip_accs.iteritems() if k in res_top}    
     return res_top,taxids,unip_accs
 
-def find_results(form,job_id):
-    active_tab=form.cleaned_data['active_tab_hidden']
+def find_results(my_form_data,job_id):
+    active_tab=my_form_data['active_tab_hidden']
     input_file=SIFTER_Output.objects.filter(job_id=job_id).values_list('input_file',flat=True)[0]
     data=pickle.load(open(input_file,'r'))
     if active_tab == 'by_protein':
         my_genes=data['proteins']
-        res,taxids,unip_accs=find_sifter_preds_byprotein(my_genes,form)
+        res,taxids,unip_accs=find_sifter_preds_byprotein(my_genes,my_form_data)
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle.dump([res,taxids,unip_accs],open(outfile,'w'))
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
+        my_object.result_date=datetime.date.today()        
         my_object.output_file=outfile
         my_object.save()
         return True
     elif active_tab == 'by_species':
         my_species=data['species']
-        res,taxids,unip_accs=find_sifter_preds_byspecies(my_species,form)
+        res,taxids,unip_accs=find_sifter_preds_byspecies(my_species,my_form_data)
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle.dump([res,taxids,unip_accs],open(outfile,'w'))
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
+        my_object.result_date=datetime.date.today()        
         my_object.output_file=outfile
         my_object.save()
         return True
     elif active_tab == 'by_function':
         my_species=data['species']
         my_functions=Term.objects.filter(acc__in=data['functions']).values_list('term_id',flat=True)
-        res,taxids,unip_accs=find_sifter_preds_byfunction(my_species,my_functions,form)
+        res,taxids,unip_accs=find_sifter_preds_byfunction(my_species,my_functions,my_form_data)
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle.dump([res,taxids,unip_accs],open(outfile,'w'))
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
+        my_object.result_date=datetime.date.today()        
         my_object.output_file=outfile
         my_object.save()
         return True

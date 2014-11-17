@@ -12,24 +12,13 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-class Term(models.Model):
-    acc = models.TextField(primary_key=True, blank=True)
-    term_id = models.IntegerField(primary_key=True, blank=True, null=True)
-    name = models.TextField(blank=True)
-    ic = models.FloatField(primary_key=True, blank=True, null=True)
-    eps = models.FloatField(blank=True, null=True)
-    descendants = models.BinaryField(blank=True, null=True)
-    ancestors = models.BinaryField(blank=True, null=True)
+class Taxid(models.Model):
+    tax_id = models.IntegerField(primary_key=True, blank=True)
+    tax_name = models.TextField(blank=True)
 
     class Meta:
         managed = False
-        db_table = 'term'
+        db_table = 'taxid'
 
-
-class Term2Term(models.Model):
-    parent_id = models.IntegerField(primary_key=True, blank=True, null=True)
-    child_id = models.IntegerField(primary_key=True, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'term2term'
+    def __unicode__(self):
+        return '%s'%self.tax_id

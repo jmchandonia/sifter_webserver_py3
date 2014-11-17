@@ -15,7 +15,7 @@ class SIFTER_Output(models.Model):
     submission_date = models.DateField()
     result_date = models.DateField()
     input_file=models.FilePathField()
-    output_file=models.FilePathField()    
+    output_file=models.FilePathField()
     def __unicode__(self):
         return '%s'%self.job_id
     

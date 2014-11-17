@@ -6,8 +6,9 @@ from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
 from django.contrib import messages
-from scripts.sqlite_query import find_results
+from sifter_web.tasks import run_sifter_job
 from results.models import SIFTER_Output
+from taxid_db.models import Taxid
 import datetime
 import random
 import pickle
@@ -111,8 +112,11 @@ def get_input(request):
                             n_proteins=0,n_species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
                             result_date=datetime.date.today(),input_file=infile,output_file='')
             P.save()
-            r=find_results(form,job_id)
-            return HttpResponseRedirect('/results-id=%s'%job_id, {'results':r})
+            
+            my_form_data={'sifter_choices':form.cleaned_data['sifter_choices'],'ExpWeight_hidden':form.cleaned_data['ExpWeight_hidden']
+                          ,'active_tab_hidden':form.cleaned_data['active_tab_hidden']}
+            run_sifter_job.delay(my_form_data,job_id)
+            return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
         else:
             active_tab=form.cleaned_data['active_tab_hidden']
             form.set_default('active_tab_hidden',active_tab)
@@ -146,7 +150,10 @@ def show_results(request,job_id):
         return render(request, 'results.html', {'my_object':'','result':'','pending':False})
     my_object=my_object[0]
     print my_object.output_file
-    if not my_object.output_file=='':
+    if my_object.output_file=='':
+        messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
+        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False})        
+    else:
         #messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
         messages.success(request,'Your SIFTER query results are ready.')        
         #return render(request, 'results.html', {'my_object':my_object,'result':'','pending':True})
@@ -162,7 +169,12 @@ def show_results(request,job_id):
         result=[]
         for j,gene in enumerate(res):
             res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
-            result.append([j+1,gene,unip_accs[gene],taxids[gene],'','','',3])
+            tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
+            if tax_obj:
+                tax_name=tax_obj[0].tax_name
+            else:
+                tax_name=taxids[gene]
+            result.append([j+1,gene,unip_accs[gene],tax_name,taxids[gene],'','','',3])
             if len(res_sorted)<=2:
                 end_i=len(res)
             else:
@@ -175,11 +187,11 @@ def show_results(request,job_id):
             for i, pred  in enumerate(res_sorted):
                 term,score=pred
                 if i<end_i:                    
-                    result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+                    result.append(['','','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
                 else:
-                    result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
+                    result.append(['','','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
                     break
-            result.append(['','','','','','','',2])        
+            result.append(['','','','','','','','',2])        
         print my_object.query_method
         if my_object.query_method == 'by_protein':
             data=pickle.load(open(my_object.input_file))
@@ -187,8 +199,8 @@ def show_results(request,job_id):
             rest=set(my_genes)-set(res.keys())
             print len(set(my_genes))
             for j,gene in enumerate(rest):
-                result.append([j+len(res)+1,gene,'?','?','','','',3])
-                result.append(['','','','','','','',2])        
+                result.append([j+len(res)+1,gene,'?','?','','','','',3])
+                result.append(['','','','','','','','',2])        
     
 
         return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})

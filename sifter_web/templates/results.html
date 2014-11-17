@@ -20,7 +20,7 @@
 
   {% if my_object.output_file == ''%}
   <div class="row">
-    <meta http-equiv='refresh' content='15'>      
+    <meta http-equiv='refresh' content='5'>      
     <div class="col-md-offset-1 col-md-10">
       <div class="panel panel-warning">
         <div class="panel-heading">
@@ -99,7 +99,7 @@
           
           <tbody > 
             {% for row in result %}
-              {% if row.7 == 2%}
+              {% if row.8 == 2%}
                 <tr>
                   <td></td>
                   <td></td>
@@ -108,26 +108,26 @@
                   <td></td>
                   <td></td>                  
               {% else %}
-                {% if row.7 == 3%}
+                {% if row.8 == 3%}
                     <tr class="row_seperator">
                     <td >{{row.0}}</td>              
                     <td ><a href="http://www.uniprot.org/uniprot/{{row.2}}">{{row.1}}</a></td>
-                    <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{row.3}}">{{row.3}}</a></td>                
+                    <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{row.4}}">{{row.3}}</a></td>                
                     <td></td>
                     <td></td>
                     <td></td>
                 {% else %}
-                  {% if row.7 == 1%}
-                    <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                  {% if row.8 == 1%}
+                    <tr style="background-color:rgba{{row.7|get_color_rgba}}; color:rgba{{row.7|get_color_rgb2}};">
                   {% else %}
-                    <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                    <tr style="background-color:rgba{{row.7|get_color_rgba}}; color:rgba{{row.7|get_color_rgb2}};">
                   {% endif %}             
-                    <td ></td>              
+                    <td </td>              
                     <td ></td>
                     <td ></td>                
-                    <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.4}}</a></td>                
-                    <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.5}}</a></td>                
-                    <td >{{row.6}}</td>
+                    <td ><a style="color:rgba{{row.7|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.5}}">{{row.5}}</a></td>                
+                    <td ><a style="color:rgba{{row.7|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.5}}">{{row.6}}</a></td>                
+                    <td >{{row.7}}</td>
                 {% endif %}
               {% endif %}
               </tr>                

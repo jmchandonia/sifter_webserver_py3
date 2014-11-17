@@ -91,9 +91,9 @@ fieldset h3{
 
 .jumbotron {
     background-color:#D3D5D6;
-    padding-bottom: 10px;
-    padding-top: 15px;
-    
+    padding-bottom: 2px;
+    padding-top: 10px;
+    margin-bottom: 10px;
 }
 
 body {
@@ -101,8 +101,10 @@ body {
 }
 
 .jumbotron p {
-font-size: 18px;
+font-size: 16px;
+color: #000;
 }
+
 
 
 
@@ -152,6 +154,7 @@ tr.row_seperator td {
   background-color: #065872;
   color: #fff;
 }
+
 tr.row_seperator td >a {
   color: #fff;
 }

@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-
+CELERY_TRACK_STARTED=True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -92,10 +92,10 @@ DATABASES = {
     },
     'taxid_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, "my_dbs","term_db.sqlite3"),
+        'NAME': os.path.join(BASE_DIR, "my_dbs","taxid_db.sqlite3"),
     }
 }
-DATABASE_ROUTERS = ['term_db.routers.term_db_router','weight_db.routers.weight_db_router','sifter_results_db.routers.sifter_results_db_router']
+DATABASE_ROUTERS = ['term_db.routers.term_db_router','weight_db.routers.weight_db_router','sifter_results_db.routers.sifter_results_db_router','taxid_db.routers.taxid_db_router']
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -117,9 +117,14 @@ STATIC_URL = '/static/'
 
 TEMPLATE_DIRS= (os.path.join(BASE_DIR,"sifter_web","templates"),)
 
+BROKER_URL = 'django://'
+
+
 if DEBUG:
     MEDIA_URL='/media/'
     STATIC_ROOT = os.path.join(BASE_DIR,"sifter_web","static","static-only")
     MEDIA_ROOT = os.path.join(BASE_DIR,"sifter_web","static","media")
     STATICFILES_DIRS = (os.path.join(BASE_DIR,"sifter_web","static","static"),)
+    
+    
     
