@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'autocomplete_light',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'chartit',
     'graphs',
+    'estimatedb',
+    'taxid_db',
+    #'ajax_search',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,6 +59,14 @@ ROOT_URLCONF = 'mysite.urls'
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
+#AJAX_SEARCH_LIMIT = 8
+#AJAX_SEARCH_HELPER = 'mysite.views.search_helper'
+#SEARCH_RESULT_TEMPLATE = os.path.join(BASE_DIR, 'mysite', 'templates', 'search.html')
+
+AJAX_LOOKUP_CHANNELS = {
+
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -63,8 +75,21 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    },
+    'estimatedb': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'estimate.sqlite3'),
+    },
+    'taxid_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'taxid_db.db'),
+    },
 }
+
+DATABASE_ROUTERS = [
+    'estimatedb.routers.EstimateDbRouter',
+    'taxid_db.routers.TaxidDbRouter',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
