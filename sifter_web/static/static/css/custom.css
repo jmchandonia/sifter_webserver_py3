@@ -160,3 +160,7 @@ tr.row_seperator td >a {
 }
 
 
+
+.hidden {
+    display: none;
+}

@@ -9,6 +9,8 @@ import numpy as np
 import math
 import os
 import datetime
+import django
+django.setup()
 
 OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
 

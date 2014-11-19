@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Estimated SIFTER processing time</title>
+</head>
+<body>
+
+	<h3 id="title">Estimated SIFTER processing time</h3>
+
+	<p>Number of GO terms:
+		<input type="text" id="numTerms" placeholder="Number of GO terms" />
+	</p>
+
+	<p>Tree size:
+		<input type="text" id="treeSize" placeholder="Tree size" />
+	</p>
+
+	<button>Estimate</button>
+
+	<p>
+		<span id="error">{{ error }}</span>
+		<span id="message">{{ message }}</span>
+	</p>
+
+	<table id="table"></table></br>
+
+</body>
+</html>

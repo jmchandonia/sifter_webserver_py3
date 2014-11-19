@@ -16,6 +16,10 @@ from term_db.models import Term
 import os
 import operator
 
+from chartit import DataPool, Chart
+from scripts.estimate_time import estimate_time, get_processing_time
+from estimatedb.models import Errorhistogrambars
+
 INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
 
 class InputForm(forms.Form):
@@ -74,6 +78,101 @@ class InputForm(forms.Form):
         data = self.data.copy()
         data[field] = value
         self.data = data
+
+
+class EstimateForm(forms.Form):
+    estim_choices = forms.ChoiceField(widget=forms.RadioSelect, choices=(('params', 'Customized Input',),('pfam', 'Use a Pfam ID',)),initial='params')
+    pfam = forms.CharField(label='PFAM ID', required=False)
+    numTerms = forms.IntegerField(label='Number of candidate functions', required=False)
+    famSize = forms.IntegerField(label='Family size', required=False)
+
+def get_query(request):
+    def render_error(response):
+        return render(request, 'query.html',
+            {'form': form, 'response': response, 'displayHist': False})
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = EstimateForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            choices = form.cleaned_data['estim_choices']
+            if choices == 'pfam':
+                pfam = form.cleaned_data['pfam']
+                if not pfam:
+                    return render_error('Please enter a PFAM id')
+                (tableHeader, tableBody, histograms, chartContainers, numTerms) = get_processing_time(pfam)
+                if not tableHeader:
+                    return render_error('Error: PFAM id %s is not in the database' % pfam)
+            else:
+                numTerms = form.cleaned_data['numTerms']
+                famSize = form.cleaned_data['famSize']
+                if not numTerms or numTerms < 0:
+                    return render_error('Please enter a positive integer for the number of GO terms')
+                elif not famSize or famSize < 0:
+                    return render_error('Please enter a positive integer for the family size')
+                (tableHeader, tableBody, histograms, chartContainers, numTerms) = estimate_time(numTerms, famSize)
+            if not histograms:
+                return render(request, 'query.html', {'form': form,
+                    'tableHeader': tableHeader, 'tableBody': tableBody, 'displayHist': False})                
+            return render_to_response('query.html',
+                {'form': form, 'tableHeader': tableHeader, 'tableBody': tableBody, 'histograms': histograms,
+                'displayHist': True, 'chartContainers': chartContainers, 'numTerms': numTerms},
+                RequestContext(request))
+        else:
+            return render(request, 'query.html',
+                {'form': form, 'response': 'Error'}, RequestContext(request))
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = EstimateForm()
+        return render(request, 'query.html', {'form': form,})
+
+
+def get_complexity(request):
+    def render_error(response):
+        return render(request, 'complexity.html',
+            {'form': form, 'response': response, 'displayHist': False})
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = EstimateForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            choices = form.cleaned_data['estim_choices']
+            if choices == 'pfam':
+                pfam = form.cleaned_data['pfam']
+                if not pfam:
+                    return render_error('Please enter a PFAM id')
+                (tableHeader, tableBody, histograms, chartContainers, numTerms) = get_processing_time(pfam)
+                if not tableHeader:
+                    return render_error('Error: PFAM id %s is not in the database' % pfam)
+            else:
+                numTerms = form.cleaned_data['numTerms']
+                famSize = form.cleaned_data['famSize']
+                if not numTerms or numTerms < 0:
+                    return render_error('Please enter a positive integer for the number of GO terms')
+                elif not famSize or famSize < 0:
+                    return render_error('Please enter a positive integer for the family size')
+                (tableHeader, tableBody, histograms, chartContainers, numTerms) = estimate_time(numTerms, famSize)
+            if not histograms:
+                return render(request, 'complexity.html', {'form': form,
+                    'tableHeader': tableHeader, 'tableBody': tableBody, 'displayHist': False})                
+            print chartContainers
+            return render_to_response('complexity.html',
+                {'form': form, 'tableHeader': tableHeader, 'tableBody': tableBody, 'histograms': histograms,
+                'displayHist': True, 'chartContainers': chartContainers, 'numTerms': numTerms},
+                RequestContext(request))
+        else:
+            return render(request, 'complexity.html',
+                {'form': form, 'response': 'Error'}, RequestContext(request))
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = EstimateForm()
+        return render(request, 'complexity.html', {'form': form,})
 
 
 def get_input(request):

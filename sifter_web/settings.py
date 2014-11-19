@@ -49,6 +49,9 @@ INSTALLED_APPS = (
     'sifter_results_db',
     'taxid_db',
     'djcelery',
+    'chartit',
+    'graphs',
+    'estimatedb',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -93,9 +96,19 @@ DATABASES = {
     'taxid_db': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, "my_dbs","taxid_db.sqlite3"),
-    }
+    },
+    'estimatedb': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, "my_dbs",'estimate.sqlite3'),
+    },
 }
-DATABASE_ROUTERS = ['term_db.routers.term_db_router','weight_db.routers.weight_db_router','sifter_results_db.routers.sifter_results_db_router','taxid_db.routers.taxid_db_router']
+DATABASE_ROUTERS = [
+    'term_db.routers.term_db_router',
+    'weight_db.routers.weight_db_router',
+    'sifter_results_db.routers.sifter_results_db_router',
+    'taxid_db.routers.taxid_db_router',
+    'estimatedb.routers.EstimateDbRouter'
+    ]
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 

@@ -33,7 +33,8 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
       <script src="/static/js/custom.js"></script>    
-    
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+   
   </head>
 
   <body role="document">
@@ -70,9 +71,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/static/js/jquery.min.js"></script>
     <script type='text/javascript' src="/static/js/bootstrap-slider.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/highcharts.js"></script>
     <script src="/static/js/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
@@ -110,6 +111,7 @@
       });
 
       $(document).ready(function(){
+	
 	
 	fix_weight($("#ExpWeight_hidden").val())
     
@@ -162,6 +164,28 @@
 		set_default_weight();
 	       }
 	  });
+      
+      $('input:radio[name="estim_choices"]').change(
+	  function(){      
+	      // checks that the clicked radio button is the one of value 'Yes'
+	      // the value of the element is the one that's checked (as noted by @shef in comments)
+	      if ($(this).val() == 'pfam') {
+			$('#id_pfam').prop('disabled', false);
+			$('#id_numTerms').val('');
+			$('#id_famSize').val('');
+			$('#id_numTerms').prop('disabled', true);
+			$('#id_famSize').prop('disabled', true);
+			
+	       }
+	      else {
+			$('#id_pfam').prop('disabled', true);
+			$('#id_pfam').val('');
+			$('#id_numTerms').prop('disabled', false);
+			$('#id_famSize').prop('disabled', false);
+	       }
+	  });
+      
+      
       var set_default_weight= function() {
 	      $("#weight").slider('setValue',0.7);
 	      $("#ExpWeight").text(0.7);
@@ -210,6 +234,32 @@
 	$("#active_tab_hidden").val(tab);
       };
 	
+	var displayHist = $("#displayHist")[0].innerHTML;
+	var numTerms = $("#numTerms")[0].innerHTML;
+	var response = $("#response")[0];
+	
+	if (displayHist === "True") {
+	    var i;
+	    for (i = 1; i <= numTerms; i++) {
+		var container = document.createElement("div");
+		container.id = "hist_container" + i;
+		container.class = "col-md-6";
+		$("#chart_place").append(container);
+		$("#hist_container".concat(i)).hide(0);
+	    }
+	}
+	
+	var i = 1;
+	$(".estim_highlightable").mouseenter(
+	    function() {
+		$(".estim_highlightable").css("background-color", "transparent");
+		$(this).css("backgroundColor", "yellow");
+	
+		$("#hist_container".concat(i)).hide(0);
+		i = parseInt($(this)[0].cells[0].innerHTML);
+		$("#hist_container".concat(i)).show(0);
+	    }
+	);   
      
     </script>
     
