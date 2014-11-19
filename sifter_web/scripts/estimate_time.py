@@ -306,9 +306,9 @@ def format_times(times):
         return times
     t = times[0]
     if t < 1:
-        return ['%.1f seconds' % (60 * t) for t in times]
+        return ['%.1f secs' % (60 * t) for t in times]
     elif t < 60:
-        return ['%.1f minutes' % t for t in times]
+        return ['%.1f mins' % t for t in times]
     elif t < 60 * 24:
         return ['%.1f hours' % (t / 60) for t in times]
     elif t < 60 * 24 * 365:
