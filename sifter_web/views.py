@@ -273,7 +273,7 @@ def show_results(request,job_id):
                 tax_name=tax_obj[0].tax_name
             else:
                 tax_name=taxids[gene]
-            result.append([j+1,gene,unip_accs[gene],tax_name,taxids[gene],'','','',3])
+            result.append([gene,unip_accs[gene],tax_name,taxids[gene],'','','',3])
             if len(res_sorted)<=2:
                 end_i=len(res)
             else:
@@ -286,11 +286,11 @@ def show_results(request,job_id):
             for i, pred  in enumerate(res_sorted):
                 term,score=pred
                 if i<end_i:                    
-                    result.append(['','','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+                    result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
                 else:
-                    result.append(['','','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
+                    result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
                     break
-            result.append(['','','','','','','','',2])        
+            result.append(['','','','','','','',2])        
         print my_object.query_method
         if my_object.query_method == 'by_protein':
             data=pickle.load(open(my_object.input_file))
@@ -298,8 +298,8 @@ def show_results(request,job_id):
             rest=set(my_genes)-set(res.keys())
             print len(set(my_genes))
             for j,gene in enumerate(rest):
-                result.append([j+len(res)+1,gene,'?','?','','','','',3])
-                result.append(['','','','','','','','',2])        
+                result.append([gene,'?','?','','','','',3])
+                result.append(['','','','','','','',2])        
     
 
         return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
