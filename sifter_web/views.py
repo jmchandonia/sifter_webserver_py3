@@ -204,7 +204,7 @@ def get_input(request):
             elif active_tab=='by_function':
                 data={'species':form.cleaned_data['input_function_sp'],'functions':[w for w in form.cleaned_data['input_function'].split(',')]}                
             elif active_tab=='by_sequence':
-                data={'species':form.cleaned_data['input_sequence']}                
+                data={'sequences':form.cleaned_data['input_sequence']}                
             pickle.dump(data,open(infile,'w'))
             P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                             query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,

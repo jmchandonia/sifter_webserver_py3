@@ -10,6 +10,8 @@ import math
 import os
 import datetime
 import django
+from Bio.Blast import NCBIWWW,NCBIXML
+
 django.setup()
 
 OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
@@ -504,6 +506,26 @@ def find_sifter_preds_byfunction(species,functions,my_form_data):
     unip_accs={k:v for k,v in unip_accs.iteritems() if k in res_top}    
     return res_top,taxids,unip_accs
 
+def find_sifter_preds_byfsequence(my_sequences,my_form_data):
+   
+    status=0
+    try:
+        qblast_output = NCBIWWW.qblast("blastp", "swissprot", my_sequences,alignments=0,expect=1e-2)
+    except:
+        status=1
+    
+    if status==0:
+        my_blast_file=os.path.join(OUTPUT_DIR,"%s_output.blast"%job_id)
+        save_file = open(my_blast_file, "w")
+        save_file.write(qblast_output.read())
+        save_file.close()
+        qblast_output.close()
+        for record in NCBIXML.parse(open(my_blast_file)):
+            if record.alignments :
+                for aa in record.alignments:
+                    sp_id=aa.hit_id.split('sp|')[1].split('|')[0].split('.')[0]            
+                print aa.hsps[0].bits, aa.hsps[0].expect,sp_id
+
 def find_results(my_form_data,job_id):
     active_tab=my_form_data['active_tab_hidden']
     input_file=SIFTER_Output.objects.filter(job_id=job_id).values_list('input_file',flat=True)[0]
@@ -542,4 +564,16 @@ def find_results(my_form_data,job_id):
         my_object.output_file=outfile
         my_object.save()
         return True
+    elif active_tab == 'by_sequence':
+        my_sequences=data['sequences']
+        res,taxids,unip_accs=find_sifter_preds_byfsequence(my_sequences,my_form_data)
+        outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
+        pickle.dump([res,taxids,unip_accs],open(outfile,'w'))
+        my_object=SIFTER_Output.objects.filter(job_id=job_id)
+        my_object=my_object[0]        
+        my_object.result_date=datetime.date.today()        
+        my_object.output_file=outfile
+        my_object.save()
+        return True
+
 
