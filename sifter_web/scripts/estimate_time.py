@@ -1,6 +1,5 @@
 import numpy as np
 import os
-import pickle
 import sqlite3
 from math import log10
 from numpy import array, linalg, ones
@@ -9,15 +8,7 @@ from scipy import misc, stats
 from chartit import DataPool, Chart
 from estimatedb.models import Errorhistogrambars
 
-# Paths to various files
-runningTimeFile = '/lab/app/python/python_mohammad/SIFTER_jobs/CAFA/running_time.pickle'
 myFile = os.path.dirname(__file__)
-runningTimeNCFile = os.path.join(myFile, 'running_time_nc.pickle')
-dataDictFile = os.path.join(myFile, 'data_dict.pickle')
-paramsDictFile = os.path.join(myFile, 'params_dict.pickle')
-dividersFile = os.path.join(myFile, 'dividers.pickle')
-errDictFile = os.path.join(myFile, 'err_dict.pickle')
-percentileDictFile = os.path.join(myFile, 'percentile_dict.pickle')
 dbFile = os.path.join(myFile, 'sqlite.db')
 
 # DATADICT['reg'] is a dictionary that maps tags to their corresponding values from DICT_TIME_NC.
@@ -271,34 +262,6 @@ def calc_upper_bounds(pers):
 # corresponding to the category CAT.
 def get_upper_bound(eTime, cat, per):
     return eTime * percentileDict[cat][per]
-
-# Setup DATADICT, PARAMSDICT, the dividers NUMELDIVS and FAMSIZEDIVS, ERRDICT, and PERCENTILEDICT.
-if os.path.exists(dataDictFile):
-    [dataDict] = pickle.load(open(dataDictFile, 'rb'))
-    [paramsDict] = pickle.load(open(paramsDictFile, 'rb'))
-    [numelDivs, famSizeDivs] = pickle.load(open(dividersFile, 'rb'))
-    [errDict] = pickle.load(open(errDictFile, 'rb'))
-    [percentileDict] = pickle.load(open(percentileDictFile, 'rb'))
-else:
-    if os.path.exists(runningTimeNCFile):
-        [dict_time_nc, dict_time_nc_iea] = pickle.load(open(runningTimeNCFile, 'rb'))
-    else:
-        [dict_time, dict_time2, dict_time_iea, dict_time2_iea, dict_time_nc, dict_time_nc_iea] \
-            = pickle.load(open(runningTimeFile,'rb'))
-    pfamsDict = get_pfams_dict()
-    outliersDict = get_outliers()
-    remove_outliers()
-    dataDict = get_data_dict(pfamsDict)
-    get_params(pfamsDict)
-    (numelList, sizeList) = get_numels_famSizes(dataDict)
-    (numelDivs, famSizeDivs) = get_dividers(numelList, sizeList, 4)
-    calc_errs(dataDict)
-    calc_upper_bounds([95, 99.9])
-    pickle.dump([dataDict], open(dataDictFile, 'wb'))
-    pickle.dump([paramsDict], open(paramsDictFile, 'wb'))
-    pickle.dump([numelDivs, famSizeDivs], open(dividersFile, 'wb'))
-    pickle.dump([errDict], open(errDictFile, 'wb'))
-    pickle.dump([percentileDict], open(percentileDictFile, 'wb'))
     
 # Returns the times in TIMES, given in minutes, in consistent units, rounded to EST decimal places.
 def format_times(times):
