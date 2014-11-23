@@ -84,44 +84,85 @@
           <h3 class="panel-title">SIFTER Predictions for Job ID: {{my_object.job_id}}</h3>
         </div>
         <div class="panel-body">
-          <table class="table">
-          <thead>
-            <tr>
-              <th></th>
-              <th></th>
-              <th>Confidence Score</th>
-            </tr>
-          </thead>
-          
-          
-          <tbody > 
-            {% for row in result %}
-              {% if row.7 == 2%}
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-              {% else %}
-                {% if row.7 == 3%}
-                    <tr class="row_seperator">
-                    <td ><a href="http://www.uniprot.org/uniprot/{{row.1}}">{{row.0}}</a></td>
-                    <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{row.3}}">{{row.2}}</a></td>                
+          {% if not my_object.query_method == 'by_sequence' %}
+            <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>Confidence Score</th>
+              </tr>
+            </thead>         
+            <tbody > 
+              {% for row in result %}
+                {% if row.7 == 2%}
+                  <tr>
+                    <td></td>
+                    <td></td>
                     <td></td>
                 {% else %}
-                  {% if row.7 == 1%}
-                    <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                  {% if row.7 == 3%}
+                      <tr class="row_seperator">
+                      <td ><a href="http://www.uniprot.org/uniprot/{{row.1}}">{{row.0}}</a></td>
+                      <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{row.3}}">{{row.2}}</a></td>                
+                      <td></td>
                   {% else %}
-                    <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
-                  {% endif %}             
-                    <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.4}}</a></td>                
-                    <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.5}}</a></td>                
-                    <td >{{row.6}}</td>
+                    {% if row.7 == 1%}
+                      <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                    {% else %}
+                      <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                    {% endif %}             
+                      <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.4}}</a></td>                
+                      <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.5}}</a></td>                
+                      <td >{{row.6}}</td>
+                  {% endif %}
                 {% endif %}
-              {% endif %}
-              </tr>                
-           {%endfor%}
-          </tbody>
-      </table>
+                </tr>                
+             {%endfor%}
+            </tbody>
+            </table>
+          {%else%}
+          {%for query in results %}
+            111
+            
+            <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>Confidence Score</th>
+              </tr>
+            </thead>         
+            <tbody > 
+              {% for row in query.1 %}
+                {% if row.7 == 2%}
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                {% else %}
+                  {% if row.7 == 3%}
+                      <tr class="row_seperator">
+                      <td ><a href="http://www.uniprot.org/uniprot/{{row.1}}">{{row.0}}</a></td>
+                      <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{row.3}}">{{row.2}}</a></td>                
+                      <td></td>
+                  {% else %}
+                    {% if row.7 == 1%}
+                      <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                    {% else %}
+                      <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
+                    {% endif %}             
+                      <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.4}}</a></td>                
+                      <td ><a style="color:rgba{{row.6|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.4}}">{{row.5}}</a></td>                
+                      <td >{{row.6}}</td>
+                  {% endif %}
+                {% endif %}
+                </tr>                
+             {%endfor%}
+            </tbody>
+            </table>
+          {%endfor%}
+          {% endif %}
         </div>
       </div>
     </div>

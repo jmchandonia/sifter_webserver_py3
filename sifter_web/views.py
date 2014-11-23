@@ -253,56 +253,86 @@ def show_results(request,job_id):
         messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
         return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False})        
     else:
-        #messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
-        messages.success(request,'Your SIFTER query results are ready.')        
-        #return render(request, 'results.html', {'my_object':my_object,'result':'','pending':True})
-        '''result=[['FRDA_HUMAN','GO:0008198', 'ferrous iron binding','0.98'],
-            ['FRDA_HUMAN','GO:0034986', 'iron chaperone activity','0.81'],
-            ['FRDA_HUMAN','GO:0008199', 'iron, 2 sulfur cluster binding','0.55'],
-            ['A4_HUMAN','GO:0033130', 'acetylcholine receptor binding','0.90'],
-            ['A4_HUMAN','GO:0008198', 'PTB domain binding','0.40'],
-            ['A4_HUMAN','GO:0008198', 'growth factor receptor binding','0.14']]'''
-        res,taxids,unip_accs=pickle.load(open(my_object.output_file))
-        terms=set([v for w in res.values() for v in w])                
-        idx_to_go_name=find_go_name_acc(terms)
-        result=[]
-        for j,gene in enumerate(res):
-            res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
-            tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
-            if tax_obj:
-                tax_name=tax_obj[0].tax_name
-            else:
-                tax_name=taxids[gene]
-            result.append([gene,unip_accs[gene],tax_name,taxids[gene],'','','',3])
-            if len(res_sorted)<=2:
-                end_i=len(res)
-            else:
-                end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
-                if end_i:
-                   end_i=end_i[-1]
+        messages.success(request,'Your SIFTER query results are ready.')
+        if not my_object.query_method=='by_sequence':
+            res,taxids,unip_accs=pickle.load(open(my_object.output_file))
+            terms=set([v for w in res.values() for v in w])                
+            idx_to_go_name=find_go_name_acc(terms)
+            result=[]
+            for j,gene in enumerate(res):
+                res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
+                tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
+                if tax_obj:
+                    tax_name=tax_obj[0].tax_name
                 else:
-                   end_i=1
-
-            for i, pred  in enumerate(res_sorted):
-                term,score=pred
-                if i<end_i:                    
-                    result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+                    tax_name=taxids[gene]
+                result.append([gene,unip_accs[gene],tax_name,taxids[gene],'','','',3])
+                if len(res_sorted)<=2:
+                    end_i=len(res)
                 else:
-                    result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
-                    break
-            result.append(['','','','','','','',2])        
-        print my_object.query_method
-        if my_object.query_method == 'by_protein':
-            data=pickle.load(open(my_object.input_file))
-            my_genes=data['proteins']
-            rest=set(my_genes)-set(res.keys())
-            print len(set(my_genes))
-            for j,gene in enumerate(rest):
-                result.append([gene,'?','?','','','','',3])
+                    end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
+                    if end_i:
+                       end_i=end_i[-1]
+                    else:
+                       end_i=1
+    
+                for i, pred  in enumerate(res_sorted):
+                    term,score=pred
+                    if i<end_i:                    
+                        result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+                    else:
+                        result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
+                        break
                 result.append(['','','','','','','',2])        
+            print my_object.query_method
+            if my_object.query_method == 'by_protein':
+                data=pickle.load(open(my_object.input_file))
+                my_genes=data['proteins']
+                rest=set(my_genes)-set(res.keys())
+                print len(set(my_genes))
+                for j,gene in enumerate(rest):
+                    result.append([gene,'?','?','','','','',3])
+                    result.append(['','','','','','','',2])        
+        
     
-
-        return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
-    
-    
+            return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
+            
+        else:
+            res,taxids,unip_accs,blast_hits,connected=pickle.load(open(my_object.output_file))
+            terms=set([v for w in res.values() for v in w])                
+            idx_to_go_name=find_go_name_acc(terms)
+            result=[]
+            for query, hits in blast_hits.iteritems():
+                result_q=[]
+                for j,hit in enumerate(hits):
+                    gene=hit[0]
+                    print res.keys()
+                    res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
+                    tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
+                    if tax_obj:
+                        tax_name=tax_obj[0].tax_name
+                    else:
+                        tax_name=taxids[gene]
+                    result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],hit[1],hit[2],hit[3],3])
+                    if len(res_sorted)<=2:
+                        end_i=len(res)
+                    else:
+                        end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
+                        if end_i:
+                           end_i=end_i[-1]
+                        else:
+                           end_i=1
+        
+                    for i, pred  in enumerate(res_sorted):
+                        term,score=pred
+                        if i<end_i:                    
+                            result_q.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+                        else:
+                            result_q.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
+                            break
+                    result_q.append(['','','','','','','',2])
+                result.append([query,result_q])   
+            return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
+        
+        
 

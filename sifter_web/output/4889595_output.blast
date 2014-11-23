@@ -1,0 +1,2842 @@
+<?xml version="1.0"?>
+<!DOCTYPE BlastOutput PUBLIC "-//NCBI//NCBI BlastOutput/EN" "http://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.dtd">
+<BlastOutput>
+  <BlastOutput_program>blastp</BlastOutput_program>
+  <BlastOutput_version>BLASTP 2.2.30+</BlastOutput_version>
+  <BlastOutput_reference>Stephen F. Altschul, Thomas L. Madden, Alejandro A. Sch&amp;auml;ffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), &quot;Gapped BLAST and PSI-BLAST: a new generation of protein database search programs&quot;, Nucleic Acids Res. 25:3389-3402.</BlastOutput_reference>
+  <BlastOutput_db>nr</BlastOutput_db>
+  <BlastOutput_query-ID>58703</BlastOutput_query-ID>
+  <BlastOutput_query-def>seq1</BlastOutput_query-def>
+  <BlastOutput_query-len>125</BlastOutput_query-len>
+  <BlastOutput_param>
+    <Parameters>
+      <Parameters_matrix>BLOSUM62</Parameters_matrix>
+      <Parameters_expect>0.01</Parameters_expect>
+      <Parameters_gap-open>11</Parameters_gap-open>
+      <Parameters_gap-extend>1</Parameters_gap-extend>
+      <Parameters_filter>F</Parameters_filter>
+    </Parameters>
+  </BlastOutput_param>
+<BlastOutput_iterations>
+<Iteration>
+  <Iteration_iter-num>1</Iteration_iter-num>
+  <Iteration_query-ID>58703</Iteration_query-ID>
+  <Iteration_query-def>seq1</Iteration_query-def>
+  <Iteration_query-len>125</Iteration_query-len>
+<Iteration_hits>
+<Hit>
+  <Hit_num>1</Hit_num>
+  <Hit_id>gi|17863042|gb|AAL39998.1|</Hit_id>
+  <Hit_def>SD10289p [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>AAL39998</Hit_accession>
+  <Hit_len>447</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>258.84</Hsp_bit-score>
+      <Hsp_score>660</Hsp_score>
+      <Hsp_evalue>6.7305e-82</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>125</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>2</Hit_num>
+  <Hit_id>gi|45549272|ref|NP_524932.2|</Hit_id>
+  <Hit_def>lethal (2) tumorous imaginal discs, isoform A [Drosophila melanogaster] &gt;gi|45445388|gb|AAF47051.3| lethal (2) tumorous imaginal discs, isoform A [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>NP_524932</Hit_accession>
+  <Hit_len>447</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>258.455</Hsp_bit-score>
+      <Hsp_score>659</Hsp_score>
+      <Hsp_evalue>8.16924e-82</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>125</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>3</Hit_num>
+  <Hit_id>gi|34924896|sp|Q27237.2|TID_DROME</Hit_id>
+  <Hit_def>RecName: Full=Protein tumorous imaginal discs, mitochondrial; AltName: Full=Protein lethal(2)tumorous imaginal discs; AltName: Full=TID50; AltName: Full=TID56; Flags: Precursor [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>Q27237</Hit_accession>
+  <Hit_len>520</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>260.381</Hsp_bit-score>
+      <Hsp_score>664</Hsp_score>
+      <Hsp_evalue>8.72522e-82</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>125</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>4</Hit_num>
+  <Hit_id>gi|45552813|ref|NP_995932.1|</Hit_id>
+  <Hit_def>lethal (2) tumorous imaginal discs, isoform B [Drosophila melanogaster] &gt;gi|1487968|emb|CAA64538.1| Tid56 protein [Drosophila melanogaster] &gt;gi|1487970|emb|CAA64540.1| Tid56 protein [Drosophila melanogaster] &gt;gi|2130991|emb|CAA64536.1| Tid56 protein [Drosophila melanogaster] &gt;gi|45445386|gb|AAS64764.1| lethal (2) tumorous imaginal discs, isoform B [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>NP_995932</Hit_accession>
+  <Hit_len>520</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>260.381</Hsp_bit-score>
+      <Hsp_score>664</Hsp_score>
+      <Hsp_evalue>8.72522e-82</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>125</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>5</Hit_num>
+  <Hit_id>gi|665403148|ref|NP_001286777.1|</Hit_id>
+  <Hit_def>lethal (2) tumorous imaginal discs, isoform E [Drosophila melanogaster] &gt;gi|288860152|gb|ADC55520.1| GH23452p [Drosophila melanogaster] &gt;gi|599127359|gb|AHN56572.1| lethal (2) tumorous imaginal discs, isoform E [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>NP_001286777</Hit_accession>
+  <Hit_len>445</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>258.455</Hsp_bit-score>
+      <Hsp_score>659</Hsp_score>
+      <Hsp_evalue>8.81666e-82</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>125</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>6</Hit_num>
+  <Hit_id>gi|386768530|ref|NP_001246483.1|</Hit_id>
+  <Hit_def>lethal (2) tumorous imaginal discs, isoform D [Drosophila melanogaster] &gt;gi|383302669|gb|AFH08236.1| lethal (2) tumorous imaginal discs, isoform D [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>NP_001246483</Hit_accession>
+  <Hit_len>514</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>259.996</Hsp_bit-score>
+      <Hsp_score>663</Hsp_score>
+      <Hsp_evalue>1.03994e-81</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>125</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>7</Hit_num>
+  <Hit_id>gi|544583650|gb|AGW24095.1|</Hit_id>
+  <Hit_def>MIP11551p1 [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>AGW24095</Hit_accession>
+  <Hit_len>514</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>259.225</Hsp_bit-score>
+      <Hsp_score>661</Hsp_score>
+      <Hsp_evalue>2.8152e-81</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>124</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRSTSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPR+TSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>8</Hit_num>
+  <Hit_id>gi|297591842|gb|ADI46798.1|</Hit_id>
+  <Hit_def>UT01205p [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>ADI46798</Hit_accession>
+  <Hit_len>507</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>258.84</Hsp_bit-score>
+      <Hsp_score>660</Hsp_score>
+      <Hsp_evalue>3.13551e-81</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>125</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>9</Hit_num>
+  <Hit_id>gi|45552811|ref|NP_995931.1|</Hit_id>
+  <Hit_def>lethal (2) tumorous imaginal discs, isoform C [Drosophila melanogaster] &gt;gi|45445387|gb|AAS64765.1| lethal (2) tumorous imaginal discs, isoform C [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>NP_995931</Hit_accession>
+  <Hit_len>507</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>258.455</Hsp_bit-score>
+      <Hsp_score>659</Hsp_score>
+      <Hsp_evalue>3.72174e-81</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>125</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>10</Hit_num>
+  <Hit_id>gi|1487966|emb|CAA64531.1|</Hit_id>
+  <Hit_def>Tid56 protein [Drosophila melanogaster] &gt;gi|1780788|emb|CAA71163.1| lethal(2)tumorous imaginal discs [Drosophila melanogaster] &gt;gi|1780789|emb|CAA71164.1| lethal(2)tumorous imaginal discs [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>CAA64531</Hit_accession>
+  <Hit_len>518</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>258.07</Hsp_bit-score>
+      <Hsp_score>658</Hsp_score>
+      <Hsp_evalue>7.53981e-81</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>124</Hsp_identity>
+      <Hsp_positive>124</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSAPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFS PRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>11</Hit_num>
+  <Hit_id>gi|195586132|ref|XP_002082832.1|</Hit_id>
+  <Hit_def>GD11789 [Drosophila simulans] &gt;gi|194194841|gb|EDX08417.1| GD11789 [Drosophila simulans]</Hit_def>
+  <Hit_accession>XP_002082832</Hit_accession>
+  <Hit_len>505</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>251.906</Hsp_bit-score>
+      <Hsp_score>642</Hsp_score>
+      <Hsp_evalue>1.3936e-78</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>121</Hsp_identity>
+      <Hsp_positive>122</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLATAAFSSPRATSYRILSSAGSGSTRTDAPQVRGLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLA AAFS+PRATSYRILSSAGSGSTR DAPQVR LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>12</Hit_num>
+  <Hit_id>gi|456627|emb|CAA54837.1|</Hit_id>
+  <Hit_def>Tid(56) [Drosophila melanogaster] &gt;gi|1487972|emb|CAA64528.1| l(2)tid [Drosophila melanogaster] &gt;gi|4007007|emb|CAA66720.1| l(2)tid [Drosophila melanogaster]</Hit_def>
+  <Hit_accession>CAA54837</Hit_accession>
+  <Hit_len>518</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>251.521</Hsp_bit-score>
+      <Hsp_score>641</Hsp_score>
+      <Hsp_evalue>2.30205e-78</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>123</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>123</Hsp_identity>
+      <Hsp_positive>123</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRA--PQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRA  PQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>13</Hit_num>
+  <Hit_id>gi|195347180|ref|XP_002040132.1|</Hit_id>
+  <Hit_def>GM16041 [Drosophila sechellia] &gt;gi|194135481|gb|EDW56997.1| GM16041 [Drosophila sechellia]</Hit_def>
+  <Hit_accession>XP_002040132</Hit_accession>
+  <Hit_len>489</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>246.899</Hsp_bit-score>
+      <Hsp_score>629</Hsp_score>
+      <Hsp_evalue>7.623e-77</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>124</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>124</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>118</Hsp_identity>
+      <Hsp_positive>119</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>124</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRR</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLATAAFSSPRATSYRILSSAGSGSARTDGPQVRGLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRR</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLA AAFS+PRATSYRILSSAGSGS R D PQVR LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRR</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>14</Hit_num>
+  <Hit_id>gi|195489269|ref|XP_002092665.1|</Hit_id>
+  <Hit_def>GE14318 [Drosophila yakuba] &gt;gi|194178766|gb|EDW92377.1| GE14318 [Drosophila yakuba]</Hit_def>
+  <Hit_accession>XP_002092665</Hit_accession>
+  <Hit_len>507</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>246.514</Hsp_bit-score>
+      <Hsp_score>628</Hsp_score>
+      <Hsp_evalue>1.70312e-76</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>119</Hsp_identity>
+      <Hsp_positive>121</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLAAAACSTPRSTSYRILSSAWSGSNRADAPQVRRLHTTRNLLAKDYYTTLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLAAAA STPR+TSYRILSSA SGS RADAPQVRRLHTTR+LLAKDYY TLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>15</Hit_num>
+  <Hit_id>gi|194885545|ref|XP_001976453.1|</Hit_id>
+  <Hit_def>GG22881 [Drosophila erecta] &gt;gi|190659640|gb|EDV56853.1| GG22881 [Drosophila erecta]</Hit_def>
+  <Hit_accession>XP_001976453</Hit_accession>
+  <Hit_len>508</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>240.736</Hsp_bit-score>
+      <Hsp_score>613</Hsp_score>
+      <Hsp_evalue>2.83994e-74</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>125</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>118</Hsp_identity>
+      <Hsp_positive>118</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>MMISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MMISCKKLFVFRQLPAVRRCLATAACSTPSATSYRILSSAWSGSTRADAAQVRRLHTTRHLLAKDYYTTLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MMISCKKLFVFRQLPAVRRCLA AA STP ATSYRILSSA SGSTRADA QVRRLHTTR LLAKDYY TLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>16</Hit_num>
+  <Hit_id>gi|194755154|ref|XP_001959857.1|</Hit_id>
+  <Hit_def>GF13077 [Drosophila ananassae] &gt;gi|190621155|gb|EDV36679.1| GF13077 [Drosophila ananassae]</Hit_def>
+  <Hit_accession>XP_001959857</Hit_accession>
+  <Hit_len>505</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>171.785</Hsp_bit-score>
+      <Hsp_score>434</Hsp_score>
+      <Hsp_evalue>4.42727e-48</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>133</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>88</Hsp_identity>
+      <Hsp_positive>94</Hsp_positive>
+      <Hsp_gaps>9</Hsp_gaps>
+      <Hsp_align-len>133</Hsp_align-len>
+      <Hsp_qseq>MISCKKLFVFRQLPAVRRC---------LAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MISCKNLFVFRQLPALRRCQANYLRSTLVATACSSASACLTYQSWRSTPGNPGALRPTTTRNFHTTRSLLAKDYYQTLGVPKNANGKDIKKAYYQLAKKYHPDTNKDDPDAGRKFQEVSEAYEVLSDDQKRRE</Hsp_hseq>
+      <Hsp_midline>MISCK LFVFRQLPA+RRC         +A A  S     +Y+   S             R  HTTR LLAKDYY TLGV KNANGKDIKKAYYQLAKKYHPDTNK+DPDAGRKFQEVSEAYEVLSD+QKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>17</Hit_num>
+  <Hit_id>gi|195154617|ref|XP_002018218.1|</Hit_id>
+  <Hit_def>GL16883 [Drosophila persimilis] &gt;gi|194114014|gb|EDW36057.1| GL16883 [Drosophila persimilis]</Hit_def>
+  <Hit_accession>XP_002018218</Hit_accession>
+  <Hit_len>525</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>157.532</Hsp_bit-score>
+      <Hsp_score>397</Hsp_score>
+      <Hsp_evalue>9.13587e-43</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>144</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>88</Hsp_identity>
+      <Hsp_positive>99</Hsp_positive>
+      <Hsp_gaps>20</Hsp_gaps>
+      <Hsp_align-len>144</Hsp_align-len>
+      <Hsp_qseq>MISCKKLFVFR-QLPAVRRCL-----------AAAAFSTPRATSYRILSSAGSGS-------TRADAPQ-VRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MISCQNLFVLRGQLPAIRCCRRYQQHLRTTLKHSSSFSPWGPTAAPSISHASASKLSLLGLRTRDDGRHTVRSFHTSSRMLAKDYYTTLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDDQKRRE</Hsp_hseq>
+      <Hsp_midline>MISC+ LFV R QLPA+R C             +++FS    T+   +S A +         TR D    VR  HT+  +LAKDYY TLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSD+QKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>18</Hit_num>
+  <Hit_id>gi|198458538|ref|XP_002138555.1|</Hit_id>
+  <Hit_def>GA24322 [Drosophila pseudoobscura pseudoobscura] &gt;gi|198136377|gb|EDY69113.1| GA24322 [Drosophila pseudoobscura pseudoobscura]</Hit_def>
+  <Hit_accession>XP_002138555</Hit_accession>
+  <Hit_len>525</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>155.221</Hsp_bit-score>
+      <Hsp_score>391</Hsp_score>
+      <Hsp_evalue>7.40194e-42</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>144</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>87</Hsp_identity>
+      <Hsp_positive>99</Hsp_positive>
+      <Hsp_gaps>20</Hsp_gaps>
+      <Hsp_align-len>144</Hsp_align-len>
+      <Hsp_qseq>MISCKKLFVFR-QLPAVRRCL-----------AAAAFSTPRATSYRILSSAGSGS-------TRADAPQ-VRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MISCQNLFVLRGQLPAIRCCRRYQQHLRTTLKHSSSFSAWGPTAAPSISHASASKLSLLGLRTRDDGRHTVRSFYTSSRMLAKDYYTTLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDDQKRRE</Hsp_hseq>
+      <Hsp_midline>MISC+ LFV R QLPA+R C             +++FS    T+   +S A +         TR D    VR  +T+  +LAKDYY TLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSD+QKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>19</Hit_num>
+  <Hit_id>gi|195455212|ref|XP_002074613.1|</Hit_id>
+  <Hit_def>GK23073 [Drosophila willistoni] &gt;gi|194170698|gb|EDW85599.1| GK23073 [Drosophila willistoni]</Hit_def>
+  <Hit_accession>XP_002074613</Hit_accession>
+  <Hit_len>505</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>154.066</Hsp_bit-score>
+      <Hsp_score>388</Hsp_score>
+      <Hsp_evalue>1.44753e-41</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>140</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>85</Hsp_identity>
+      <Hsp_positive>98</Hsp_positive>
+      <Hsp_gaps>16</Hsp_gaps>
+      <Hsp_align-len>140</Hsp_align-len>
+      <Hsp_qseq>MISCKKLFVFRQLPAVRRC------LAAAAFSTPR-------ATSYRI---LSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MISCKNLFVFRKLSTVRSCRHYQVHLRAALSCSSSGTSSTRAASTWRIVDLLDKTRSTAARTAAGSVRTIHTSSTLLAKDYYSALGVAKNASAKDIKKAYYQLAKKYHPDTNKDDPDSSRKFQEVSEAYEVLSDDQKRRE</Hsp_hseq>
+      <Hsp_midline>MISCK LFVFR+L  VR C      L AA   +         A+++RI   L    S + R  A  VR +HT+  LLAKDYY+ LGVAKNA+ KDIKKAYYQLAKKYHPDTNK+DPD+ RKFQEVSEAYEVLSD+QKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>20</Hit_num>
+  <Hit_id>gi|195401422|ref|XP_002059312.1|</Hit_id>
+  <Hit_def>lethal (2) tumorous imaginal discs [Drosophila virilis] &gt;gi|194142318|gb|EDW58724.1| lethal (2) tumorous imaginal discs [Drosophila virilis]</Hit_def>
+  <Hit_accession>XP_002059312</Hit_accession>
+  <Hit_len>516</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>140.198</Hsp_bit-score>
+      <Hsp_score>352</Hsp_score>
+      <Hsp_evalue>1.35868e-36</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>140</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>78</Hsp_identity>
+      <Hsp_positive>94</Hsp_positive>
+      <Hsp_gaps>18</Hsp_gaps>
+      <Hsp_align-len>141</Hsp_align-len>
+      <Hsp_qseq>MISCKKLFVFRQLPAVRRC-------LAAAAFSTPRATSYRILSSAGSGSTRA----------DAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MISCKNLCVLRQLP-LKNCRRHYSAIQSSAALLSVRPTKWTPKPAAAGGAVSAWQQRTTAKQHQQQQRRSLFSSSRMQAKDYYATLGVAKNANAKDIKKAYYELAKKYHPDTNKDDPDASKKFQDVSEAYEVLSDDQKRRE</Hsp_hseq>
+      <Hsp_midline>MISCK L V RQLP ++ C        ++AA  + R T +    +A  G+  A             Q R L ++  + AKDYYATLGVAKNAN KDIKKAYY+LAKKYHPDTNK+DPDA +KFQ+VSEAYEVLSD+QKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>21</Hit_num>
+  <Hit_id>gi|34924888|sp|Q24331.1|TID_DROVI</Hit_id>
+  <Hit_def>RecName: Full=Protein tumorous imaginal discs, mitochondrial; AltName: Full=Protein lethal(2)tumorous imaginal discs; AltName: Full=TID58; Flags: Precursor [Drosophila virilis] &gt;gi|5834529|emb|CAA68962.1| Tid58 protein [Drosophila virilis]</Hit_def>
+  <Hit_accession>Q24331</Hit_accession>
+  <Hit_len>529</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>140.198</Hsp_bit-score>
+      <Hsp_score>352</Hsp_score>
+      <Hsp_evalue>1.5179e-36</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>140</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>78</Hsp_identity>
+      <Hsp_positive>94</Hsp_positive>
+      <Hsp_gaps>18</Hsp_gaps>
+      <Hsp_align-len>141</Hsp_align-len>
+      <Hsp_qseq>MISCKKLFVFRQLPAVRRC-------LAAAAFSTPRATSYRILSSAGSGSTRA----------DAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MISCKNLCVLRQLP-LKNCRRHYSAIQSSAALLSVRPTKWTPKPAAAGGAVSAWQQRTTAKQHQQQQRRSLFSSSRMQAKDYYATLGVAKNANAKDIKKAYYELAKKYHPDTNKDDPDASKKFQDVSEAYEVLSDDQKRRE</Hsp_hseq>
+      <Hsp_midline>MISCK L V RQLP ++ C        ++AA  + R T +    +A  G+  A             Q R L ++  + AKDYYATLGVAKNAN KDIKKAYY+LAKKYHPDTNK+DPDA +KFQ+VSEAYEVLSD+QKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>22</Hit_num>
+  <Hit_id>gi|195026816|ref|XP_001986341.1|</Hit_id>
+  <Hit_def>GH21307 [Drosophila grimshawi] &gt;gi|193902341|gb|EDW01208.1| GH21307 [Drosophila grimshawi]</Hit_def>
+  <Hit_accession>XP_001986341</Hit_accession>
+  <Hit_len>504</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>133.265</Hsp_bit-score>
+      <Hsp_score>334</Hsp_score>
+      <Hsp_evalue>4.14666e-34</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>136</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>82</Hsp_identity>
+      <Hsp_positive>90</Hsp_positive>
+      <Hsp_gaps>16</Hsp_gaps>
+      <Hsp_align-len>138</Hsp_align-len>
+      <Hsp_qseq>MISCKKLFVFRQLPAVRRCLA----AAAFST----------PRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MISYKNLCVLRQLP-LRSCCSRQYNAIQLSTALRTAKNSWNPNPTAV-IASAAWQQRATQQQRQERNIYTTSRQQAKDYYTTLGVAKNANGKDIKKAYYDLAKKYHPDTNKDDPDASKKFQEVSEAYEVLSDEQKRRE</Hsp_hseq>
+      <Hsp_midline>MIS K L V RQLP +R C +    A   ST          P  T+  I S+A          Q R ++TT    AKDYY TLGVAKNANGKDIKKAYY LAKKYHPDTNK+DPDA +KFQEVSEAYEVLSDEQKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>23</Hit_num>
+  <Hit_id>gi|195119326|ref|XP_002004182.1|</Hit_id>
+  <Hit_def>GI19741 [Drosophila mojavensis] &gt;gi|193909250|gb|EDW08117.1| GI19741 [Drosophila mojavensis]</Hit_def>
+  <Hit_accession>XP_002004182</Hit_accession>
+  <Hit_len>512</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>132.494</Hsp_bit-score>
+      <Hsp_score>332</Hsp_score>
+      <Hsp_evalue>7.12226e-34</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>144</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>77</Hsp_identity>
+      <Hsp_positive>91</Hsp_positive>
+      <Hsp_gaps>20</Hsp_gaps>
+      <Hsp_align-len>144</Hsp_align-len>
+      <Hsp_qseq>MISCKKLFVFRQLPAVRRCLA-AAAFSTPRATSYRILSSAGSGSTRADAPQVRR-------------------LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>MISCKNLCVLRQLPFKGCCRQYNATLLSGRLASWTTRAAASSTAGVATSAWQQRAPHQRQQQLQQQQQQQRRSIFSSSRLNAKDYYATLGVAKNASAKDIKKAYYQLAKKYHPDTNKDDPDASKKFQEVSEAYEVLSDDQKRRE</Hsp_hseq>
+      <Hsp_midline>MISCK L V RQLP    C    A   + R  S+   ++A S +  A +   +R                   + ++  L AKDYYATLGVAKNA+ KDIKKAYYQLAKKYHPDTNK+DPDA +KFQEVSEAYEVLSD+QKRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>24</Hit_num>
+  <Hit_id>gi|557768175|ref|XP_005183772.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X2 [Musca domestica]</Hit_def>
+  <Hit_accession>XP_005183772</Hit_accession>
+  <Hit_len>452</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>127.872</Hsp_bit-score>
+      <Hsp_score>320</Hsp_score>
+      <Hsp_evalue>2.49841e-32</Hsp_evalue>
+      <Hsp_query-from>51</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>64</Hsp_hit-from>
+      <Hsp_hit-to>138</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>61</Hsp_identity>
+      <Hsp_positive>67</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>75</Hsp_align-len>
+      <Hsp_qseq>QVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>QRRKFHTTNELKAKDYYQTLGVAKNASSKEIKKAYYQLAKKYHPDTNKDDPDASRKFQEVSEAYEVLSDDTKRRE</Hsp_hseq>
+      <Hsp_midline>Q R+ HTT +L AKDYY TLGVAKNA+ K+IKKAYYQLAKKYHPDTNK+DPDA RKFQEVSEAYEVLSD+ KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>25</Hit_num>
+  <Hit_id>gi|557768173|ref|XP_005183771.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X1 [Musca domestica]</Hit_def>
+  <Hit_accession>XP_005183771</Hit_accession>
+  <Hit_len>508</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>128.257</Hsp_bit-score>
+      <Hsp_score>321</Hsp_score>
+      <Hsp_evalue>2.75638e-32</Hsp_evalue>
+      <Hsp_query-from>51</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>64</Hsp_hit-from>
+      <Hsp_hit-to>138</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>61</Hsp_identity>
+      <Hsp_positive>67</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>75</Hsp_align-len>
+      <Hsp_qseq>QVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>QRRKFHTTNELKAKDYYQTLGVAKNASSKEIKKAYYQLAKKYHPDTNKDDPDASRKFQEVSEAYEVLSDDTKRRE</Hsp_hseq>
+      <Hsp_midline>Q R+ HTT +L AKDYY TLGVAKNA+ K+IKKAYYQLAKKYHPDTNK+DPDA RKFQEVSEAYEVLSD+ KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>26</Hit_num>
+  <Hit_id>gi|499002829|ref|XP_004534935.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X1 [Ceratitis capitata]</Hit_def>
+  <Hit_accession>XP_004534935</Hit_accession>
+  <Hit_len>477</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>126.331</Hsp_bit-score>
+      <Hsp_score>316</Hsp_score>
+      <Hsp_evalue>1.13203e-31</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>77</Hsp_hit-from>
+      <Hsp_hit-to>147</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>59</Hsp_identity>
+      <Hsp_positive>63</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>IHTSNVLTAKDYYQILGVAKNANSKDIKKAYYQLAKKYHPDTNKSDPDAGKKFQEVSEAYEVLSDDTKRRE</Hsp_hseq>
+      <Hsp_midline>+HT+  L AKDYY  LGVAKNAN KDIKKAYYQLAKKYHPDTNK DPDAG+KFQEVSEAYEVLSD+ KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>27</Hit_num>
+  <Hit_id>gi|499002833|ref|XP_004534936.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X2 [Ceratitis capitata]</Hit_def>
+  <Hit_accession>XP_004534936</Hit_accession>
+  <Hit_len>469</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>125.946</Hsp_bit-score>
+      <Hsp_score>315</Hsp_score>
+      <Hsp_evalue>1.377e-31</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>77</Hsp_hit-from>
+      <Hsp_hit-to>147</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>59</Hsp_identity>
+      <Hsp_positive>63</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>IHTSNVLTAKDYYQILGVAKNANSKDIKKAYYQLAKKYHPDTNKSDPDAGKKFQEVSEAYEVLSDDTKRRE</Hsp_hseq>
+      <Hsp_midline>+HT+  L AKDYY  LGVAKNAN KDIKKAYYQLAKKYHPDTNK DPDAG+KFQEVSEAYEVLSD+ KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>28</Hit_num>
+  <Hit_id>gi|325303678|tpg|DAA34351.1|</Hit_id>
+  <Hit_def>TPA_inf: DnaJ superfamily chaperone [Amblyomma variegatum]</Hit_def>
+  <Hit_accession>DAA34351</Hit_accession>
+  <Hit_len>237</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>121.324</Hsp_bit-score>
+      <Hsp_score>303</Hsp_score>
+      <Hsp_evalue>4.35234e-31</Hsp_evalue>
+      <Hsp_query-from>18</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>15</Hsp_hit-from>
+      <Hsp_hit-to>121</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>62</Hsp_identity>
+      <Hsp_positive>76</Hsp_positive>
+      <Hsp_gaps>5</Hsp_gaps>
+      <Hsp_align-len>110</Hsp_align-len>
+      <Hsp_qseq>RRCLAAAAFS--TPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RCCVACSKFNGVLPRIASFEI---GNVSSCLVAVPLRRQFHVSSSLLKKDYYDVLGVSRNASQKDIKKAYYQLAKKYHPDTNKGDPEAAKKFQEVSEAYEVLSDDSKRQQ</Hsp_hseq>
+      <Hsp_midline>R C+A + F+   PR  S+ I       S     P  R+ H +  LL KDYY  LGV++NA+ KDIKKAYYQLAKKYHPDTNK DP+A +KFQEVSEAYEVLSD+ KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>29</Hit_num>
+  <Hit_id>gi|668446550|gb|KFB36536.1|</Hit_id>
+  <Hit_def>AGAP007565-PA-like protein [Anopheles sinensis]</Hit_def>
+  <Hit_accession>KFB36536</Hit_accession>
+  <Hit_len>480</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>123.635</Hsp_bit-score>
+      <Hsp_score>309</Hsp_score>
+      <Hsp_evalue>9.11385e-31</Hsp_evalue>
+      <Hsp_query-from>52</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>77</Hsp_hit-from>
+      <Hsp_hit-to>150</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>58</Hsp_identity>
+      <Hsp_positive>65</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>74</Hsp_align-len>
+      <Hsp_qseq>VRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>TRSFYTSNILLKKDYYSTLGVTKNASPKEIKKAYYQLAKKYHPDTNKEDPNAGKKFQEVSEAYEVLSDETKRRE</Hsp_hseq>
+      <Hsp_midline> R  +T+  LL KDYY+TLGV KNA+ K+IKKAYYQLAKKYHPDTNKEDP+AG+KFQEVSEAYEVLSDE KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>30</Hit_num>
+  <Hit_id>gi|350410070|ref|XP_003488936.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like [Bombus impatiens]</Hit_def>
+  <Hit_accession>XP_003488936</Hit_accession>
+  <Hit_len>529</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>122.094</Hsp_bit-score>
+      <Hsp_score>305</Hsp_score>
+      <Hsp_evalue>4.45582e-30</Hsp_evalue>
+      <Hsp_query-from>17</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>38</Hsp_hit-from>
+      <Hsp_hit-to>148</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>67</Hsp_identity>
+      <Hsp_positive>78</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>111</Hsp_align-len>
+      <Hsp_qseq>VRRCLAAAAFSTPRATSYRILSSAGSGSTRADA-PQVRR-LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>VQKCSTCHRSVTTIALNVGSWSSKKSGKYMIDNLSKVQRGIHTTSKLLKRNYYEILGVSKNAAAKDIKKAYYQLAKKYHPDTNKGDPDASRKFQEVSEAYEVLSDDQKRKE</Hsp_hseq>
+      <Hsp_midline>V++C       T  A +    SS  SG    D   +V+R +HTT  LL ++YY  LGV+KNA  KDIKKAYYQLAKKYHPDTNK DPDA RKFQEVSEAYEVLSD+QKR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>31</Hit_num>
+  <Hit_id>gi|340720435|ref|XP_003398644.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like [Bombus terrestris]</Hit_def>
+  <Hit_accession>XP_003398644</Hit_accession>
+  <Hit_len>522</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>121.709</Hsp_bit-score>
+      <Hsp_score>304</Hsp_score>
+      <Hsp_evalue>7.18028e-30</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>24</Hsp_hit-from>
+      <Hsp_hit-to>148</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>72</Hsp_identity>
+      <Hsp_positive>84</Hsp_positive>
+      <Hsp_gaps>3</Hsp_gaps>
+      <Hsp_align-len>126</Hsp_align-len>
+      <Hsp_qseq>MISCKKLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGS-TRADAPQVRR-LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>LISNSKLNKF-PCGIVQRCSTCHRSFTTVALSVGSWNSKKSGKYMIENLSKVQRGIHTTCKLLKRNYYEILGVSKNAAAKDIKKAYYQLAKKYHPDTNKGDPDASRKFQEVSEAYEVLSDDQKRKE</Hsp_hseq>
+      <Hsp_midline>+IS  KL  F     V+RC       T  A S    +S  SG     +  +V+R +HTT  LL ++YY  LGV+KNA  KDIKKAYYQLAKKYHPDTNK DPDA RKFQEVSEAYEVLSD+QKR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>32</Hit_num>
+  <Hit_id>gi|571577853|ref|XP_006572194.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X1 [Apis mellifera]</Hit_def>
+  <Hit_accession>XP_006572194</Hit_accession>
+  <Hit_len>489</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>120.168</Hsp_bit-score>
+      <Hsp_score>300</Hsp_score>
+      <Hsp_evalue>1.99565e-29</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>76</Hsp_hit-from>
+      <Hsp_hit-to>148</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>64</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RGIHTTQKLLKRNYYEILGVSKNASAKDIKKAYYQLAKKYHPDTNKGDPDASKKFQEVSEAYEVLSDDNKRKE</Hsp_hseq>
+      <Hsp_midline>R +HTT+ LL ++YY  LGV+KNA+ KDIKKAYYQLAKKYHPDTNK DPDA +KFQEVSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>33</Hit_num>
+  <Hit_id>gi|572269568|ref|XP_006612800.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X2 [Apis dorsata]</Hit_def>
+  <Hit_accession>XP_006612800</Hit_accession>
+  <Hit_len>489</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>119.783</Hsp_bit-score>
+      <Hsp_score>299</Hsp_score>
+      <Hsp_evalue>2.33964e-29</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>76</Hsp_hit-from>
+      <Hsp_hit-to>148</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>64</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RGIHTTQKLLKRNYYEILGVSKNASAKDIKKAYYQLAKKYHPDTNKGDPDASKKFQEVSEAYEVLSDDNKRKE</Hsp_hseq>
+      <Hsp_midline>R +HTT+ LL ++YY  LGV+KNA+ KDIKKAYYQLAKKYHPDTNK DPDA +KFQEVSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>34</Hit_num>
+  <Hit_id>gi|380026912|ref|XP_003697183.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like [Apis florea]</Hit_def>
+  <Hit_accession>XP_003697183</Hit_accession>
+  <Hit_len>520</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>119.783</Hsp_bit-score>
+      <Hsp_score>299</Hsp_score>
+      <Hsp_evalue>2.99002e-29</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>76</Hsp_hit-from>
+      <Hsp_hit-to>148</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>64</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RGIHTTQKLLKRNYYEILGVSKNASAKDIKKAYYQLAKKYHPDTNKGDPDASKKFQEVSEAYEVLSDDNKRKE</Hsp_hseq>
+      <Hsp_midline>R +HTT+ LL ++YY  LGV+KNA+ KDIKKAYYQLAKKYHPDTNK DPDA +KFQEVSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>35</Hit_num>
+  <Hit_id>gi|572269566|ref|XP_006612799.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X1 [Apis dorsata]</Hit_def>
+  <Hit_accession>XP_006612799</Hit_accession>
+  <Hit_len>520</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>119.783</Hsp_bit-score>
+      <Hsp_score>299</Hsp_score>
+      <Hsp_evalue>3.66008e-29</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>76</Hsp_hit-from>
+      <Hsp_hit-to>148</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>64</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RGIHTTQKLLKRNYYEILGVSKNASAKDIKKAYYQLAKKYHPDTNKGDPDASKKFQEVSEAYEVLSDDNKRKE</Hsp_hseq>
+      <Hsp_midline>R +HTT+ LL ++YY  LGV+KNA+ KDIKKAYYQLAKKYHPDTNK DPDA +KFQEVSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>36</Hit_num>
+  <Hit_id>gi|328793508|ref|XP_394833.2|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X2 [Apis mellifera]</Hit_def>
+  <Hit_accession>XP_394833</Hit_accession>
+  <Hit_len>520</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>119.398</Hsp_bit-score>
+      <Hsp_score>298</Hsp_score>
+      <Hsp_evalue>3.73487e-29</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>76</Hsp_hit-from>
+      <Hsp_hit-to>148</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>64</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RGIHTTQKLLKRNYYEILGVSKNASAKDIKKAYYQLAKKYHPDTNKGDPDASKKFQEVSEAYEVLSDDNKRKE</Hsp_hseq>
+      <Hsp_midline>R +HTT+ LL ++YY  LGV+KNA+ KDIKKAYYQLAKKYHPDTNK DPDA +KFQEVSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>37</Hit_num>
+  <Hit_id>gi|157128157|ref|XP_001661333.1|</Hit_id>
+  <Hit_def>chaperone protein dnaj [Aedes aegypti] &gt;gi|108872682|gb|EAT36907.1| AAEL011055-PA [Aedes aegypti]</Hit_def>
+  <Hit_accession>XP_001661333</Hit_accession>
+  <Hit_len>491</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>119.013</Hsp_bit-score>
+      <Hsp_score>297</Hsp_score>
+      <Hsp_evalue>5.15029e-29</Hsp_evalue>
+      <Hsp_query-from>51</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>70</Hsp_hit-from>
+      <Hsp_hit-to>144</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>57</Hsp_identity>
+      <Hsp_positive>63</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>75</Hsp_align-len>
+      <Hsp_qseq>QVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>QARTISTSNVLLKKDYYNVLGVAKNASAKEIKKAYYQLAKKYHPDTNKGDPDSSRKFQEVSEAYEVLSDDTKRRE</Hsp_hseq>
+      <Hsp_midline>Q R + T+  LL KDYY  LGVAKNA+ K+IKKAYYQLAKKYHPDTNK DPD+ RKFQEVSEAYEVLSD+ KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>38</Hit_num>
+  <Hit_id>gi|568259940|gb|ETN67767.1|</Hit_id>
+  <Hit_def>DnaJ like protein subfamily A member 3 [Anopheles darlingi]</Hit_def>
+  <Hit_accession>ETN67767</Hit_accession>
+  <Hit_len>429</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>117.857</Hsp_bit-score>
+      <Hsp_score>294</Hsp_score>
+      <Hsp_evalue>8.88096e-29</Hsp_evalue>
+      <Hsp_query-from>52</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>36</Hsp_hit-from>
+      <Hsp_hit-to>109</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>57</Hsp_identity>
+      <Hsp_positive>63</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>74</Hsp_align-len>
+      <Hsp_qseq>VRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>VRSFYTSNIRRKKDYYSTLGVTKNASPKEIKKAYYQLAKKYHPDTNKDDPDAGRKFQEVSEAYEVLSDETKRSE</Hsp_hseq>
+      <Hsp_midline>VR  +T+     KDYY+TLGV KNA+ K+IKKAYYQLAKKYHPDTNK+DPDAGRKFQEVSEAYEVLSDE KR E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>39</Hit_num>
+  <Hit_id>gi|158285436|ref|XP_001687891.1|</Hit_id>
+  <Hit_def>AGAP007565-PA [Anopheles gambiae str. PEST] &gt;gi|157019991|gb|EDO64540.1| AGAP007565-PA [Anopheles gambiae str. PEST]</Hit_def>
+  <Hit_accession>XP_001687891</Hit_accession>
+  <Hit_len>496</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>117.857</Hsp_bit-score>
+      <Hsp_score>294</Hsp_score>
+      <Hsp_evalue>1.3796e-28</Hsp_evalue>
+      <Hsp_query-from>42</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>82</Hsp_hit-from>
+      <Hsp_hit-to>166</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>60</Hsp_identity>
+      <Hsp_positive>69</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>85</Hsp_align-len>
+      <Hsp_qseq>SGSTRADAPQVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>SPSSRCSTLQSTRSFYTSNILHKSDYYSTLGVTKNASPKEIKKAYYQLAKKYHPDTNKDDPNAGKKFQEVSEAYEVLSDETKRRE</Hsp_hseq>
+      <Hsp_midline>S S+R    Q  R   T ++L K DYY+TLGV KNA+ K+IKKAYYQLAKKYHPDTNK+DP+AG+KFQEVSEAYEVLSDE KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>40</Hit_num>
+  <Hit_id>gi|307180424|gb|EFN68450.1|</Hit_id>
+  <Hit_def>Protein tumorous imaginal discs, mitochondrial [Camponotus floridanus]</Hit_def>
+  <Hit_accession>EFN68450</Hit_accession>
+  <Hit_len>519</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>117.857</Hsp_bit-score>
+      <Hsp_score>294</Hsp_score>
+      <Hsp_evalue>1.77976e-28</Hsp_evalue>
+      <Hsp_query-from>10</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>31</Hsp_hit-from>
+      <Hsp_hit-to>142</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>65</Hsp_identity>
+      <Hsp_positive>79</Hsp_positive>
+      <Hsp_gaps>4</Hsp_gaps>
+      <Hsp_align-len>116</Hsp_align-len>
+      <Hsp_qseq>VFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>VLQQGNACRRHVASIASTVGRPNCGK---TEKDNFGRIVQPH-RTIHITNRLLKRNYYEILGVSKNASAKDIKKAYYQLAKKYHPDTNKGDPDAGKKFQEVSEAYEVLSDDTKRKE</Hsp_hseq>
+      <Hsp_midline>V +Q  A RR +A+ A +  R    +   +      R   P  R +H T  LL ++YY  LGV+KNA+ KDIKKAYYQLAKKYHPDTNK DPDAG+KFQEVSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>41</Hit_num>
+  <Hit_id>gi|568253274|gb|ETN62455.1|</Hit_id>
+  <Hit_def>chaperone protein dnaj [Anopheles darlingi]</Hit_def>
+  <Hit_accession>ETN62455</Hit_accession>
+  <Hit_len>518</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>117.472</Hsp_bit-score>
+      <Hsp_score>293</Hsp_score>
+      <Hsp_evalue>2.0742e-28</Hsp_evalue>
+      <Hsp_query-from>45</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>19</Hsp_hit-from>
+      <Hsp_hit-to>99</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>59</Hsp_identity>
+      <Hsp_positive>65</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>81</Hsp_align-len>
+      <Hsp_qseq>TRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>TGASLRTVRSFYTSNIRRKKDYYSTLGVTKNASPKEIKKAYYQLAKKYHPDTNKDDPDAGRKFQEVSEAYEVLSDETKRSE</Hsp_hseq>
+      <Hsp_midline>T A    VR  +T+     KDYY+TLGV KNA+ K+IKKAYYQLAKKYHPDTNK+DPDAGRKFQEVSEAYEVLSDE KR E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>42</Hit_num>
+  <Hit_id>gi|391325935|ref|XP_003737482.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like [Metaseiulus occidentalis]</Hit_def>
+  <Hit_accession>XP_003737482</Hit_accession>
+  <Hit_len>447</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>115.931</Hsp_bit-score>
+      <Hsp_score>289</Hsp_score>
+      <Hsp_evalue>5.21383e-28</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>124</Hsp_query-to>
+      <Hsp_hit-from>37</Hsp_hit-from>
+      <Hsp_hit-to>108</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>53</Hsp_identity>
+      <Hsp_positive>62</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>72</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRR</Hsp_qseq>
+      <Hsp_hseq>RKFHTSRALLKRDYYEILGVARNASAKDVKKAYYQLAKKYHPDTNKGDKDAAKKFQEVSEAYEVLSDDSKRK</Hsp_hseq>
+      <Hsp_midline>R+ HT+R LL +DYY  LGVA+NA+ KD+KKAYYQLAKKYHPDTNK D DA +KFQEVSEAYEVLSD+ KR+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>43</Hit_num>
+  <Hit_id>gi|158285438|ref|XP_308308.4|</Hit_id>
+  <Hit_def>AGAP007565-PB [Anopheles gambiae str. PEST] &gt;gi|157019992|gb|EAA04743.4| AGAP007565-PB [Anopheles gambiae str. PEST]</Hit_def>
+  <Hit_accession>XP_308308</Hit_accession>
+  <Hit_len>574</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>116.701</Hsp_bit-score>
+      <Hsp_score>291</Hsp_score>
+      <Hsp_evalue>6.03054e-28</Hsp_evalue>
+      <Hsp_query-from>42</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>82</Hsp_hit-from>
+      <Hsp_hit-to>166</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>60</Hsp_identity>
+      <Hsp_positive>69</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>85</Hsp_align-len>
+      <Hsp_qseq>SGSTRADAPQVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>SPSSRCSTLQSTRSFYTSNILHKSDYYSTLGVTKNASPKEIKKAYYQLAKKYHPDTNKDDPNAGKKFQEVSEAYEVLSDETKRRE</Hsp_hseq>
+      <Hsp_midline>S S+R    Q  R   T ++L K DYY+TLGV KNA+ K+IKKAYYQLAKKYHPDTNK+DP+AG+KFQEVSEAYEVLSDE KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>44</Hit_num>
+  <Hit_id>gi|383852683|ref|XP_003701855.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like [Megachile rotundata]</Hit_def>
+  <Hit_accession>XP_003701855</Hit_accession>
+  <Hit_len>522</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>115.546</Hsp_bit-score>
+      <Hsp_score>288</Hsp_score>
+      <Hsp_evalue>1.33109e-27</Hsp_evalue>
+      <Hsp_query-from>50</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>74</Hsp_hit-from>
+      <Hsp_hit-to>148</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>64</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>76</Hsp_align-len>
+      <Hsp_qseq>PQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>PQ-RGIHLTSKLLKRNYYEILGVSKNASAKDIKKAYYQLAKKYHPDTNKGDPDASKKFQEVSEAYEVLSDDTKRKQ</Hsp_hseq>
+      <Hsp_midline>PQ R +H T  LL ++YY  LGV+KNA+ KDIKKAYYQLAKKYHPDTNK DPDA +KFQEVSEAYEVLSD+ KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>45</Hit_num>
+  <Hit_id>gi|332023854|gb|EGI64078.1|</Hit_id>
+  <Hit_def>Protein tumorous imaginal discs, mitochondrial [Acromyrmex echinatior]</Hit_def>
+  <Hit_accession>EGI64078</Hit_accession>
+  <Hit_len>479</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>114.775</Hsp_bit-score>
+      <Hsp_score>286</Hsp_score>
+      <Hsp_evalue>1.56959e-27</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>66</Hsp_hit-from>
+      <Hsp_hit-to>138</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>54</Hsp_identity>
+      <Hsp_positive>62</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RAIHLTSRLLKRNYYEILGVSKNASAKDIKKAYYQLAKKYHPDTNKRDPDANQKFQEVSEAYEVLSDDTKRKE</Hsp_hseq>
+      <Hsp_midline>R +H T  LL ++YY  LGV+KNA+ KDIKKAYYQLAKKYHPDTNK DPDA +KFQEVSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>46</Hit_num>
+  <Hit_id>gi|607363488|gb|EZA57720.1|</Hit_id>
+  <Hit_def>Protein tumorous imaginal discs, mitochondrial [Cerapachys biroi]</Hit_def>
+  <Hit_accession>EZA57720</Hit_accession>
+  <Hit_len>524</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>114.775</Hsp_bit-score>
+      <Hsp_score>286</Hsp_score>
+      <Hsp_evalue>2.47764e-27</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>75</Hsp_hit-from>
+      <Hsp_hit-to>147</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>53</Hsp_identity>
+      <Hsp_positive>62</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RAIHLTSKLLKRNYYEILGVSKNASAKDIKKAYYQLAKKYHPDTNKGDPSSGKKFQEVSEAYEVLSDDVKRKE</Hsp_hseq>
+      <Hsp_midline>R +H T  LL ++YY  LGV+KNA+ KDIKKAYYQLAKKYHPDTNK DP +G+KFQEVSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>47</Hit_num>
+  <Hit_id>gi|322785350|gb|EFZ12024.1|</Hit_id>
+  <Hit_def>hypothetical protein SINV_09539 [Solenopsis invicta]</Hit_def>
+  <Hit_accession>EFZ12024</Hit_accession>
+  <Hit_len>543</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>114.39</Hsp_bit-score>
+      <Hsp_score>285</Hsp_score>
+      <Hsp_evalue>3.5232e-27</Hsp_evalue>
+      <Hsp_query-from>10</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>35</Hsp_hit-from>
+      <Hsp_hit-to>142</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>64</Hsp_identity>
+      <Hsp_positive>75</Hsp_positive>
+      <Hsp_gaps>8</Hsp_gaps>
+      <Hsp_align-len>116</Hsp_align-len>
+      <Hsp_qseq>VFRQLPAVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>VSRQCSACRRHVVTVASTVGDWNRER-------GIGRIVQPH-RTIYLTSRLLKRNYYEILGVSKNASTKDIKKSYYQLAKKYHPDTNKGDPDANRKFQEVSEAYEVLSDDTKRKE</Hsp_hseq>
+      <Hsp_midline>V RQ  A RR +   A +       R       G  R   P  R ++ T  LL ++YY  LGV+KNA+ KDIKK+YYQLAKKYHPDTNK DPDA RKFQEVSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>48</Hit_num>
+  <Hit_id>gi|307204018|gb|EFN82922.1|</Hit_id>
+  <Hit_def>Protein tumorous imaginal discs, mitochondrial [Harpegnathos saltator]</Hit_def>
+  <Hit_accession>EFN82922</Hit_accession>
+  <Hit_len>485</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>113.62</Hsp_bit-score>
+      <Hsp_score>283</Hsp_score>
+      <Hsp_evalue>3.53132e-27</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>70</Hsp_hit-from>
+      <Hsp_hit-to>142</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>53</Hsp_identity>
+      <Hsp_positive>62</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RSIYLTNKLLKRNYYEILGVSKNASAKDIKKAYYELAKKYHPDTNKGDPNTGRKFQEVSEAYEVLSDESKRKE</Hsp_hseq>
+      <Hsp_midline>R ++ T  LL ++YY  LGV+KNA+ KDIKKAYY+LAKKYHPDTNK DP+ GRKFQEVSEAYEVLSDE KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>49</Hit_num>
+  <Hit_id>gi|525343559|ref|NP_001266353.1|</Hit_id>
+  <Hit_def>uncharacterized protein LOC101744449 [Bombyx mori] &gt;gi|378466067|gb|AFC01228.1| DnaJ-14 [Bombyx mori]</Hit_def>
+  <Hit_accession>NP_001266353</Hit_accession>
+  <Hit_len>537</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>114.005</Hsp_bit-score>
+      <Hsp_score>284</Hsp_score>
+      <Hsp_evalue>5.64392e-27</Hsp_evalue>
+      <Hsp_query-from>50</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>58</Hsp_hit-from>
+      <Hsp_hit-to>134</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>53</Hsp_identity>
+      <Hsp_positive>64</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>77</Hsp_align-len>
+      <Hsp_qseq>PQVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>PKHRHIHTTNNLYNRADYYKVLGVSKNASAKDIKKAYYQLAKKYHPDANKSDPEASKKFQEVSEAYEILSDENKRKQ</Hsp_hseq>
+      <Hsp_midline>P+ R +HTT +L  + DYY  LGV+KNA+ KDIKKAYYQLAKKYHPD NK DP+A +KFQEVSEAYE+LSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>50</Hit_num>
+  <Hit_id>gi|357603501|gb|EHJ63807.1|</Hit_id>
+  <Hit_def>hypothetical protein KGM_01577 [Danaus plexippus]</Hit_def>
+  <Hit_accession>EHJ63807</Hit_accession>
+  <Hit_len>550</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>112.849</Hsp_bit-score>
+      <Hsp_score>281</Hsp_score>
+      <Hsp_evalue>1.68043e-26</Hsp_evalue>
+      <Hsp_query-from>17</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>32</Hsp_hit-from>
+      <Hsp_hit-to>140</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>60</Hsp_identity>
+      <Hsp_positive>71</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>110</Hsp_align-len>
+      <Hsp_qseq>VRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>IRRCYNCNNFLKGRETVPLLLNCKNWKYNEIIGKH-RNFHTTNKLEARVDYYKVLGVSKNASVKDIKKAYYQLAKKYHPDANKSDPEASKKFQEVSEAYEILSDENKRKQ</Hsp_hseq>
+      <Hsp_midline>+RRC     F   R T   +L+              R  HTT  L A+ DYY  LGV+KNA+ KDIKKAYYQLAKKYHPD NK DP+A +KFQEVSEAYE+LSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>51</Hit_num>
+  <Hit_id>gi|645010378|ref|XP_008213489.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X5 [Nasonia vitripennis]</Hit_def>
+  <Hit_accession>XP_008213489</Hit_accession>
+  <Hit_len>504</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>112.079</Hsp_bit-score>
+      <Hsp_score>279</Hsp_score>
+      <Hsp_evalue>1.76049e-26</Hsp_evalue>
+      <Hsp_query-from>33</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>95</Hsp_hit-from>
+      <Hsp_hit-to>184</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>72</Hsp_positive>
+      <Hsp_gaps>5</Hsp_gaps>
+      <Hsp_align-len>94</Hsp_align-len>
+      <Hsp_qseq>SYRILSSAGSGSTRADAPQVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>SFKVHKYTAAGSLQSH----RKFHLTSETLAKKSYYEVLGISRNSSAKDIKKAYYQLAKKYHPDTNKDDPNASKKFQEVSEAYEVLSDETKRKE</Hsp_hseq>
+      <Hsp_midline>S+++     +GS ++     R+ H T + LAK  YY  LG+++N++ KDIKKAYYQLAKKYHPDTNK+DP+A +KFQEVSEAYEVLSDE KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>52</Hit_num>
+  <Hit_id>gi|645010373|ref|XP_008213488.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X3 [Nasonia vitripennis]</Hit_def>
+  <Hit_accession>XP_008213488</Hit_accession>
+  <Hit_len>526</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>112.079</Hsp_bit-score>
+      <Hsp_score>279</Hsp_score>
+      <Hsp_evalue>2.10952e-26</Hsp_evalue>
+      <Hsp_query-from>33</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>95</Hsp_hit-from>
+      <Hsp_hit-to>184</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>72</Hsp_positive>
+      <Hsp_gaps>5</Hsp_gaps>
+      <Hsp_align-len>94</Hsp_align-len>
+      <Hsp_qseq>SYRILSSAGSGSTRADAPQVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>SFKVHKYTAAGSLQSH----RKFHLTSETLAKKSYYEVLGISRNSSAKDIKKAYYQLAKKYHPDTNKDDPNASKKFQEVSEAYEVLSDETKRKE</Hsp_hseq>
+      <Hsp_midline>S+++     +GS ++     R+ H T + LAK  YY  LG+++N++ KDIKKAYYQLAKKYHPDTNK+DP+A +KFQEVSEAYEVLSDE KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>53</Hit_num>
+  <Hit_id>gi|345480778|ref|XP_001605490.2|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X4 [Nasonia vitripennis]</Hit_def>
+  <Hit_accession>XP_001605490</Hit_accession>
+  <Hit_len>522</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>112.079</Hsp_bit-score>
+      <Hsp_score>279</Hsp_score>
+      <Hsp_evalue>2.48527e-26</Hsp_evalue>
+      <Hsp_query-from>33</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>61</Hsp_hit-from>
+      <Hsp_hit-to>150</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>72</Hsp_positive>
+      <Hsp_gaps>5</Hsp_gaps>
+      <Hsp_align-len>94</Hsp_align-len>
+      <Hsp_qseq>SYRILSSAGSGSTRADAPQVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>SFKVHKYTAAGSLQSH----RKFHLTSETLAKKSYYEVLGISRNSSAKDIKKAYYQLAKKYHPDTNKDDPNASKKFQEVSEAYEVLSDETKRKE</Hsp_hseq>
+      <Hsp_midline>S+++     +GS ++     R+ H T + LAK  YY  LG+++N++ KDIKKAYYQLAKKYHPDTNK+DP+A +KFQEVSEAYEVLSDE KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>54</Hit_num>
+  <Hit_id>gi|645010365|ref|XP_008213486.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X1 [Nasonia vitripennis]</Hit_def>
+  <Hit_accession>XP_008213486</Hit_accession>
+  <Hit_len>556</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>112.079</Hsp_bit-score>
+      <Hsp_score>279</Hsp_score>
+      <Hsp_evalue>2.66042e-26</Hsp_evalue>
+      <Hsp_query-from>33</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>95</Hsp_hit-from>
+      <Hsp_hit-to>184</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>72</Hsp_positive>
+      <Hsp_gaps>5</Hsp_gaps>
+      <Hsp_align-len>94</Hsp_align-len>
+      <Hsp_qseq>SYRILSSAGSGSTRADAPQVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>SFKVHKYTAAGSLQSH----RKFHLTSETLAKKSYYEVLGISRNSSAKDIKKAYYQLAKKYHPDTNKDDPNASKKFQEVSEAYEVLSDETKRKE</Hsp_hseq>
+      <Hsp_midline>S+++     +GS ++     R+ H T + LAK  YY  LG+++N++ KDIKKAYYQLAKKYHPDTNK+DP+A +KFQEVSEAYEVLSDE KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>55</Hit_num>
+  <Hit_id>gi|645010367|ref|XP_008213487.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X2 [Nasonia vitripennis]</Hit_def>
+  <Hit_accession>XP_008213487</Hit_accession>
+  <Hit_len>544</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>112.079</Hsp_bit-score>
+      <Hsp_score>279</Hsp_score>
+      <Hsp_evalue>2.69701e-26</Hsp_evalue>
+      <Hsp_query-from>33</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>172</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>72</Hsp_positive>
+      <Hsp_gaps>5</Hsp_gaps>
+      <Hsp_align-len>94</Hsp_align-len>
+      <Hsp_qseq>SYRILSSAGSGSTRADAPQVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>SFKVHKYTAAGSLQSH----RKFHLTSETLAKKSYYEVLGISRNSSAKDIKKAYYQLAKKYHPDTNKDDPNASKKFQEVSEAYEVLSDETKRKE</Hsp_hseq>
+      <Hsp_midline>S+++     +GS ++     R+ H T + LAK  YY  LG+++N++ KDIKKAYYQLAKKYHPDTNK+DP+A +KFQEVSEAYEVLSDE KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>56</Hit_num>
+  <Hit_id>gi|646704922|gb|KDR12875.1|</Hit_id>
+  <Hit_def>Protein tumorous imaginal discs, mitochondrial [Zootermopsis nevadensis]</Hit_def>
+  <Hit_accession>KDR12875</Hit_accession>
+  <Hit_len>536</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>108.997</Hsp_bit-score>
+      <Hsp_score>271</Hsp_score>
+      <Hsp_evalue>3.14376e-25</Hsp_evalue>
+      <Hsp_query-from>64</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>80</Hsp_hit-from>
+      <Hsp_hit-to>141</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>49</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>62</Hsp_align-len>
+      <Hsp_qseq>KDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RDYYEILGVSRNASAKDIKKSYYQLAKKYHPDTNKGDPDAGRKFQEVSEAYEVLSDDAKRKQ</Hsp_hseq>
+      <Hsp_midline>+DYY  LGV++NA+ KDIKK+YYQLAKKYHPDTNK DPDAGRKFQEVSEAYEVLSD+ KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>57</Hit_num>
+  <Hit_id>gi|359487428|ref|XP_002263448.2|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial-like [Vitis vinifera] &gt;gi|297736212|emb|CBI24850.3| unnamed protein product [Vitis vinifera]</Hit_def>
+  <Hit_accession>XP_002263448</Hit_accession>
+  <Hit_len>451</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>106.686</Hsp_bit-score>
+      <Hsp_score>265</Hsp_score>
+      <Hsp_evalue>8.9122e-25</Hsp_evalue>
+      <Hsp_query-from>29</Hsp_query-from>
+      <Hsp_query-to>123</Hsp_query-to>
+      <Hsp_hit-from>57</Hsp_hit-from>
+      <Hsp_hit-to>151</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>54</Hsp_identity>
+      <Hsp_positive>66</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>95</Hsp_align-len>
+      <Hsp_qseq>PRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKR</Hsp_qseq>
+      <Hsp_hseq>PNSTSVNHRNRLLFGVLNANWGAARWIHGTAYMAANDYYDTLGVSKNASASEIKKAYYGLAKKFHPDTNKEDPDAEKKFQEVQKAYEVLKDEEKR</Hsp_hseq>
+      <Hsp_midline>P +TS    +    G   A+    R +H T  + A DYY TLGV+KNA+  +IKKAYY LAKK+HPDTNKEDPDA +KFQEV +AYEVL DE+KR</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>58</Hit_num>
+  <Hit_id>gi|470141580|ref|XP_004306508.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial-like [Fragaria vesca subsp. vesca]</Hit_def>
+  <Hit_accession>XP_004306508</Hit_accession>
+  <Hit_len>432</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>105.916</Hsp_bit-score>
+      <Hsp_score>263</Hsp_score>
+      <Hsp_evalue>1.69937e-24</Hsp_evalue>
+      <Hsp_query-from>52</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>70</Hsp_hit-from>
+      <Hsp_hit-to>143</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>48</Hsp_identity>
+      <Hsp_positive>62</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>74</Hsp_align-len>
+      <Hsp_qseq>VRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>VRLIHATASMAARDYYETLGVSRNASASEIKKAYYGLAKKLHPDTNKDDPEAEKKFQEVSKAYEVLKDEEKRQQ</Hsp_hseq>
+      <Hsp_midline>VR +H T  + A+DYY TLGV++NA+  +IKKAYY LAKK HPDTNK+DP+A +KFQEVS+AYEVL DE+KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>59</Hit_num>
+  <Hit_id>gi|659122665|ref|XP_008461262.1|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial [Cucumis melo]</Hit_def>
+  <Hit_accession>XP_008461262</Hit_accession>
+  <Hit_len>446</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>105.916</Hsp_bit-score>
+      <Hsp_score>263</Hsp_score>
+      <Hsp_evalue>1.71237e-24</Hsp_evalue>
+      <Hsp_query-from>43</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>70</Hsp_hit-from>
+      <Hsp_hit-to>152</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>52</Hsp_identity>
+      <Hsp_positive>62</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>83</Hsp_align-len>
+      <Hsp_qseq>GSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>GVLGANYGEAKFIHGTAHMSAKNYYDTLGVNKNATASEIKKAYYGLAKKLHPDTNKEDPDAEKKFQEVSKAYEVLKDEDKRRQ</Hsp_hseq>
+      <Hsp_midline>G   A+  + + +H T  + AK+YY TLGV KNA   +IKKAYY LAKK HPDTNKEDPDA +KFQEVS+AYEVL DE KRR+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>60</Hit_num>
+  <Hit_id>gi|695008878|ref|XP_009391042.1|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial-like isoform X2 [Musa acuminata subsp. malaccensis]</Hit_def>
+  <Hit_accession>XP_009391042</Hit_accession>
+  <Hit_len>450</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>105.916</Hsp_bit-score>
+      <Hsp_score>263</Hsp_score>
+      <Hsp_evalue>1.79022e-24</Hsp_evalue>
+      <Hsp_query-from>16</Hsp_query-from>
+      <Hsp_query-to>124</Hsp_query-to>
+      <Hsp_hit-from>38</Hsp_hit-from>
+      <Hsp_hit-to>146</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>70</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>109</Hsp_align-len>
+      <Hsp_qseq>AVRRCLAAAAFSTPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRR</Hsp_qseq>
+      <Hsp_hseq>ASGKCSSCRSFTNGRSEAARSKRGTLDGAFRSLFSPSRSFHGTRSLLLRDFYDVLGVSKDASASDIKKAYYALAKKLHPDTNKDDADAEKKFQEVQHAYEVLKDEDKRR</Hsp_hseq>
+      <Hsp_midline>A  +C +  +F+  R+ + R       G+ R+     R  H TR LL +D+Y  LGV+K+A+  DIKKAYY LAKK HPDTNK+D DA +KFQEV  AYEVL DE KRR</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>61</Hit_num>
+  <Hit_id>gi|645250716|ref|XP_008231339.1|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial [Prunus mume]</Hit_def>
+  <Hit_accession>XP_008231339</Hit_accession>
+  <Hit_len>441</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>105.531</Hsp_bit-score>
+      <Hsp_score>262</Hsp_score>
+      <Hsp_evalue>2.33686e-24</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>80</Hsp_hit-from>
+      <Hsp_hit-to>152</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>48</Hsp_identity>
+      <Hsp_positive>59</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RSIHGTASMSTRDYYDTLGVSKNANASEIKKAYYGLAKKLHPDTNKDDPDAEKKFQEVQKAYEVLKDEEKRQQ</Hsp_hseq>
+      <Hsp_midline>R +H T  +  +DYY TLGV+KNAN  +IKKAYY LAKK HPDTNK+DPDA +KFQEV +AYEVL DE+KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>62</Hit_num>
+  <Hit_id>gi|470112274|ref|XP_004292361.1|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial-like [Fragaria vesca subsp. vesca]</Hit_def>
+  <Hit_accession>XP_004292361</Hit_accession>
+  <Hit_len>442</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>105.531</Hsp_bit-score>
+      <Hsp_score>262</Hsp_score>
+      <Hsp_evalue>2.76761e-24</Hsp_evalue>
+      <Hsp_query-from>22</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>43</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>54</Hsp_identity>
+      <Hsp_positive>73</Hsp_positive>
+      <Hsp_gaps>7</Hsp_gaps>
+      <Hsp_align-len>111</Hsp_align-len>
+      <Hsp_qseq>AAAAFSTPRATSYRILSSAGS-------GSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>AYRTFHSGLCSNHRVLGNHNACSKNWFLGGVHANWTTVKSIHGTASVAACDYYDTLGVSKTASVSEIKKAYYGLAKKLHPDTNKDDPDAEKKFQEIQKAYEVLKDEEKRRE</Hsp_hseq>
+      <Hsp_midline>A   F +   +++R+L +  +       G   A+   V+ +H T  + A DYY TLGV+K A+  +IKKAYY LAKK HPDTNK+DPDA +KFQE+ +AYEVL DE+KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>63</Hit_num>
+  <Hit_id>gi|657950885|ref|XP_008350097.1|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial [Malus domestica]</Hit_def>
+  <Hit_accession>XP_008350097</Hit_accession>
+  <Hit_len>434</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>104.76</Hsp_bit-score>
+      <Hsp_score>260</Hsp_score>
+      <Hsp_evalue>4.78929e-24</Hsp_evalue>
+      <Hsp_query-from>52</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>73</Hsp_hit-from>
+      <Hsp_hit-to>146</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>48</Hsp_identity>
+      <Hsp_positive>58</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>74</Hsp_align-len>
+      <Hsp_qseq>VRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>VRSIHGTASMSVRDYYETLGVSKNASSSEIKKAYYGLAKKLHPDTNKNDPDTEKKFQEVQKAYEVLKDEEKRQE</Hsp_hseq>
+      <Hsp_midline>VR +H T  +  +DYY TLGV+KNA+  +IKKAYY LAKK HPDTNK DPD  +KFQEV +AYEVL DE+KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>64</Hit_num>
+  <Hit_id>gi|674588465|emb|CDS32520.1|</Hit_id>
+  <Hit_def>protein tumorous imaginal discs [Hymenolepis microstoma]</Hit_def>
+  <Hit_accession>CDS32520</Hit_accession>
+  <Hit_len>466</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>104.375</Hsp_bit-score>
+      <Hsp_score>259</Hsp_score>
+      <Hsp_evalue>7.20773e-24</Hsp_evalue>
+      <Hsp_query-from>52</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>17</Hsp_hit-from>
+      <Hsp_hit-to>90</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>50</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>74</Hsp_align-len>
+      <Hsp_qseq>VRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>VRNLHISSSLSAKDFYKVLGVDKNASQSDIKKAYYQLAKKYHPDINKSDKTAAQKFAEVSEAYEILGDEQKRKQ</Hsp_hseq>
+      <Hsp_midline>VR LH +  L AKD+Y  LGV KNA+  DIKKAYYQLAKKYHPD NK D  A +KF EVSEAYE+L DEQKR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>65</Hit_num>
+  <Hit_id>gi|669214766|emb|CDW61169.1|</Hit_id>
+  <Hit_def>DnaJ CXXCXGXG and DnaJ domain containing protein, partial [Trichuris trichiura]</Hit_def>
+  <Hit_accession>CDW61169</Hit_accession>
+  <Hit_len>306</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>103.219</Hsp_bit-score>
+      <Hsp_score>256</Hsp_score>
+      <Hsp_evalue>7.92567e-24</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>4</Hsp_hit-from>
+      <Hsp_hit-to>78</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>49</Hsp_identity>
+      <Hsp_positive>58</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>75</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLA--KDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RTFHLSAFVLQARKDYYEVLGIPRNASQKDIKKAYYQLAKKYHPDVNKNDPQAAKKFQEVSEAYEILSDEGKRQQ</Hsp_hseq>
+      <Hsp_midline>R  H +  +L   KDYY  LG+ +NA+ KDIKKAYYQLAKKYHPD NK DP A +KFQEVSEAYE+LSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>66</Hit_num>
+  <Hit_id>gi|665787297|ref|XP_008556729.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X1 [Microplitis demolitor]</Hit_def>
+  <Hit_accession>XP_008556729</Hit_accession>
+  <Hit_len>524</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>104.76</Hsp_bit-score>
+      <Hsp_score>260</Hsp_score>
+      <Hsp_evalue>9.142e-24</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>68</Hsp_hit-from>
+      <Hsp_hit-to>142</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>49</Hsp_identity>
+      <Hsp_positive>61</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>75</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAK--DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RSFHVSKNLQATRTNYYEVLGVSRNSSAKDIKKAYYELAKKYHPDTNKSDPDASKKFQLVSEAYEVLSDDTKRKE</Hsp_hseq>
+      <Hsp_midline>R  H +++L A   +YY  LGV++N++ KDIKKAYY+LAKKYHPDTNK DPDA +KFQ VSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>67</Hit_num>
+  <Hit_id>gi|607304872|gb|EZA45877.1|</Hit_id>
+  <Hit_def>protein tumorous imaginal disc, mitochondrial-like protein [Microplitis demolitor]</Hit_def>
+  <Hit_accession>EZA45877</Hit_accession>
+  <Hit_len>539</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>105.145</Hsp_bit-score>
+      <Hsp_score>261</Hsp_score>
+      <Hsp_evalue>9.24433e-24</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>68</Hsp_hit-from>
+      <Hsp_hit-to>142</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>49</Hsp_identity>
+      <Hsp_positive>61</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>75</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAK--DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RSFHVSKNLQATRTNYYEVLGVSRNSSAKDIKKAYYELAKKYHPDTNKSDPDASKKFQLVSEAYEVLSDDTKRKE</Hsp_hseq>
+      <Hsp_midline>R  H +++L A   +YY  LGV++N++ KDIKKAYY+LAKKYHPDTNK DPDA +KFQ VSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>68</Hit_num>
+  <Hit_id>gi|504148722|ref|XP_004586767.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X3 [Ochotona princeps]</Hit_def>
+  <Hit_accession>XP_004586767</Hit_accession>
+  <Hit_len>428</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>103.605</Hsp_bit-score>
+      <Hsp_score>257</Hsp_score>
+      <Hsp_evalue>1.22155e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>48</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSAPLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKEDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNKEDP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>69</Hit_num>
+  <Hit_id>gi|674568236|emb|CDS17351.1|</Hit_id>
+  <Hit_def>protein tumorous imaginal discs [Echinococcus granulosus]</Hit_def>
+  <Hit_accession>CDS17351</Hit_accession>
+  <Hit_len>469</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>103.99</Hsp_bit-score>
+      <Hsp_score>258</Hsp_score>
+      <Hsp_evalue>1.27669e-23</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>124</Hsp_query-to>
+      <Hsp_hit-from>22</Hsp_hit-from>
+      <Hsp_hit-to>93</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>48</Hsp_identity>
+      <Hsp_positive>55</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>72</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRR</Hsp_qseq>
+      <Hsp_hseq>RSIHVSTQMLVKDYYKILGVSKGASQSDIKKAYYQLAKKYHPDINKSDKSAAQKFAEVSEAYEVLGDEEKRR</Hsp_hseq>
+      <Hsp_midline>R +H +  +L KDYY  LGV+K A+  DIKKAYYQLAKKYHPD NK D  A +KF EVSEAYEVL DE+KRR</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>70</Hit_num>
+  <Hit_id>gi|504148720|ref|XP_004586766.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X2 [Ochotona princeps]</Hit_def>
+  <Hit_accession>XP_004586766</Hit_accession>
+  <Hit_len>453</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>103.219</Hsp_bit-score>
+      <Hsp_score>256</Hsp_score>
+      <Hsp_evalue>1.89639e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>48</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSAPLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKEDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNKEDP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>71</Hit_num>
+  <Hit_id>gi|665787299|ref|XP_008556736.1|</Hit_id>
+  <Hit_def>PREDICTED: protein tumorous imaginal discs, mitochondrial-like isoform X2 [Microplitis demolitor]</Hit_def>
+  <Hit_accession>XP_008556736</Hit_accession>
+  <Hit_len>491</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>103.605</Hsp_bit-score>
+      <Hsp_score>257</Hsp_score>
+      <Hsp_evalue>1.94763e-23</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>68</Hsp_hit-from>
+      <Hsp_hit-to>142</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>49</Hsp_identity>
+      <Hsp_positive>61</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>75</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAK--DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RSFHVSKNLQATRTNYYEVLGVSRNSSAKDIKKAYYELAKKYHPDTNKSDPDASKKFQLVSEAYEVLSDDTKRKE</Hsp_hseq>
+      <Hsp_midline>R  H +++L A   +YY  LGV++N++ KDIKKAYY+LAKKYHPDTNK DPDA +KFQ VSEAYEVLSD+ KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>72</Hit_num>
+  <Hit_id>gi|242021082|ref|XP_002430975.1|</Hit_id>
+  <Hit_def>protein tumorous imaginal discs, putative [Pediculus humanus corporis] &gt;gi|212516199|gb|EEB18237.1| protein tumorous imaginal discs, putative [Pediculus humanus corporis]</Hit_def>
+  <Hit_accession>XP_002430975</Hit_accession>
+  <Hit_len>452</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>103.219</Hsp_bit-score>
+      <Hsp_score>256</Hsp_score>
+      <Hsp_evalue>1.97537e-23</Hsp_evalue>
+      <Hsp_query-from>51</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>62</Hsp_hit-from>
+      <Hsp_hit-to>137</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>50</Hsp_identity>
+      <Hsp_positive>59</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>76</Hsp_align-len>
+      <Hsp_qseq>QVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>QVKKFHTAFTLHKKRDFYEVLGIPKNASSKDIKKAYYELAKKYHPDTNKNDPNAALKFQEVSEAYECLSDNAKRKQ</Hsp_hseq>
+      <Hsp_midline>QV++ HT   L  K D+Y  LG+ KNA+ KDIKKAYY+LAKKYHPDTNK DP+A  KFQEVSEAYE LSD  KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>73</Hit_num>
+  <Hit_id>gi|449489080|ref|XP_004158208.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog 1, mitochondrial-like [Cucumis sativus]</Hit_def>
+  <Hit_accession>XP_004158208</Hit_accession>
+  <Hit_len>424</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.834</Hsp_bit-score>
+      <Hsp_score>255</Hsp_score>
+      <Hsp_evalue>2.16126e-23</Hsp_evalue>
+      <Hsp_query-from>43</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>70</Hsp_hit-from>
+      <Hsp_hit-to>152</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>50</Hsp_identity>
+      <Hsp_positive>61</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>83</Hsp_align-len>
+      <Hsp_qseq>GSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>GVLGANYGEAKFIHGTAHMSANNYYDTLGVNKNATASEIKKAYYGLAKKLHPDTNKDDPDAEKKFQEVSKAYEVLKDEDKRRQ</Hsp_hseq>
+      <Hsp_midline>G   A+  + + +H T  + A +YY TLGV KNA   +IKKAYY LAKK HPDTNK+DPDA +KFQEVS+AYEVL DE KRR+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>74</Hit_num>
+  <Hit_id>gi|694377447|ref|XP_009365028.1|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial [Pyrus x bretschneideri]</Hit_def>
+  <Hit_accession>XP_009365028</Hit_accession>
+  <Hit_len>434</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.834</Hsp_bit-score>
+      <Hsp_score>255</Hsp_score>
+      <Hsp_evalue>2.27951e-23</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>74</Hsp_hit-from>
+      <Hsp_hit-to>146</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RSIHGTASMSVRDYYETLGVSKNASSSEIKKAYYGLAKKLHPDTNKNDPDTEKKFQEVQKAYEVLKDEEKRQE</Hsp_hseq>
+      <Hsp_midline>R +H T  +  +DYY TLGV+KNA+  +IKKAYY LAKK HPDTNK DPD  +KFQEV +AYEVL DE+KR+E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>75</Hit_num>
+  <Hit_id>gi|695008876|ref|XP_009391041.1|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial-like isoform X1 [Musa acuminata subsp. malaccensis]</Hit_def>
+  <Hit_accession>XP_009391041</Hit_accession>
+  <Hit_len>455</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.834</Hsp_bit-score>
+      <Hsp_score>255</Hsp_score>
+      <Hsp_evalue>2.34826e-23</Hsp_evalue>
+      <Hsp_query-from>19</Hsp_query-from>
+      <Hsp_query-to>124</Hsp_query-to>
+      <Hsp_hit-from>41</Hsp_hit-from>
+      <Hsp_hit-to>151</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>56</Hsp_identity>
+      <Hsp_positive>72</Hsp_positive>
+      <Hsp_gaps>5</Hsp_gaps>
+      <Hsp_align-len>111</Hsp_align-len>
+      <Hsp_qseq>RCLAAAAFSTPRATSYRIL---SSAGS--GSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRR</Hsp_qseq>
+      <Hsp_hseq>KCSSCRSFTNGRSEAVVICVARSKRGTLDGAFRSLFSPSRSFHGTRSLLLRDFYDVLGVSKDASASDIKKAYYALAKKLHPDTNKDDADAEKKFQEVQHAYEVLKDEDKRR</Hsp_hseq>
+      <Hsp_midline>+C +  +F+  R+ +  I    S  G+  G+ R+     R  H TR LL +D+Y  LGV+K+A+  DIKKAYY LAKK HPDTNK+D DA +KFQEV  AYEVL DE KRR</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>76</Hit_num>
+  <Hit_id>gi|617597385|ref|XP_007522052.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X2 [Erinaceus europaeus]</Hit_def>
+  <Hit_accession>XP_007522052</Hit_accession>
+  <Hit_len>454</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.834</Hsp_bit-score>
+      <Hsp_score>255</Hsp_score>
+      <Hsp_evalue>2.49613e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSASLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEMKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>77</Hit_num>
+  <Hit_id>gi|504148718|ref|XP_004586765.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X1 [Ochotona princeps]</Hit_def>
+  <Hit_accession>XP_004586765</Hit_accession>
+  <Hit_len>479</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>103.219</Hsp_bit-score>
+      <Hsp_score>256</Hsp_score>
+      <Hsp_evalue>2.58929e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>48</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSAPLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKEDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNKEDP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>78</Hit_num>
+  <Hit_id>gi|672203192|ref|XP_008778581.1|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial-like [Phoenix dactylifera]</Hit_def>
+  <Hit_accession>XP_008778581</Hit_accession>
+  <Hit_len>454</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.834</Hsp_bit-score>
+      <Hsp_score>255</Hsp_score>
+      <Hsp_evalue>2.6534e-23</Hsp_evalue>
+      <Hsp_query-from>52</Hsp_query-from>
+      <Hsp_query-to>123</Hsp_query-to>
+      <Hsp_hit-from>76</Hsp_hit-from>
+      <Hsp_hit-to>147</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>48</Hsp_identity>
+      <Hsp_positive>56</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>72</Hsp_align-len>
+      <Hsp_qseq>VRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKR</Hsp_qseq>
+      <Hsp_hseq>IRSFHGTRSMSARDYYEILGVSKNASASEIKKAYYALAKKLHPDTNKEDADAEKKFQEVQRAYEVLKDEEKR</Hsp_hseq>
+      <Hsp_midline>+R  H TR + A+DYY  LGV+KNA+  +IKKAYY LAKK HPDTNKED DA +KFQEV  AYEVL DE+KR</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>79</Hit_num>
+  <Hit_id>gi|675378585|gb|KFM71487.1|</Hit_id>
+  <Hit_def>DnaJ-like protein subfamily A member 3, mitochondrial, partial [Stegodyphus mimosarum]</Hit_def>
+  <Hit_accession>KFM71487</Hit_accession>
+  <Hit_len>148</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>98.5969</Hsp_bit-score>
+      <Hsp_score>244</Hsp_score>
+      <Hsp_evalue>3.07262e-23</Hsp_evalue>
+      <Hsp_query-from>7</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>19</Hsp_hit-from>
+      <Hsp_hit-to>139</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>63</Hsp_identity>
+      <Hsp_positive>76</Hsp_positive>
+      <Hsp_gaps>18</Hsp_gaps>
+      <Hsp_align-len>129</Hsp_align-len>
+      <Hsp_qseq>KLFVFRQLPAVRRCLAAAAFSTPRATSYRILSSAG------SGSTRADAP---QVRRLHTTRDLLAK-DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>KLF----LNALLRCFNK---SHPRTYS-RLLSLTSRERHLLEGTSTDYFPSCWHTRIFHQSHSNCARADLYKLLGVSRNASQNEIKKAYYQLAKKYHPDTNKNDPEAAKKFQEVSAAYEILGDEAKRRE</Hsp_hseq>
+      <Hsp_midline>KLF    L A+ RC      S PR  S R+LS          G++    P     R  H +    A+ D Y  LGV++NA+  +IKKAYYQLAKKYHPDTNK DP+A +KFQEVS AYE+L DE KRRE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>80</Hit_num>
+  <Hit_id>gi|617597382|ref|XP_007522051.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X1 [Erinaceus europaeus]</Hit_def>
+  <Hit_accession>XP_007522051</Hit_accession>
+  <Hit_len>481</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.834</Hsp_bit-score>
+      <Hsp_score>255</Hsp_score>
+      <Hsp_evalue>3.30932e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSASLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEMKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>81</Hit_num>
+  <Hit_id>gi|321461426|gb|EFX72458.1|</Hit_id>
+  <Hit_def>hypothetical protein DAPPUDRAFT_201054 [Daphnia pulex]</Hit_def>
+  <Hit_accession>EFX72458</Hit_accession>
+  <Hit_len>464</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.834</Hsp_bit-score>
+      <Hsp_score>255</Hsp_score>
+      <Hsp_evalue>3.32749e-23</Hsp_evalue>
+      <Hsp_query-from>46</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>36</Hsp_hit-from>
+      <Hsp_hit-to>118</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>51</Hsp_identity>
+      <Hsp_positive>64</Hsp_positive>
+      <Hsp_gaps>3</Hsp_gaps>
+      <Hsp_align-len>83</Hsp_align-len>
+      <Hsp_qseq>RADAPQVRR-LHTTRDLLAK--DYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>QSEIPTSRRNFHTSNITFAKKRDYYDVLGVPRNASLKDVKKAYYQLAKKFHPDTNKNDPETIKKFQEVSEAYEVLSDDGKRKQ</Hsp_hseq>
+      <Hsp_midline>+++ P  RR  HT+    AK  DYY  LGV +NA+ KD+KKAYYQLAKK+HPDTNK DP+  +KFQEVSEAYEVLSD+ KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>82</Hit_num>
+  <Hit_id>gi|674259345|emb|CDJ05108.1|</Hit_id>
+  <Hit_def>protein tumorous imaginal discs [Echinococcus multilocularis] &gt;gi|674571968|emb|CDS42390.1| protein tumorous imaginal discs [Echinococcus multilocularis]</Hit_def>
+  <Hit_accession>CDJ05108</Hit_accession>
+  <Hit_len>469</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.449</Hsp_bit-score>
+      <Hsp_score>254</Hsp_score>
+      <Hsp_evalue>4.34629e-23</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>124</Hsp_query-to>
+      <Hsp_hit-from>22</Hsp_hit-from>
+      <Hsp_hit-to>93</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>48</Hsp_identity>
+      <Hsp_positive>55</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>72</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRR</Hsp_qseq>
+      <Hsp_hseq>RSIHVSAQMLVKDYYKILGVSKGASQPDIKKAYYQLAKKYHPDINKSDKAAAQKFAEVSEAYEVLGDEEKRR</Hsp_hseq>
+      <Hsp_midline>R +H +  +L KDYY  LGV+K A+  DIKKAYYQLAKKYHPD NK D  A +KF EVSEAYEVL DE+KRR</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>83</Hit_num>
+  <Hit_id>gi|669221661|emb|CDW57040.1|</Hit_id>
+  <Hit_def>protein tumorous imaginal discs [Trichuris trichiura]</Hit_def>
+  <Hit_accession>CDW57040</Hit_accession>
+  <Hit_len>475</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.449</Hsp_bit-score>
+      <Hsp_score>254</Hsp_score>
+      <Hsp_evalue>4.53569e-23</Hsp_evalue>
+      <Hsp_query-from>53</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>52</Hsp_hit-from>
+      <Hsp_hit-to>126</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>49</Hsp_identity>
+      <Hsp_positive>58</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>75</Hsp_align-len>
+      <Hsp_qseq>RRLHTTRDLLA--KDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>RTFHLSAFVLQARKDYYEVLGIPRNASQKDIKKAYYQLAKKYHPDVNKNDPQAAKKFQEVSEAYEILSDEGKRQQ</Hsp_hseq>
+      <Hsp_midline>R  H +  +L   KDYY  LG+ +NA+ KDIKKAYYQLAKKYHPD NK DP A +KFQEVSEAYE+LSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>84</Hit_num>
+  <Hit_id>gi|669331259|gb|KFD71430.1|</Hit_id>
+  <Hit_def>hypothetical protein M514_07090 [Trichuris suis]</Hit_def>
+  <Hit_accession>KFD71430</Hit_accession>
+  <Hit_len>482</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.449</Hsp_bit-score>
+      <Hsp_score>254</Hsp_score>
+      <Hsp_evalue>4.82794e-23</Hsp_evalue>
+      <Hsp_query-from>52</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>33</Hsp_hit-from>
+      <Hsp_hit-to>108</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>49</Hsp_identity>
+      <Hsp_positive>58</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>76</Hsp_align-len>
+      <Hsp_qseq>VRRLHTTRDLLA--KDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>TRTFHLSAFVLQAKKDYYEVLGIPRNASQKDIKKAYYQLAKKYHPDVNKNDPQAAKKFQEVSEAYEILSDENKRQQ</Hsp_hseq>
+      <Hsp_midline> R  H +  +L   KDYY  LG+ +NA+ KDIKKAYYQLAKKYHPD NK DP A +KFQEVSEAYE+LSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>85</Hit_num>
+  <Hit_id>gi|449436261|ref|XP_004135911.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog 1, mitochondrial-like [Cucumis sativus] &gt;gi|700189923|gb|KGN45156.1| hypothetical protein Csa_7G428930 [Cucumis sativus]</Hit_def>
+  <Hit_accession>XP_004135911</Hit_accession>
+  <Hit_len>447</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.064</Hsp_bit-score>
+      <Hsp_score>253</Hsp_score>
+      <Hsp_evalue>4.93713e-23</Hsp_evalue>
+      <Hsp_query-from>43</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>70</Hsp_hit-from>
+      <Hsp_hit-to>152</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>50</Hsp_identity>
+      <Hsp_positive>61</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>83</Hsp_align-len>
+      <Hsp_qseq>GSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>GVLGANYGEAKFIHGTAHMSANNYYDTLGVNKNATASEIKKAYYGLAKKLHPDTNKDDPDAEKKFQEVSKAYEVLKDEDKRRQ</Hsp_hseq>
+      <Hsp_midline>G   A+  + + +H T  + A +YY TLGV KNA   +IKKAYY LAKK HPDTNK+DPDA +KFQEVS+AYEVL DE KRR+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>86</Hit_num>
+  <Hit_id>gi|291412073|ref|XP_002722307.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X2 [Oryctolagus cuniculus]</Hit_def>
+  <Hit_accession>XP_002722307</Hit_accession>
+  <Hit_len>453</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.064</Hsp_bit-score>
+      <Hsp_score>253</Hsp_score>
+      <Hsp_evalue>5.46917e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSAPLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>87</Hit_num>
+  <Hit_id>gi|507536499|ref|XP_004652282.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X3 [Jaculus jaculus]</Hit_def>
+  <Hit_accession>XP_004652282</Hit_accession>
+  <Hit_len>430</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.679</Hsp_bit-score>
+      <Hsp_score>252</Hsp_score>
+      <Hsp_evalue>5.74013e-23</Hsp_evalue>
+      <Hsp_query-from>16</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>39</Hsp_hit-from>
+      <Hsp_hit-to>154</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>60</Hsp_identity>
+      <Hsp_positive>75</Hsp_positive>
+      <Hsp_gaps>6</Hsp_gaps>
+      <Hsp_align-len>116</Hsp_align-len>
+      <Hsp_qseq>AVRRCLAAAAFS-TPRATSYRILSSAGSGSTRADAPQVRRL-----HTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>SLGRKLTVAAFSLSPGARGPRGLLTLRPSVSLAGAKQYPSVCAAPFHTSASLDKDDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline>++ R L  AAFS +P A   R L +     + A A Q   +     HT+  L   DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>88</Hit_num>
+  <Hit_id>gi|12963346|gb|AAK11223.1|AF326358_1</Hit_id>
+  <Hit_def>tumorous imaginal discs protein Tid56-like protein short form [Mus musculus]</Hit_def>
+  <Hit_accession>AAK11223</Hit_accession>
+  <Hit_len>429</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.679</Hsp_bit-score>
+      <Hsp_score>252</Hsp_score>
+      <Hsp_evalue>6.04412e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>56</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSASLAKDDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L   DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>89</Hit_num>
+  <Hit_id>gi|587017142|ref|XP_006942449.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X2 [Felis catus]</Hit_def>
+  <Hit_accession>XP_006942449</Hit_accession>
+  <Hit_len>451</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.679</Hsp_bit-score>
+      <Hsp_score>252</Hsp_score>
+      <Hsp_evalue>6.05379e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSSPLAKEDYYQILGVPRNASQKEIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRRQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ K+IKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KRR+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>90</Hit_num>
+  <Hit_id>gi|32816569|gb|AAP88584.1|</Hit_id>
+  <Hit_def>TID-1 short isoform [Rattus norvegicus]</Hit_def>
+  <Hit_accession>AAP88584</Hit_accession>
+  <Hit_len>429</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.679</Hsp_bit-score>
+      <Hsp_score>252</Hsp_score>
+      <Hsp_evalue>6.16743e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>56</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSASLAKDDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L   DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>91</Hit_num>
+  <Hit_id>gi|390471225|ref|XP_002755896.2|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X2 [Callithrix jacchus]</Hit_def>
+  <Hit_accession>XP_002755896</Hit_accession>
+  <Hit_len>453</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.679</Hsp_bit-score>
+      <Hsp_score>252</Hsp_score>
+      <Hsp_evalue>6.37285e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSAPLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>92</Hit_num>
+  <Hit_id>gi|148664827|gb|EDK97243.1|</Hit_id>
+  <Hit_def>DnaJ (Hsp40) homolog, subfamily A, member 3, isoform CRA_c [Mus musculus]</Hit_def>
+  <Hit_accession>EDK97243</Hit_accession>
+  <Hit_len>435</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.679</Hsp_bit-score>
+      <Hsp_score>252</Hsp_score>
+      <Hsp_evalue>6.45358e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>89</Hsp_hit-from>
+      <Hsp_hit-to>159</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>56</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSASLAKDDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L   DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>93</Hit_num>
+  <Hit_id>gi|555996797|ref|XP_005910132.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial-like, partial [Bos mutus]</Hit_def>
+  <Hit_accession>XP_005910132</Hit_accession>
+  <Hit_len>292</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>100.523</Hsp_bit-score>
+      <Hsp_score>249</Hsp_score>
+      <Hsp_evalue>6.56652e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>62</Hsp_hit-from>
+      <Hsp_hit-to>132</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>46</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSTHLAKEDYYQILGVPRNASQKEIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ K+IKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>94</Hit_num>
+  <Hit_id>gi|589944113|ref|XP_006984753.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X2 [Peromyscus maniculatus bairdii]</Hit_def>
+  <Hit_accession>XP_006984753</Hit_accession>
+  <Hit_len>456</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.679</Hsp_bit-score>
+      <Hsp_score>252</Hsp_score>
+      <Hsp_evalue>6.99129e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>86</Hsp_hit-from>
+      <Hsp_hit-to>156</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>56</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSASLAKDDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L   DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>95</Hit_num>
+  <Hit_id>gi|591292171|ref|XP_007073417.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial, partial [Panthera tigris altaica]</Hit_def>
+  <Hit_accession>XP_007073417</Hit_accession>
+  <Hit_len>457</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.679</Hsp_bit-score>
+      <Hsp_score>252</Hsp_score>
+      <Hsp_evalue>7.35962e-23</Hsp_evalue>
+      <Hsp_query-from>50</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>55</Hsp_hit-from>
+      <Hsp_hit-to>132</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>50</Hsp_identity>
+      <Hsp_positive>60</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>78</Hsp_align-len>
+      <Hsp_qseq>PQVR--RLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>PFVRTASFHTSSPLAKEDYYQILGVPRNASQKEIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRRQ</Hsp_hseq>
+      <Hsp_midline>P VR    HT+  L  +DYY  LGV +NA+ K+IKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KRR+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>96</Hit_num>
+  <Hit_id>gi|505784582|ref|XP_004604424.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial [Sorex araneus]</Hit_def>
+  <Hit_accession>XP_004604424</Hit_accession>
+  <Hit_len>421</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.293</Hsp_bit-score>
+      <Hsp_score>251</Hsp_score>
+      <Hsp_evalue>7.40365e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>25</Hsp_hit-from>
+      <Hsp_hit-to>95</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSAPLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>97</Hit_num>
+  <Hit_id>gi|403273444|ref|XP_003928525.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial [Saimiri boliviensis boliviensis]</Hit_def>
+  <Hit_accession>XP_003928525</Hit_accession>
+  <Hit_len>480</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.064</Hsp_bit-score>
+      <Hsp_score>253</Hsp_score>
+      <Hsp_evalue>7.56221e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSAPLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>98</Hit_num>
+  <Hit_id>gi|672177416|ref|XP_008808803.1|</Hit_id>
+  <Hit_def>PREDICTED: chaperone protein dnaJ 1, mitochondrial-like [Phoenix dactylifera]</Hit_def>
+  <Hit_accession>XP_008808803</Hit_accession>
+  <Hit_len>450</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>101.679</Hsp_bit-score>
+      <Hsp_score>252</Hsp_score>
+      <Hsp_evalue>7.65147e-23</Hsp_evalue>
+      <Hsp_query-from>27</Hsp_query-from>
+      <Hsp_query-to>123</Hsp_query-to>
+      <Hsp_hit-from>48</Hsp_hit-from>
+      <Hsp_hit-to>143</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>52</Hsp_identity>
+      <Hsp_positive>65</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>97</Hsp_align-len>
+      <Hsp_qseq>STPRATSYRILSSAGSGSTRADAPQVRRLHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKR</Hsp_qseq>
+      <Hsp_hseq>SSPKTANWRRFEIS-NGPFQGHCIPSRLFHGTRSTSARDYYEVLGVSKNASASEIKKAYYALAKKLHPDTNKDDADAERKFQEVQRAYEVLKDEEKR</Hsp_hseq>
+      <Hsp_midline>S+P+  ++R    + +G  +      R  H TR   A+DYY  LGV+KNA+  +IKKAYY LAKK HPDTNK+D DA RKFQEV  AYEVL DE+KR</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>99</Hit_num>
+  <Hit_id>gi|291412071|ref|XP_002722306.1|</Hit_id>
+  <Hit_def>PREDICTED: dnaJ homolog subfamily A member 3, mitochondrial isoform X1 [Oryctolagus cuniculus]</Hit_def>
+  <Hit_accession>XP_002722306</Hit_accession>
+  <Hit_len>479</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>102.064</Hsp_bit-score>
+      <Hsp_score>253</Hsp_score>
+      <Hsp_evalue>7.71744e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>83</Hsp_hit-from>
+      <Hsp_hit-to>153</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>47</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSAPLAKEDYYQILGVPRNASQKDIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ KDIKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>100</Hit_num>
+  <Hit_id>gi|440892816|gb|ELR45848.1|</Hit_id>
+  <Hit_def>DnaJ-like protein subfamily A member 3, mitochondrial, partial [Bos mutus]</Hit_def>
+  <Hit_accession>ELR45848</Hit_accession>
+  <Hit_len>289</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>100.138</Hsp_bit-score>
+      <Hsp_score>248</Hsp_score>
+      <Hsp_evalue>7.88531e-23</Hsp_evalue>
+      <Hsp_query-from>55</Hsp_query-from>
+      <Hsp_query-to>125</Hsp_query-to>
+      <Hsp_hit-from>52</Hsp_hit-from>
+      <Hsp_hit-to>122</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>46</Hsp_identity>
+      <Hsp_positive>57</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>71</Hsp_align-len>
+      <Hsp_qseq>LHTTRDLLAKDYYATLGVAKNANGKDIKKAYYQLAKKYHPDTNKEDPDAGRKFQEVSEAYEVLSDEQKRRE</Hsp_qseq>
+      <Hsp_hseq>FHTSTHLAKEDYYQILGVPRNASQKEIKKAYYQLAKKYHPDTNKDDPKAKEKFSQLAEAYEVLSDEVKRKQ</Hsp_hseq>
+      <Hsp_midline> HT+  L  +DYY  LGV +NA+ K+IKKAYYQLAKKYHPDTNK+DP A  KF +++EAYEVLSDE KR++</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+</Iteration_hits>
+  <Iteration_stat>
+    <Statistics>
+      <Statistics_db-num>52861312</Statistics_db-num>
+      <Statistics_db-len>1840601332</Statistics_db-len>
+      <Statistics_hsp-len>0</Statistics_hsp-len>
+      <Statistics_eff-space>0</Statistics_eff-space>
+      <Statistics_kappa>0.041</Statistics_kappa>
+      <Statistics_lambda>0.267</Statistics_lambda>
+      <Statistics_entropy>0.14</Statistics_entropy>
+    </Statistics>
+  </Iteration_stat>
+</Iteration>
+</BlastOutput_iterations>
+</BlastOutput>
+

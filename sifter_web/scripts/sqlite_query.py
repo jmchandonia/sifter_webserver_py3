@@ -11,6 +11,7 @@ import os
 import datetime
 import django
 from Bio.Blast import NCBIWWW,NCBIXML
+import uniprot as uni
 
 django.setup()
 
@@ -506,26 +507,71 @@ def find_sifter_preds_byfunction(species,functions,my_form_data):
     unip_accs={k:v for k,v in unip_accs.iteritems() if k in res_top}    
     return res_top,taxids,unip_accs
 
-def find_sifter_preds_byfsequence(my_sequences,my_form_data):
+def find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id):
    
-    status=0
-    try:
-        qblast_output = NCBIWWW.qblast("blastp", "swissprot", my_sequences,alignments=0,expect=1e-2)
-    except:
-        status=1
-    
-    if status==0:
+    blast_hits={}
+    connected=0
+    cnt=0
+    while connected==0:
+        try:
+            qblast_output = NCBIWWW.qblast("blastp", "nr", my_sequences,alignments=0,expect=1e-2,hitlist_size=100,ncbi_gi=True)            
+            connected=1
+        except:
+            cnt+=1
+            if cnt<60:
+                print("BLAST Server is busy, will sleep and try again in 1 minutes")
+                time.sleep(60)
+    if connected==0:
+        return 0,0,0,0,0 #"BLAST Server was busy for last hour; please try again later"
+    else:
         my_blast_file=os.path.join(OUTPUT_DIR,"%s_output.blast"%job_id)
         save_file = open(my_blast_file, "w")
         save_file.write(qblast_output.read())
         save_file.close()
         qblast_output.close()
+        gis=[]
+        hits={}
         for record in NCBIXML.parse(open(my_blast_file)):
             if record.alignments :
+                hits[record.query]=[]
                 for aa in record.alignments:
-                    sp_id=aa.hit_id.split('sp|')[1].split('|')[0].split('.')[0]            
-                print aa.hsps[0].bits, aa.hsps[0].expect,sp_id
+                    gi=aa.hit_id.split('gi|')
+                    if len(gi)>0:
+                        gi_num=gi[1].split('|')[0]
+                        gis.append(gi_num)
+                        hit_id={'P_GI':gi_num}
+                    else:
+                        hit_id={'all':aa.hit_id}
+                    hits[record.query].append({'hit_id':hit_id,'bits':aa.hsps[0].bits,'eval':aa.hsps[0].expect,'ident':round(aa.hsps[0].identities/float(aa.hsps[0].align_length)*100)})
+        mapped_gis=uni.map(gis, f='P_GI', t='ID') # map single id
+        mapped_gis={k:list(v)[0] for k,v in mapped_gis.iteritems() if v}
+        q_genes=[]
+        for record in hits:
+            blast_hits[record]=[]
+            for hit in hits[record]:
+                if hit['hit_id'].keys()[0]=='P_GI':
+                    gi=hit['hit_id']['P_GI']
+                    if gi in mapped_gis:
+                        blast_hits[record].append([mapped_gis[gi],hit['bits'],hit['eval'],hit['ident']])
+                        q_genes.append(mapped_gis[gi])
 
+        sifter_choices=my_form_data['sifter_choices']
+        q_results,taxids,unip_accs=find_db_results('by_protein',q_genes=q_genes)
+        my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
+        if sifter_choices=='EXP-Model':
+            res_filtered=find_Model2_results(SIFTER_results2,real_terms)
+        else:
+            ExpWeight_hidden=my_form_data['ExpWeight_hidden']
+            res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
+        trimmed_res=trim_results(res_filtered)
+        leaves=find_leave_preds(trimmed_res)
+        res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
+        return res,taxids,unip_accs,blast_hits,1
+
+
+
+        
+                        
 def find_results(my_form_data,job_id):
     active_tab=my_form_data['active_tab_hidden']
     input_file=SIFTER_Output.objects.filter(job_id=job_id).values_list('input_file',flat=True)[0]
@@ -566,9 +612,9 @@ def find_results(my_form_data,job_id):
         return True
     elif active_tab == 'by_sequence':
         my_sequences=data['sequences']
-        res,taxids,unip_accs=find_sifter_preds_byfsequence(my_sequences,my_form_data)
+        res,taxids,unip_accs,blast_hits,connected=find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id)
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        pickle.dump([res,taxids,unip_accs],open(outfile,'w'))
+        pickle.dump([res,taxids,unip_accs,blast_hits,connected],open(outfile,'w'))
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
