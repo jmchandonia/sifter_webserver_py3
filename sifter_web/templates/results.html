@@ -84,6 +84,7 @@
           <h3 class="panel-title">SIFTER Predictions for Job ID: {{my_object.job_id}}</h3>
         </div>
         <div class="panel-body">
+
           {% if not my_object.query_method == 'by_sequence' %}
             <table class="table">
             <thead>
@@ -122,8 +123,8 @@
             </tbody>
             </table>
           {%else%}
-          {%for query in results %}
-            111
+          {%for query in result %}
+            {{query.0}}
             
             <table class="table">
             <thead>

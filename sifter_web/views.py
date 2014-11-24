@@ -299,14 +299,18 @@ def show_results(request,job_id):
             
         else:
             res,taxids,unip_accs,blast_hits,connected=pickle.load(open(my_object.output_file))
+            print res
             terms=set([v for w in res.values() for v in w])                
             idx_to_go_name=find_go_name_acc(terms)
             result=[]
+            print res.keys()
             for query, hits in blast_hits.iteritems():
                 result_q=[]
                 for j,hit in enumerate(hits):
                     gene=hit[0]
-                    print res.keys()
+                    if gene not in res:
+                        print gene
+                        continue
                     res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
                     tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
                     if tax_obj:
@@ -331,7 +335,8 @@ def show_results(request,job_id):
                             result_q.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
                             break
                     result_q.append(['','','','','','','',2])
-                result.append([query,result_q])   
+                result.append([query,result_q])
+            print result[0][1]
             return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
         
         

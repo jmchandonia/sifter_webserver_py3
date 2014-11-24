@@ -538,11 +538,13 @@ def find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id):
                     gi=aa.hit_id.split('gi|')
                     if len(gi)>0:
                         gi_num=gi[1].split('|')[0]
+                        print gi_num
                         gis.append(gi_num)
                         hit_id={'P_GI':gi_num}
                     else:
                         hit_id={'all':aa.hit_id}
                     hits[record.query].append({'hit_id':hit_id,'bits':aa.hsps[0].bits,'eval':aa.hsps[0].expect,'ident':round(aa.hsps[0].identities/float(aa.hsps[0].align_length)*100)})
+        print gis
         mapped_gis=uni.map(gis, f='P_GI', t='ID') # map single id
         mapped_gis={k:list(v)[0] for k,v in mapped_gis.iteritems() if v}
         q_genes=[]
