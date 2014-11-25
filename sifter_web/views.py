@@ -15,7 +15,7 @@ import pickle
 from term_db.models import Term
 import os
 import operator
-
+import time
 from chartit import DataPool, Chart
 from scripts.estimate_time import estimate_time, get_processing_time
 from estimatedb.models import Errorhistogrambars
@@ -242,7 +242,7 @@ def find_go_name_acc(ts):
     return idx_to_go_name
 
 def show_results(request,job_id):
-    
+    time.sleep(0.5)
     my_object=SIFTER_Output.objects.filter(job_id=job_id)
     if not len(my_object)==1:
         messages.success(request,'Error in the job_id. Number of hits=%s'%(len(my_object)))       
@@ -307,6 +307,7 @@ def show_results(request,job_id):
             for query, hits in blast_hits.iteritems():
                 result_q=[]
                 for j,hit in enumerate(hits):
+                    preds=[]
                     gene=hit[0]
                     if gene not in res:
                         print gene
@@ -317,7 +318,6 @@ def show_results(request,job_id):
                         tax_name=tax_obj[0].tax_name
                     else:
                         tax_name=taxids[gene]
-                    result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],hit[1],hit[2],hit[3],3])
                     if len(res_sorted)<=2:
                         end_i=len(res)
                     else:
@@ -329,14 +329,12 @@ def show_results(request,job_id):
         
                     for i, pred  in enumerate(res_sorted):
                         term,score=pred
-                        if i<end_i:                    
-                            result_q.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+                        if i<=end_i:                    
+                            preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
                         else:
-                            result_q.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
                             break
-                    result_q.append(['','','','','','','',2])
+                    result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],hit[1],hit[2],'%0.0f'%hit[3],preds])
                 result.append([query,result_q])
-            print result[0][1]
             return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
         
         

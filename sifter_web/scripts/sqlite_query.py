@@ -1,7 +1,9 @@
 from sifter_results_db.models import SifterResults
+from sifter_results_ready_db.models import SifterResults as SifterResultsReady
 from term_db.models import Term,Term2Term
 from weight_db.models import Weight
 from results.models import SIFTER_Output
+from idmap_db.models import Idmap
 from django.db import connection
 import cPickle,zlib
 import pickle
@@ -196,6 +198,27 @@ def find_db_results(method,q_genes={},species=''):
     for q_gene in q_results:
         taxids[q_gene]=q_results[q_gene][0].tax_id
         unip_accs[q_gene]=q_results[q_gene][0].uniprot_acc
+    return q_results,taxids,unip_accs
+
+
+def find_db_ready_results(method,q_genes={},mode=1,species=''):
+    if method=='by_protein':
+        q_results0=[]
+        batchs=100
+        for i in range(0,int(np.ceil(float(len(q_genes))/float(batchs)))):
+            q_results0.extend(SifterResultsReady.objects.filter(uniprot_id__in=q_genes[batchs*i:min(len(q_genes),batchs*(i+1))],mode=mode))
+        print len(q_results0)
+    elif method=='by_species':
+        q_results0=SifterResultsReady.objects.filter(tax_id=species,mode=mode)
+        
+    q_results={}    
+    taxids={}
+    unip_accs={}
+    for q_res in q_results0:
+        q_gene=q_res.uniprot_id
+        q_results[q_gene]=cPickle.loads(zlib.decompress(q_res.preds).encode('ascii','ignore'))
+        taxids[q_gene]=q_res.tax_id
+        unip_accs[q_gene]=q_res.uniprot_acc
     return q_results,taxids,unip_accs
 
 
@@ -459,31 +482,48 @@ def find_leave_preds(preds):
         
 def find_sifter_preds_byprotein(q_genes,my_form_data):
     sifter_choices=my_form_data['sifter_choices']
-    q_results,taxids,unip_accs=find_db_results('by_protein',q_genes=q_genes)
-    my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
-    if sifter_choices=='EXP-Model':
-        res_filtered=find_Model2_results(SIFTER_results2,real_terms)
-    else:
-        ExpWeight_hidden=my_form_data['ExpWeight_hidden']
-        res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
-    trimmed_res=trim_results(res_filtered)
-    leaves=find_leave_preds(trimmed_res)
-    res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
-    return res,taxids,unip_accs
+    ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
+    print sifter_choices,ExpWeight_hidden*2
+    if ((sifter_choices=='EXP-Model') or ((sifter_choices=='ALL-Model')and(ExpWeight_hidden==0.7))):
+        if sifter_choices=='EXP-Model':
+            mode=1
+        else:
+            mode=0
+        q_results,taxids,unip_accs=find_db_ready_results('by_protein',q_genes=q_genes,mode=mode)
+        return q_results,taxids,unip_accs
+    else:        
+        q_results,taxids,unip_accs=find_db_results('by_protein',q_genes=q_genes)
+        my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
+        if sifter_choices=='EXP-Model':
+            res_filtered=find_Model2_results(SIFTER_results2,real_terms)
+        else:
+            res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
+        trimmed_res=trim_results(res_filtered)
+        leaves=find_leave_preds(trimmed_res)
+        res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
+        return res,taxids,unip_accs
 
 def find_sifter_preds_byspecies(species,my_form_data):
     sifter_choices=my_form_data['sifter_choices']
-    q_results,taxids,unip_accs=find_db_results('by_species',species=species)
-    my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
-    if sifter_choices=='EXP-Model':
-        res_filtered=find_Model2_results(SIFTER_results2,real_terms)
-    else:
-        ExpWeight_hidden=my_form_data['ExpWeight_hidden']
-        res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
-    trimmed_res=trim_results(res_filtered)
-    leaves=find_leave_preds(trimmed_res)
-    res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
-    return res,taxids,unip_accs
+    ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
+    if ((sifter_choices=='EXP-Model') or ((sifter_choices=='ALL-Model')and(ExpWeight_hidden==0.7))):
+        if sifter_choices=='EXP-Model':
+            mode=1
+        else:
+            mode=0
+        q_results,taxids,unip_accs=find_db_ready_results('by_species',mode=mode,species=species)
+        return q_results,taxids,unip_accs
+    else:        
+        q_results,taxids,unip_accs=find_db_results('by_species',species=species)
+        my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
+        if sifter_choices=='EXP-Model':
+            res_filtered=find_Model2_results(SIFTER_results2,real_terms)
+        else:
+            res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
+        trimmed_res=trim_results(res_filtered)
+        leaves=find_leave_preds(trimmed_res)
+        res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
+        return res,taxids,unip_accs
 
 def find_sifter_preds_byfunction(species,functions,my_form_data):
     sifter_choices=my_form_data['sifter_choices']
@@ -492,7 +532,7 @@ def find_sifter_preds_byfunction(species,functions,my_form_data):
     if sifter_choices=='EXP-Model':
         res_filtered=find_Model2_results(SIFTER_results2,real_terms)
     else:
-        ExpWeight_hidden=my_form_data['ExpWeight_hidden']
+        ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
         res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
     trimmed_res=trim_results(res_filtered)
     leaves=find_leave_preds(trimmed_res)
@@ -538,15 +578,15 @@ def find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id):
                     gi=aa.hit_id.split('gi|')
                     if len(gi)>0:
                         gi_num=gi[1].split('|')[0]
-                        print gi_num
                         gis.append(gi_num)
                         hit_id={'P_GI':gi_num}
                     else:
                         hit_id={'all':aa.hit_id}
                     hits[record.query].append({'hit_id':hit_id,'bits':aa.hsps[0].bits,'eval':aa.hsps[0].expect,'ident':round(aa.hsps[0].identities/float(aa.hsps[0].align_length)*100)})
-        print gis
-        mapped_gis=uni.map(gis, f='P_GI', t='ID') # map single id
-        mapped_gis={k:list(v)[0] for k,v in mapped_gis.iteritems() if v}
+        mapped_gis=Idmap.objects.filter(other_id__in=gis, db='GI').values_list('other_id','unip_id')
+        mapped_gis={w[0]:w[1] for w in mapped_gis}
+        #mapped_gis=uni.map(gis, f='P_GI', t='ID') # map single id
+        #mapped_gis={k:list(v)[0] for k,v in mapped_gis.iteritems() if v}
         q_genes=[]
         for record in hits:
             blast_hits[record]=[]
@@ -563,7 +603,7 @@ def find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id):
         if sifter_choices=='EXP-Model':
             res_filtered=find_Model2_results(SIFTER_results2,real_terms)
         else:
-            ExpWeight_hidden=my_form_data['ExpWeight_hidden']
+            ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
             res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
         trimmed_res=trim_results(res_filtered)
         leaves=find_leave_preds(trimmed_res)

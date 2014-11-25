@@ -52,6 +52,8 @@ INSTALLED_APPS = (
     'chartit',
     'graphs',
     'estimatedb',
+    'sifter_results_ready_db',
+    'idmap_db',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -101,13 +103,23 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, "my_dbs",'estimate.sqlite3'),
     },
+    'sifter_results_ready_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/lab/app/python/python_mohammad/SIFTER_jobs/webserver/sifter_results_cmp_ready_leaves.sqlite3',
+    },
+    'idmap_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/lab/app/python/python_mohammad/SIFTER_jobs/webserver/idmap_db.sqlite3',
+    },
 }
 DATABASE_ROUTERS = [
     'term_db.routers.term_db_router',
     'weight_db.routers.weight_db_router',
     'sifter_results_db.routers.sifter_results_db_router',
     'taxid_db.routers.taxid_db_router',
-    'estimatedb.routers.EstimateDbRouter'
+    'estimatedb.routers.EstimateDbRouter',
+    'sifter_results_ready_db.routers.sifter_results_ready_db_router',
+    'idmap_db.routers.idmap_db_router'
     ]
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/

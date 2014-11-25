@@ -123,10 +123,53 @@
             </tbody>
             </table>
           {%else%}
+            
+            
+            
           {%for query in result %}
-            {{query.0}}
+            <div class="query-info">
+              <h3>Query Sequence: {{query.0}}</h3>
+            </div>
+            
             
             <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Confidence Score</th>
+              </tr>
+            </thead>         
+            <tbody >
+              {% for hits in query.1 %}
+                <tr class="row_seperator">
+                  <td class="col-md-2"><a href="http://www.uniprot.org/uniprot/{{hits.1}}">{{hits.0}}</a></td>
+                  <td class="col-md-3"><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{hits.3}}">{{hits.2}}</a></td>                
+                  <td class="col-md-5">Bit-score: {{hits.4}} &nbsp&nbsp&nbsp&nbsp E-val: {{hits.5}} &nbsp&nbsp&nbsp&nbsp Identitiy: {{hits.6}}%</td>
+                  <td class="col-md-1"></td>
+                </tr>
+                <tr>
+                  <td colspan="4">
+                    <table class="table">
+                    <tbody >
+                    {% for row in hits.7 %}
+                      <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">
+                          <td ><a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.1}}">{{row.0}}</a></td>                
+                          <td ><a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.1}}">{{row.1}}</a></td>                
+                          <td >{{row.2}}</td>                    
+                      </tr>               
+                    {%endfor%}                  
+                    </tbody> 
+                    </table>
+                  </td>
+                </tr>                
+             {%endfor%}
+            </tbody>
+            </table>            
+            
+            
+<!--            <table class="table">
             <thead>
               <tr>
                 <th></th>
@@ -146,7 +189,19 @@
                       <tr class="row_seperator">
                       <td ><a href="http://www.uniprot.org/uniprot/{{row.1}}">{{row.0}}</a></td>
                       <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{row.3}}">{{row.2}}</a></td>                
-                      <td></td>
+                      <td>
+                        <div class="row">
+                          <div class="col-md-4">
+                            Bit-score: {{row.4}}
+                          </div>
+                          <div class="col-md-4">
+                            E-val: {{row.5}}
+                          </div>
+                          <div class="col-md-4">
+                            Identitiy: {{row.6}}%
+                          </div>
+                        </div>
+                      </td>
                   {% else %}
                     {% if row.7 == 1%}
                       <tr style="background-color:rgba{{row.6|get_color_rgba}}; color:rgba{{row.6|get_color_rgb2}};">
@@ -161,7 +216,7 @@
                 </tr>                
              {%endfor%}
             </tbody>
-            </table>
+            </table>-->
           {%endfor%}
           {% endif %}
         </div>
