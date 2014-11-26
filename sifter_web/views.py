@@ -19,6 +19,7 @@ import time
 from chartit import DataPool, Chart
 from scripts.estimate_time import estimate_time, get_processing_time
 from estimatedb.models import Errorhistogrambars
+import numpy as np
 
 INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
 
@@ -235,7 +236,12 @@ def get_input(request):
 
 
 def find_go_name_acc(ts):
-    res0=Term.objects.filter(term_id__in=ts).values('term_id','name','acc')
+    res0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        print i
+        res0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('term_id','name','acc'))
+    print len(res0)
     idx_to_go_name={}
     for w in res0:
         idx_to_go_name[w['term_id']]=[w['acc'],w['name']]
@@ -244,11 +250,12 @@ def find_go_name_acc(ts):
 def show_results(request,job_id):
     time.sleep(0.5)
     my_object=SIFTER_Output.objects.filter(job_id=job_id)
+
     if not len(my_object)==1:
         messages.success(request,'Error in the job_id. Number of hits=%s'%(len(my_object)))       
         return render(request, 'results.html', {'my_object':'','result':'','pending':False})
     my_object=my_object[0]
-    print my_object.output_file
+    print my_object.input_file,my_object.output_file
     if my_object.output_file=='':
         messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
         return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False})        
@@ -256,7 +263,9 @@ def show_results(request,job_id):
         messages.success(request,'Your SIFTER query results are ready.')
         if not my_object.query_method=='by_sequence':
             res,taxids,unip_accs=pickle.load(open(my_object.output_file))
-            terms=set([v for w in res.values() for v in w])                
+            terms=list(set([v for w in res.values() for v in w]))
+            print len(terms)
+            print len(res)
             idx_to_go_name=find_go_name_acc(terms)
             result=[]
             for j,gene in enumerate(res):
@@ -300,7 +309,7 @@ def show_results(request,job_id):
         else:
             res,taxids,unip_accs,blast_hits,connected=pickle.load(open(my_object.output_file))
             print res
-            terms=set([v for w in res.values() for v in w])                
+            terms=list(set([v for w in res.values() for v in w]))
             idx_to_go_name=find_go_name_acc(terms)
             result=[]
             print res.keys()

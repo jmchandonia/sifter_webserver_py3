@@ -598,18 +598,27 @@ def find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id):
                         q_genes.append(mapped_gis[gi])
 
         sifter_choices=my_form_data['sifter_choices']
-        q_results,taxids,unip_accs=find_db_results('by_protein',q_genes=q_genes)
-        my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
-        if sifter_choices=='EXP-Model':
-            res_filtered=find_Model2_results(SIFTER_results2,real_terms)
-        else:
-            ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
-            res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
-        trimmed_res=trim_results(res_filtered)
-        leaves=find_leave_preds(trimmed_res)
-        res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
-        return res,taxids,unip_accs,blast_hits,1
-
+        ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
+        print sifter_choices,ExpWeight_hidden*2
+        if ((sifter_choices=='EXP-Model') or ((sifter_choices=='ALL-Model')and(ExpWeight_hidden==0.7))):
+            if sifter_choices=='EXP-Model':
+                mode=1
+            else:
+                mode=0
+            q_results,taxids,unip_accs=find_db_ready_results('by_protein',q_genes=q_genes,mode=mode)
+            return q_results,taxids,unip_accs,blast_hits,1
+        else:        
+            q_results,taxids,unip_accs=find_db_results('by_protein',q_genes=q_genes)
+            my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
+            if sifter_choices=='EXP-Model':
+                res_filtered=find_Model2_results(SIFTER_results2,real_terms)
+            else:
+                res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
+            trimmed_res=trim_results(res_filtered)
+            leaves=find_leave_preds(trimmed_res)
+            res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
+            return res,taxids,unip_accs,blast_hits,1
+    
 
 
         
