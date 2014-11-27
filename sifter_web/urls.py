@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from sifter_web.views import get_input,show_results,get_query,get_complexity
+from sifter_web.views import get_input,show_results,get_query,get_complexity,navigation_autocomplete
+
 
 urlpatterns = patterns('',
     # Examples:
@@ -14,6 +15,8 @@ urlpatterns = patterns('',
     url(r'^query/$', get_query),
     # url(r'^blog/', include('blog.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^autocomplete/', include('autocomplete_light.urls')),
+    url(r'^navigationAutocomplete/', navigation_autocomplete, name='navigationAutocomplete'),	
 )
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,

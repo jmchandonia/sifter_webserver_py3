@@ -4,11 +4,8 @@
 <div class="alert alert-danger {%if not form.input_any.errors %} hidden {% endif %}">{{ form.input_any.errors }}</div>
 <div class="form-group {%if form.input_any.errors %} has-error {% endif %}" >
   Enter any Uniprot ID or Accession, Go term ID, Function name, Species Name or ID, etc.
-  <div class="row">
-    <div class="col-md-12">
-      {{form.input_any}}      
       <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-12 col-sm-12 col-xs-12">
 	    <div class="text-right">	    
 		<a id="example1" class="sample" href="javascript:setExample(1)">Example 1</a>
 		<a id="example2" class="sample" href="javascript:setExample(2)">Example 2</a>
@@ -17,6 +14,9 @@
 	    </div>
 	</div>
       </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      {{form.input_any}}      
     </div>
   </div>
 </div>	    

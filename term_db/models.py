@@ -26,7 +26,7 @@ class Term(models.Model):
         db_table = 'term'
     
     def __unicode__(self):
-        return '%s'%self.term_id
+        return '%s (%s)'%(self.name, self.acc)
 
 
 class Term2Term(models.Model):

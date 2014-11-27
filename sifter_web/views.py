@@ -5,7 +5,6 @@ from django import forms
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
-from django.contrib import messages
 from sifter_web.tasks import run_sifter_job
 from results.models import SIFTER_Output
 from taxid_db.models import Taxid
@@ -20,11 +19,13 @@ from chartit import DataPool, Chart
 from scripts.estimate_time import estimate_time, get_processing_time
 from estimatedb.models import Errorhistogrambars
 import numpy as np
+from django.db.models import Q as Q_lookup
+import autocomplete_light
 
 INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
 
 class InputForm(forms.Form):
-    input_any = forms.CharField(widget=forms.Textarea(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control','id':'input_any'}),label='Input Any Queries', max_length=100000,required=False)
+    input_any = autocomplete_light.ChoiceField('TermAutocomplete')#forms.CharField(widget=forms.Textarea(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control','id':'input_any'}),label='Input Any Queries', max_length=100000,required=False)
     input_queries = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'placeholder':'Enter query proteins','class':'form-control','id':'input_queries'}),label='Input Queries', max_length=100000,required=False)
     query_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'query_uploader'}),required=False)
     input_species = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Enter query species Taxonomy ID','class':'form-control','id':'input_species'}),label='Input Species', max_length=1000,required=False)
@@ -39,6 +40,7 @@ class InputForm(forms.Form):
     active_tab_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'id':'active_tab_hidden'}),initial='by_any',required=False)
     ExpWeight_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'id':'ExpWeight_hidden'}),initial='0.7',required=False)
     more_options_hidden= forms.BooleanField(widget=forms.HiddenInput(attrs={'id':'more_options_hidden'}),initial=False,required=False)
+    bbb = autocomplete_light.ChoiceField('TaxidAutocomplete')
 
     
     def check(self,cleaned_data,my_fields,msg):
@@ -250,17 +252,17 @@ def find_go_name_acc(ts):
 def show_results(request,job_id):
     time.sleep(0.5)
     my_object=SIFTER_Output.objects.filter(job_id=job_id)
-
+    my_msg=[]
     if not len(my_object)==1:
-        messages.success(request,'Error in the job_id. Number of hits=%s'%(len(my_object)))       
-        return render(request, 'results.html', {'my_object':'','result':'','pending':False})
+        my_msg.append(['danger','Error in the job_id. Number of hits=%s'%(len(my_object))])       
+        return render(request, 'results.html', {'my_object':'','result':'','pending':False,'my_msg':my_msg})
     my_object=my_object[0]
     print my_object.input_file,my_object.output_file
     if my_object.output_file=='':
-        messages.success(request,'Thanks! You have successfully submitted your SIFTER query.')
-        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False})        
+        my_msg.append(['info','Thanks! You have successfully submitted your SIFTER query.'])
+        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg})        
     else:
-        messages.success(request,'Your SIFTER query results are ready.')
+        my_msg.append(['info','Your SIFTER query results are ready.'])
         if not my_object.query_method=='by_sequence':
             res,taxids,unip_accs=pickle.load(open(my_object.output_file))
             terms=list(set([v for w in res.values() for v in w]))
@@ -269,13 +271,14 @@ def show_results(request,job_id):
             idx_to_go_name=find_go_name_acc(terms)
             result=[]
             for j,gene in enumerate(res):
+                print gene
+                preds=[]			
                 res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
                 tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
                 if tax_obj:
                     tax_name=tax_obj[0].tax_name
                 else:
                     tax_name=taxids[gene]
-                result.append([gene,unip_accs[gene],tax_name,taxids[gene],'','','',3])
                 if len(res_sorted)<=2:
                     end_i=len(res)
                 else:
@@ -287,12 +290,12 @@ def show_results(request,job_id):
     
                 for i, pred  in enumerate(res_sorted):
                     term,score=pred
-                    if i<end_i:                    
-                        result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),0])
+                    if i<=end_i:                    
+                        preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
                     else:
-                        result.append(['','','','',idx_to_go_name[term][0],idx_to_go_name[term][1],str(score),1])
                         break
-                result.append(['','','','','','','',2])        
+                result.append([gene,unip_accs[gene],tax_name,taxids[gene],preds])
+
             print my_object.query_method
             if my_object.query_method == 'by_protein':
                 data=pickle.load(open(my_object.input_file))
@@ -300,11 +303,10 @@ def show_results(request,job_id):
                 rest=set(my_genes)-set(res.keys())
                 print len(set(my_genes))
                 for j,gene in enumerate(rest):
-                    result.append([gene,'?','?','','','','',3])
-                    result.append(['','','','','','','',2])        
+                    result.append([gene,'?','?','?',[]])        
         
     
-            return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
+            return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False,'my_msg':my_msg})
             
         else:
             res,taxids,unip_accs,blast_hits,connected=pickle.load(open(my_object.output_file))
@@ -344,7 +346,21 @@ def show_results(request,job_id):
                             break
                     result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],hit[1],hit[2],'%0.0f'%hit[3],preds])
                 result.append([query,result_q])
-            return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False})
+            return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False,'my_msg':my_msg})
         
         
 
+def navigation_autocomplete(request, template_name='ac2.html'):
+    q = request.GET.get('q', '')
+    queries = {}
+    queries['taxids'] = Taxid.objects.filter(
+        #Q(tax_name__icontains=q) | Q(tax_id__icontains=q)
+        Q_lookup(tax_name__icontains=q)
+    ).distinct()[:15]
+    '''    queries['sifter_results'] = SifterResults.objects.filter(
+        # Q(uniprot_id__icontains=q) | Q(pfam__icontains=q)
+        Q_lookup(uniprot_id__startswith=q)
+    ).distinct()[:15]'''
+    form = InputForm(request.POST,request.FILES)
+    queries['form']=form
+    return render(request, template_name, queries)

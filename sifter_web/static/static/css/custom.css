@@ -60,6 +60,11 @@ fieldset h3{
     padding-left: 4em;
 }
 
+.container {
+    width: 97%;
+}
+
+
 .navbar-inverse {
   background-color: #003262; /* background color will be black for all browsers */
   background-image: none;
@@ -90,9 +95,9 @@ fieldset h3{
 }
 
 .jumbotron {
-    background-color:#D3D5D6;
+/*    background-color:#D3D5D6;*/
     padding-bottom: 2px;
-    padding-top: 10px;
+    padding-top: 13px;	
     margin-bottom: 10px;
 }
 
@@ -100,12 +105,17 @@ body {
   padding-top: 40px;
 }
 
+
 .jumbotron p {
 font-size: 16px;
 color: #000;
 }
 
 
+
+.panel-wb {
+	background-color: #f6f6f6;
+}
 
 
 .alert-danger {
@@ -127,6 +137,9 @@ color: #000;
 }
 
 .query-info h2{
+    color:#003262;
+}
+.query-info h3{
     color:#003262;
 }
 
@@ -164,3 +177,5 @@ tr.row_seperator td >a {
 .hidden {
     display: none;
 }
+
+

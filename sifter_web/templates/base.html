@@ -34,18 +34,20 @@
     <![endif]-->
       <script src="/static/js/custom.js"></script>    
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-   
+    {% include 'autocomplete_light/static.html' %}   
   </head>
 
   <body role="document">
     {% include 'navbar.html' %}
     
-    <div class="container theme-showcase" role="main">
+    <div class="container theme-showcase " role="main">
 
 	<!-- Main jumbotron for a primary marketing message or call to action -->
 	<div class="jumbotron">
-		<h2>Phylogeny-based Protein Function Prediction</h2>
 		<div class="row">
+		  <div class="col-md-12">
+			<h2>Phylogeny-based Protein Function Prediction</h2>
+		  </div>
 		  <div class="col-md-11">
 			<p><b>SIFTER</b> (<b>S</b>tatistical <b>I</b>nference of <b>F</b>unction <b>T</b>hrough <b>E</b>volutionary <b>R</b>elationships) is a statistical approach to predicting protein function that uses a protein family's phylogenetic tree, as the natural structure for representing protein relationships.</p>
 		  </div>
@@ -112,6 +114,16 @@
 
       $(document).ready(function(){
 	
+		$('.navbar li.active').removeClass('active');
+		var url = window.location;
+		// Will only work if string in href matches with location
+		$('ul.nav a[href="'+ url +'"]').parent().addClass('active');
+
+		// Will also work for relative and absolute hrefs
+		$('ul.nav a').filter(function() {
+			return this.href == url;
+		}).parent().addClass('active');
+
 	
 	fix_weight($("#ExpWeight_hidden").val())
     
@@ -149,6 +161,8 @@
 	  $("#active_tab_hidden").val(id);
 	  reset_forms();
 	});
+	
+	
 
      });
       

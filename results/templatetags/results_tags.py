@@ -5,7 +5,7 @@ import matplotlib.colors as colors
 import matplotlib.cm as cmx
 
 my_map =plt.get_cmap('Greens')
-cNorm  = colors.Normalize(vmin=0, vmax=100)
+cNorm  = colors.Normalize(vmin=0, vmax=200)
 scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=my_map)
 
 my_map2 =plt.get_cmap('Greys')

@@ -21,4 +21,4 @@ class Taxid(models.Model):
         db_table = 'taxid'
 
     def __unicode__(self):
-        return '%s'%self.tax_id
+        return '%s (%s)'%(self.tax_name,self.tax_id)
