@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+     <form type="get" action="/search/">
+         <input type="text" name="q">
+         <button type="submit">Search</button>
+     </form>
+
+     <p>Your query "{{ search_query }} has returned {{ notes.count }} result{{ notes|pluralize }}"</p>
+
+     {% for note in notes %}
+     <h1>{{ note.title }}</h1>
+     <p>
+         {{ note.body }}
+     </p>
+     {% endfor %}
+{% endblock %}

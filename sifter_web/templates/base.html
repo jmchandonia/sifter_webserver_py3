@@ -72,6 +72,9 @@
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
+	  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
     <!-- Placed at the end of the document so the pages load faster -->
     <script type='text/javascript' src="/static/js/bootstrap-slider.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
@@ -79,8 +82,7 @@
     <script src="/static/js/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
-
-
+	
 
 
 
@@ -162,7 +164,27 @@
 	  reset_forms();
 	});
 	
-	
+    show_results = function(data) {
+		$("#id_my_search_field").autocomplete({
+		  source: data.results
+		});
+	 };
+
+	 $("#id_my_search_field").keyup(function(){
+	  query=$(this).val();
+	  minimum_length=2
+	  if(query.length >= minimum_length) {
+		  myurl='/search/autocomplete/';
+		  $.ajax({
+		  url: myurl
+		  , data: {
+		  'q': query
+		  }, success: function(data) {
+			  show_results(data)
+			}})
+		}
+	});
+
 
      });
       

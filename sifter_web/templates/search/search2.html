@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Autocomplete - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script>
+  $(document).ready(function(){
+	$("#tags").keyup(function(){
+	  query=$(this).val();
+	  myurl='/search/autocomplete/';
+	  $.ajax({
+	  url: myurl
+	  , data: {
+	  'q': query
+	  }, success: function(data) {
+          show_results(data)
+        }})
+	});
+	});
+    show_results = function(data) {
+      // Remove any existing results.
+		$( "#tags" ).autocomplete({
+		  source: data.results
+		});
+	 };
+  </script>
+</head>
+<body>
+ 
+<div class="ui-widget">
+  <label for="tags">Tags: </label>
+  <input id="tags">
+</div>
+</body>
+</html>

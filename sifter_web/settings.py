@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'autocomplete_light',
     'djcelery',
     'chartit',
+	'haystack',
     'results',
     'graphs',
     'term_db',
@@ -122,6 +123,18 @@ DATABASE_ROUTERS = [
     'sifter_results_ready_db.routers.sifter_results_ready_db_router',
     'idmap_db.routers.idmap_db_router'
     ]
+	
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr',
+        'INCLUDE_SPELLING': True,
+        # ...or for multicore...
+        # 'URL': 'http://127.0.0.1:8983/solr/mysite',
+    },
+}
+
+	
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
