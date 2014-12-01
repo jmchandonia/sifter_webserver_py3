@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load results_tags %}
+
 {% block get_input %}
 <div class="container custom-container">
     <div class="row">
@@ -7,12 +9,10 @@
                <!-- Example row of columns -->
                <div class="row">
                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <form method="post" role="form" id="main_form" enctype="multipart/form-data">
+                   <div  class="hideable-options0" {%if form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>                    
+                    <form method="post" role="form" id="main_form">
                         {% csrf_token %}
                     <div class="tab-content">
-                      <div id="by_any" class="tab-pane {% if form.active_tab_hidden.value == 'by_any' %} active{% endif %}">
-                        {% include 'byany.html' %}
-                      </div>                        
                       <div id="by_protein" class="tab-pane {% if form.active_tab_hidden.value == 'by_protein' %} active{% endif %}">
                         {% include 'byp.html' %}
                       </div>
@@ -30,7 +30,6 @@
                     {{ form.ExpWeight_hidden }}
                     {{ form.more_options_hidden }}                
                     
-                   <div  class="hideable-options0" {%if form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>                    
                     <div class="form-group">
                     <a id="toggleOptions" href="javascript:void(0)">Show advanced options</a>
                     <div  class="hideable-options" {%if not form.more_options_hidden.value %} style="display: none" {% endif %}>
@@ -77,43 +76,103 @@
                         </div>
                         </fieldset>	      
                      </div>
-                   </div>
                     <div class="text-center">
                     <p>
                        <button type="submit" class="btn btn-primary">Submit</button>
                         <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>                       
                     </p>
                     </div>
-
-
-					{% if query %}
-						{{suggestion}}
-
-						<h3>Search Results</h3>
-
-						{% for result in page.object_list %}
-							<p>
-								<a href="{{ result.object.get_absolute_url }}">{{ result.object}}</a>
-							</p>
-						{% empty %}
-							<p>No results found.</p>
-						{% endfor %}
-
-						{% if page.has_previous or page.has_next %}
-							<div>
-								{% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-								|
-								{% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
-							</div>
-						{% endif %}
-					{% else %}
-						{# Show some example queries to run, maybe query syntax, something else? #}
-					{% endif %}
-
-
-					
 					</form>
-                    
+                   </div>
+                   <div  class="hideable-options02" {%if not form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>                    
+					<form method="get" id="home_search_form" action=".">
+						<div class="tab-content">
+						  <div id="by_any" class="tab-pane {% if form.active_tab_hidden.value == 'by_any' %} active{% endif %}">
+							{% include 'byany.html' %}
+						  </div>        
+						</div>
+						<div class="text-center">
+						<p>
+						   <button type="submit" class="btn btn-primary">Submit</button>
+							<a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>                       
+						</p>
+						</div>
+						{% if query %}
+							<div class="search-info">
+							<h3>Search Results for "<label>{{query}} </label>"</h3>
+							</div>
+							<table class="table">
+							<thead>
+							  <tr>
+								{% for page in pages %}
+									<th>Search results in {{ page.model}}</th>
+								{% endfor %}
+							  </tr>
+							</thead>         
+							<tbody > 
+								<tr>
+								{% for page in pages %}
+								{% with forloop.counter0 as this_page %}								
+									<td>
+										{% if page.page.has_previous or page.page.has_next %}
+										<nav>
+										  <ul class="pagination">				
+											{% if page.page.has_previous %}
+												<li><a href="?q={{ query }}{% for page2 in pages %}{% if not forloop.counter0 == this_page %}{% if page2.page.has_previous or page2.page.has_next %}
+												&amp;page-{{forloop.counter0}}={{page2.page.number}}{% endif %}{% endif %}{% endfor %}
+												&amp;page-{{this_page}}={{ page.page.previous_page_number }}">												
+												<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>										  
+											{%endif%}
+											{% with paginators|hash:this_page as paginator %}
+											{% for n in paginator.page_range|in_range:page.page.number %}
+												<li class="{%if n == page.page.number %} active {%else%} disabled{% endif %}">
+												<a href="?q={{ query }}{% for page2 in pages %}{% if not forloop.counter0 == this_page %}{% if page2.page.has_previous or page2.page.has_next %}
+												&amp;page-{{forloop.counter0}}={{page2.page.number}}{% endif %}{% endif %}{% endfor %}
+												&amp;page-{{this_page}}={{n}}">												
+												{{n}}<span class="sr-only">(current)</span></a></li>
+											{%endfor%}
+											{%endwith%}
+											{% if page.page.has_next %}
+												<li><a href="?q={{ query }}{% for page2 in pages %}{% if not forloop.counter0 == this_page %}{% if page2.page.has_previous or page2.page.has_next %}
+												&amp;page-{{forloop.counter0}}={{page2.page.number}}{% endif %}{% endif %}{% endfor %}												
+												&amp;page-{{this_page}}={{ page.page.next_page_number }}">												
+												<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>										  
+											{% endif %}
+										  </ul>
+										</nav>
+										{%endif%}
+									
+										<ul class="list-unstyled">
+										{% for result in page.page.object_list %}											
+											<li><a href="{{ result.object.get_absolute_url }}">{{ result.object}}</li>
+										{% empty %}
+											<p>No results found.</p>
+										{% endfor %}
+										</ul>
+										{% if page.page.has_previous or page.page.has_next %}
+											<div>
+												{% if page.page.has_previous %}<a href="?q={{ query }}
+												{% for page2 in pages %}{% if not forloop.counter0 == this_page %}{% if page2.page.has_previous or page2.page.has_next %}
+												&amp;page-{{forloop.counter0}}={{page2.page.number}}
+												{% endif %}{% endif %}{% endfor %}
+												&amp;page-{{this_page}}={{ page.page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.page.has_previous %}</a>{% endif %}
+												|
+												{% if page.page.has_next %}<a href="?q={{ query }}
+												{% for page2 in pages %}{% if not forloop.counter0 == this_page %}{% if page2.page.has_previous or page2.page.has_next %}
+												&amp;page-{{forloop.counter0}}={{page2.page.number}}
+												{% endif %}{% endif %}{% endfor %}												
+												&amp;page-{{this_page}}={{ page.page.next_page_number }}">{% endif %}Next &raquo;{% if page.page.has_next %}</a>{% endif %}
+											</div>
+										{% endif %}
+									</td>
+								{% endwith %}
+								{% endfor %}		
+								</tr>                
+							</tbody>
+							</table>
+						{% endif %}							
+					</form>
+                   </div>                    
                     <div class="query-info endpage">
                     <ul class="list-unstyled">
                         <li>Try advanced search from the right menu.</li>

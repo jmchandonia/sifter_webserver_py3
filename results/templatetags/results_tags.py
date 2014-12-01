@@ -20,6 +20,12 @@ register = template.Library()
 def hash(h, key):
     return h[key]
 
+@register.filter
+def in_range(h,k):
+    m=max(h)  
+    m=min(k+4,m)
+    return [h[i] for i in range(k-1,m)]
+
 
 @register.filter
 def get_color_rgba(score):

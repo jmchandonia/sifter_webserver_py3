@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>SIFTER Function Prediction</title>
+    <title>SIFTER Protein Function Prediction</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
@@ -72,8 +72,8 @@
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
-	  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-	  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
     <!-- Placed at the end of the document so the pages load faster -->
     <script type='text/javascript' src="/static/js/bootstrap-slider.js"></script>
@@ -161,16 +161,19 @@
 	$('.nav-stacked > li > a').click(function(event){
 	  var id = $(event.target).attr("href").substr(1);
 	  $("#active_tab_hidden").val(id);
+	  $("#ssss").text($("#active_tab_hidden").val());	      
+
 	  reset_forms();
 	});
 	
     show_results = function(data) {
-		$("#id_my_search_field").autocomplete({
+		$("#id_q").autocomplete({
 		  source: data.results
 		});
 	 };
 
-	 $("#id_my_search_field").keyup(function(){
+	 $("#id_q").keyup(function(){
+		$("#ssss").text($("#active_tab_hidden").val());	      
 	  query=$(this).val();
 	  minimum_length=2
 	  if(query.length >= minimum_length) {
@@ -223,7 +226,7 @@
       
       
       var set_default_weight= function() {
-	      $("#weight").slider('setValue',0.7);
+	      $("#weight").slider(0.7);
 	      $("#ExpWeight").text(0.7);
               $("#NExpWeight").text(0.3);
 	      $("#ExpWeight_hidden").val($("#ExpWeight").text().substr());	      	      	
@@ -238,7 +241,11 @@
 	      $("#ssss").text($("#active_tab_hidden").val());	      
 	      if ($("#active_tab_hidden").val()=="by_any"){
 		$('.hideable-options0').hide();
-		}else{$('.hideable-options0').show();}	      
+		$('.hideable-options02').show();		
+		}else{
+		$('.hideable-options0').show();
+		$('.hideable-options02').hide();		
+		}	      
       }
 
       var reset_forms= function() {

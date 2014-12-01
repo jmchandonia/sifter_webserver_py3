@@ -2,7 +2,7 @@ from django.shortcuts import render,render_to_response,RequestContext
 #from django.template import  Context
 #from django.template.loader import get_template
 from django import forms
-from django.http import HttpResponseRedirect,HttpResponse
+from django.http import HttpResponseRedirect,HttpResponse,Http404
 from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
 from sifter_web.tasks import run_sifter_job
@@ -90,28 +90,30 @@ class InputForm(forms.Form):
         self.data = data
         
 class MySearchForm(SearchForm):
-    my_search_field = forms.CharField(required=False)
+    #q = forms.CharField(required=False, widget=forms.TextInput(attrs={'type': 'text'}))
+    q=forms.CharField(widget=forms.TextInput(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control'}),label='Input Any Queries', max_length=100000,required=False)
 
     def no_query_found(self):
         return self.searchqueryset.all()
 
     def search(self):
         # First, store the SearchQuerySet received from other processing.
-        sqs = super(MySearchForm, self).search()
+        sqs = SearchQuerySet()
 
         if not self.is_valid():
             return self.no_query_found()
 
-        # Check to see if a my_search_field was chosen.
-        if self.cleaned_data['my_search_field']:
-            sqs1 = sqs.filter(content_auto_name=self.cleaned_data['my_search_field'])
-            sqs2 = sqs.filter(content_auto_acc=self.cleaned_data['my_search_field'])            
-            sqs3 = sqs.filter(content_auto_taxname=self.cleaned_data['my_search_field'])
-            sqs4 = sqs.filter(content_auto_taxid=self.cleaned_data['my_search_field'])
-            sqs5=sqs.filter(text=self.cleaned_data['my_search_field'])
+        # Check to see if a q was chosen.
+        if self.cleaned_data['q']:		
+            sqs1 = sqs.filter(content_auto_name=self.cleaned_data['q'])
+            sqs2 = sqs.filter(content_auto_acc=self.cleaned_data['q'])            
+            sqs3 = sqs.filter(content_auto_taxname=self.cleaned_data['q'])
+            sqs4 = sqs.filter(content_auto_taxid=self.cleaned_data['q'])
+            sqs5 = sqs.filter(text=self.cleaned_data['q'])
             sqs=sqs5|sqs1|sqs2|sqs3|sqs4
-
-        return sqs
+            sqs_term=sqs.filter(django_ct='term_db.term')            
+            sqs_taxid=sqs.filter(django_ct='taxid_db.taxid')
+        return [{'model':'Species','results':sqs_taxid},{'model':'Functions','results':sqs_term}]
 
 class EstimateForm(forms.Form):
     estim_choices = forms.ChoiceField(widget=forms.RadioSelect, choices=(('params', 'Customized Input',),('pfam', 'Use a Pfam ID',)),initial='params')
@@ -119,7 +121,7 @@ class EstimateForm(forms.Form):
     numTerms = forms.IntegerField(label='Number of candidate functions', required=False)
     famSize = forms.IntegerField(label='Family size', required=False)
 
-def get_query(request):
+'''def get_query(request):
     def render_error(response):
         return render(request, 'query.html',
             {'form': form, 'response': response, 'displayHist': False})
@@ -162,7 +164,7 @@ def get_query(request):
         form = EstimateForm()
         return render(request, 'query.html', {'form': form,})
 
-
+'''
 def get_complexity(request):
     def render_error(response):
         return render(request, 'complexity.html',
@@ -217,15 +219,32 @@ def get_input(request):
     results_per_page=None
     query = ''
     results = EmptySearchQuerySet()
+    search_form = MySearchForm(searchqueryset=searchqueryset, load_all=load_all)
+    pages = ''
+    paginators=''
+    context = {
+        'search_form': search_form,
+        'pages': pages,
+        'paginators': paginators,
+        'query': query,
+        'suggestion': None,
+    }
+    if results.query.backend.include_spelling:
+        context['suggestion'] = search_form.get_suggestion()
+    spelling = results.spelling_suggestion(query)
+    context['suggestion']= spelling
 
+    if extra_context:
+        context.update(extra_context)
+            
+        
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = InputForm(request.POST,request.FILES)
-        search_form = MySearchForm(request.POST, searchqueryset=searchqueryset, load_all=load_all)
         # check whether it's valid:
 
-        if form.is_valid() and search_form.is_valid():
+        if form.is_valid():
             active_tab=form.cleaned_data['active_tab_hidden']
             form.set_default('active_tab_hidden',active_tab)
             more_options=form.cleaned_data['more_options_hidden']
@@ -234,35 +253,6 @@ def get_input(request):
             form.set_default('sifter_choices',sifter_choices_val)
             
             if active_tab=='by_any':                
-                query = search_form.cleaned_data['my_search_field']
-                print query
-                results = search_form.search()
-                paginator = Paginator(results, results_per_page or RESULTS_PER_PAGE)
-
-                try:
-                    page = paginator.page(int(request.GET.get('page', 1)))
-                except InvalidPage:
-                    raise Http404("No such page of results!")
-
-                context = {
-                    'search_form': search_form,
-                    'page': page,
-                    'paginator': paginator,
-                    'query': query,
-                    'suggestion': None,
-                }
-
-                if results.query.backend.include_spelling:
-                    context['suggestion'] = search_form.get_suggestion()
-
-                spelling = results.spelling_suggestion(query)
-                context['suggestion']= spelling
-
-                if extra_context:
-                    context.update(extra_context)
-                
-                context['form']=form
-                context['response']='Hi'        
                 return render_to_response('home.html', context, context_instance=context_class(request))        
             else:
                 job_id=random.randint(1000000,9999999)
@@ -297,32 +287,47 @@ def get_input(request):
             form.set_default('more_options_hidden',more_options)
             sifter_choices_val=form.cleaned_data['sifter_choices']
             form.set_default('sifter_choices',sifter_choices_val)
+            
+            context['form']=form
+            context['response']=form.cleaned_data['ExpWeight_hidden']        
 
-            return render(request, 'home.html', {'form': form, 'response':form.cleaned_data['ExpWeight_hidden']})            
+            return render_to_response('home.html', context, context_instance=context_class(request))        
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        #search form processing
-        search_form = MySearchForm(searchqueryset=searchqueryset, load_all=load_all)
-        paginator = Paginator(results, results_per_page or RESULTS_PER_PAGE)
-
-        try:
-            page = paginator.page(int(request.GET.get('page', 1)))
-        except InvalidPage:
-            raise Http404("No such page of results!")
-
+        if request.GET.get('q'):    
+            #search form processing
+            search_form = MySearchForm(request.GET, searchqueryset=searchqueryset, load_all=load_all)
+            if search_form.is_valid():
+                query = search_form.cleaned_data['q']
+                print query
+                results = search_form.search()
+        else:
+            search_form = MySearchForm(searchqueryset=searchqueryset, load_all=load_all)
+        
+        paginators=[]
+        pages=[]
+        for i,result in enumerate(results):
+            paginator=Paginator(result['results'], results_per_page or RESULTS_PER_PAGE)
+            paginators.append(paginator)
+            try:
+                pages.append({'model':result['model'],'page':paginator.page(int(request.GET.get('page-%s'%i, 1)))})
+            except InvalidPage:
+                raise Http404("No such page of results!")
+                
         context = {
             'search_form': search_form,
-            'page': page,
-            'paginator': paginator,
+            'pages': pages,
+            'paginators': paginators,
             'query': query,
             'suggestion': None,
         }
-        if results.query.backend.include_spelling:
-            context['suggestion'] = search_form.get_suggestion()
-        spelling = results.spelling_suggestion(query)
-        context['suggestion']= spelling
-
+        for result in results:
+            if result['results'].query.backend.include_spelling:
+                context['suggestion'] = search_form.get_suggestion()
+            spelling = result['results'].spelling_suggestion(query)
+            context['suggestion']= spelling
+        
         if extra_context:
             context.update(extra_context)
         
@@ -336,7 +341,7 @@ def get_input(request):
     #return render(request, 'home.html', context)
 
 
-
+    
 def find_go_name_acc(ts):
     res0=[]
     batchs=100
@@ -455,10 +460,9 @@ def autocomplete(request):
     sqs3 = sqs.autocomplete(content_auto_taxname=request.GET.get('q', ''))[:5]
     sqs4 = sqs.autocomplete(content_auto_taxid=request.GET.get('q', ''))[:5]
     sqs5 = sqs.filter(text=request.GET.get('q', ''),django_ct='term_db.term')[:5]
-    sqs6 = sqs.filter(text=request.GET.get('q', ''),django_ct='taxid_db.term')[:5]
-    #sqs5 = sqs.filter(text=request.GET.get('q', ''),django_ct='term_db.term')[:5]	
-    suggestions1 = [result.object.name for result in sqs5+sqs1+sqs2]	
-    suggestions2 = [result.object.tax_name for result in sqs6+sqs3+sqs4]	
+    sqs6 = sqs.filter(text=request.GET.get('q', ''),django_ct='taxid_db.taxid')[:5]
+    suggestions1 = ["%s (%s)"%(result.object.name,result.object.acc) for result in sqs5+sqs1+sqs2]    
+    suggestions2 = ["%s (taxid:%s)"%(result.object.tax_name,result.object.tax_id) for result in sqs6+sqs3+sqs4]    
     suggestions=suggestions1+suggestions2
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
@@ -471,17 +475,17 @@ def autocomplete(request):
 def do_basic_search(request, template='search/search.html', load_all=True, form_class=MySearchForm, searchqueryset=None, context_class=RequestContext, extra_context=None, results_per_page=None):
     query = ''
     results = EmptySearchQuerySet()
-    if request.GET.get('my_search_field'):
+    if request.GET.get('q'):
         form = form_class(request.GET, searchqueryset=searchqueryset, load_all=load_all)
 
         if form.is_valid():
-            query = form.cleaned_data['my_search_field']
+            query = form.cleaned_data['q']
             results = form.search()
+            results=results[0]['results']|results[1]['results']
     else:
         form = form_class(searchqueryset=searchqueryset, load_all=load_all)
 
     paginator = Paginator(results, results_per_page or RESULTS_PER_PAGE)
-
     try:
         page = paginator.page(int(request.GET.get('page', 1)))
     except InvalidPage:
