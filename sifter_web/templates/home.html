@@ -9,6 +9,14 @@
                <!-- Example row of columns -->
                <div class="row">
                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="query-info toppage">
+                    <ul class="list-unstyled">
+                        <li>Currently SIFTER has predictions for more than <label>15,932,878</label> proteins across <label>195,863</label> species.</li>
+                        <li>For queries not in our current results, try <a href="#" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
+                        <li>You can try advanced search from the right menu.</li>
+                    </ul>
+                    </div>
+                    
                    <div  class="hideable-options0" {%if form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>                    
                     <form method="post" role="form" id="main_form">
                         {% csrf_token %}
@@ -173,13 +181,6 @@
 						{% endif %}							
 					</form>
                    </div>                    
-                    <div class="query-info endpage">
-                    <ul class="list-unstyled">
-                        <li>Try advanced search from the right menu.</li>
-                        <li>Currently SIFTER has predictions for more than 15,932,878 proteins across 195,863 species.</li>
-                        <li>For queries not in our current results, try <a href="#" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
-                    </ul>
-                    </div>
                     
                  </div>
             </div>

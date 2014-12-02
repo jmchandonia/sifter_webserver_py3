@@ -6,7 +6,7 @@ class SifterResultsIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     uniprot_id = indexes.CharField(model_attr='uniprot_id')
     suggestions = indexes.FacetCharField()
-    content_auto_uniprotid= indexes.EdgeNgramField(model_attr='uniprotid')
+    content_auto_uniprotid= indexes.EdgeNgramField(model_attr='uniprot_id')
 
     def get_model(self):
         return SifterResults

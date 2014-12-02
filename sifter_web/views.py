@@ -7,13 +7,10 @@ from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
 from sifter_web.tasks import run_sifter_job
 from results.models import SIFTER_Output
-from taxid_db.models import Taxid
 import datetime
 import random
 import pickle
-from term_db.models import Term
 import os
-import operator
 import time
 from chartit import DataPool, Chart
 from scripts.estimate_time import estimate_time, get_processing_time
@@ -30,6 +27,7 @@ RESULTS_PER_PAGE = getattr(settings, 'HAYSTACK_SEARCH_RESULTS_PER_PAGE', 20)
 import json
 
 INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
+OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
 
 class InputForm(forms.Form):
     #input_any = autocomplete_light.ChoiceField('TermAutocomplete')
@@ -209,6 +207,19 @@ def get_complexity(request):
         form = EstimateForm()
         return render(request, 'complexity.html', {'form': form,})
 
+def delete_old_results():
+    olddate = datetime.date.today()+datetime.timedelta(days=-15)
+    old_job_ids=SIFTER_Output.objects.filter(result_date__lte=olddate).values_list('job_id',flat=True)
+    for job_id in old_job_ids:
+        print job_id
+        infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
+        if os.path.exists(infile):
+            os.remove(infile)
+        outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
+        if os.path.exists(outfile):
+            os.remove(outfile)
+    
+    
 
 def get_input(request):
     
@@ -261,21 +272,31 @@ def get_input(request):
                 print job_id
                 
                 infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
+                my_species=''
+                my_functions=[]
+                my_proteins=[]
+                n_sequences=0
                 if active_tab=='by_protein':
-                    data={'proteins':[w for w in form.cleaned_data['input_queries'].split(',')]}
+                    my_proteins=[w for w in form.cleaned_data['input_queries'].split(',')]
+                    data={'proteins':my_proteins}
                 elif active_tab=='by_species':
-                    data={'species':form.cleaned_data['input_species']}                
+                    my_species=form.cleaned_data['input_species']
+                    data={'species':my_species}
                 elif active_tab=='by_function':
-                    data={'species':form.cleaned_data['input_function_sp'],'functions':[w for w in form.cleaned_data['input_function'].split(',')]}                
+                   my_species=form.cleaned_data['input_function_sp']
+                   my_functions=[w for w in form.cleaned_data['input_function'].split(',')]
+                   data={'species':form.cleaned_data['input_function_sp'],'functions':my_functions}                
                 elif active_tab=='by_sequence':
-                    data={'sequences':form.cleaned_data['input_sequence']}                
+                    my_sequences=form.cleaned_data['input_sequence']
+                    n_sequences=len(my_sequences)
+                    data={'sequences':my_sequences}                
                 pickle.dump(data,open(infile,'w'))
                 P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                                 query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
-                                n_proteins=0,n_species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
+                                n_proteins=len(my_proteins),n_species=len(my_species),n_functions=len(my_functions),n_sequences=n_sequences,submission_date=datetime.date.today(),
                                 result_date=datetime.date.today(),input_file=infile,output_file='')
                 P.save()
-                
+                delete_old_results()
                 my_form_data={'sifter_choices':form.cleaned_data['sifter_choices'],'ExpWeight_hidden':form.cleaned_data['ExpWeight_hidden']
                               ,'active_tab_hidden':form.cleaned_data['active_tab_hidden']}
                 run_sifter_job.delay(my_form_data,job_id)
@@ -341,20 +362,9 @@ def get_input(request):
     #return render(request, 'home.html', context)
 
 
-    
-def find_go_name_acc(ts):
-    res0=[]
-    batchs=100
-    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
-        print i
-        res0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('term_id','name','acc'))
-    print len(res0)
-    idx_to_go_name={}
-    for w in res0:
-        idx_to_go_name[w['term_id']]=[w['acc'],w['name']]
-    return idx_to_go_name
 
 def show_results(request,job_id):
+    results_per_page=20
     time.sleep(0.5)
     my_object=SIFTER_Output.objects.filter(job_id=job_id)
     my_msg=[]
@@ -364,94 +374,22 @@ def show_results(request,job_id):
     my_object=my_object[0]
     print my_object.input_file,my_object.output_file
     if my_object.output_file=='':
-        my_msg.append(['info','Thanks! You have successfully submitted your SIFTER query.'])
+        my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
         return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg})        
     else:
         my_msg.append(['info','Your SIFTER query results are ready.'])
-        if not my_object.query_method=='by_sequence':
-            res,taxids,unip_accs=pickle.load(open(my_object.output_file))
-            terms=list(set([v for w in res.values() for v in w]))
-            print len(terms)
-            print len(res)
-            idx_to_go_name=find_go_name_acc(terms)
-            result=[]
-            for j,gene in enumerate(res):
-                print gene
-                preds=[]            
-                res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
-                tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
-                if tax_obj:
-                    tax_name=tax_obj[0].tax_name
-                else:
-                    tax_name=taxids[gene]
-                if len(res_sorted)<=2:
-                    end_i=len(res)
-                else:
-                    end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
-                    if end_i:
-                       end_i=end_i[-1]
-                    else:
-                       end_i=1
-    
-                for i, pred  in enumerate(res_sorted):
-                    term,score=pred
-                    if i<=end_i:                    
-                        preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
-                    else:
-                        break
-                result.append([gene,unip_accs[gene],tax_name,taxids[gene],preds])
-
-            print my_object.query_method
-            if my_object.query_method == 'by_protein':
-                data=pickle.load(open(my_object.input_file))
-                my_genes=data['proteins']
-                rest=set(my_genes)-set(res.keys())
-                print len(set(my_genes))
-                for j,gene in enumerate(rest):
-                    result.append([gene,'?','?','?',[]])        
-        
-    
-            return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False,'my_msg':my_msg})
+        results=pickle.load(open(my_object.output_file))
+        paginator = Paginator(results['result'], results_per_page)
+        try:
+            page = paginator.page(int(request.GET.get('page', 1)))
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
             
-        else:
-            res,taxids,unip_accs,blast_hits,connected=pickle.load(open(my_object.output_file))
-            print res
-            terms=list(set([v for w in res.values() for v in w]))
-            idx_to_go_name=find_go_name_acc(terms)
-            result=[]
-            print res.keys()
-            for query, hits in blast_hits.iteritems():
-                result_q=[]
-                for j,hit in enumerate(hits):
-                    preds=[]
-                    gene=hit[0]
-                    if gene not in res:
-                        print gene
-                        continue
-                    res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
-                    tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
-                    if tax_obj:
-                        tax_name=tax_obj[0].tax_name
-                    else:
-                        tax_name=taxids[gene]
-                    if len(res_sorted)<=2:
-                        end_i=len(res)
-                    else:
-                        end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
-                        if end_i:
-                           end_i=end_i[-1]
-                        else:
-                           end_i=1
+        return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg})
         
-                    for i, pred  in enumerate(res_sorted):
-                        term,score=pred
-                        if i<=end_i:                    
-                            preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
-                        else:
-                            break
-                    result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],hit[1],hit[2],'%0.0f'%hit[3],preds])
-                result.append([query,result_q])
-            return render(request, 'results.html', {'my_object':my_object,'result':result,'pending':False,'my_msg':my_msg})
             
 def autocomplete(request):
     sqs=SearchQuerySet()

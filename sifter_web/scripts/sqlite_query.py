@@ -14,10 +14,13 @@ import datetime
 import django
 from Bio.Blast import NCBIWWW,NCBIXML
 import uniprot as uni
+import operator
+from taxid_db.models import Taxid
 
 django.setup()
 
 OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
+INPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"input")
 
     
 def find_go_ancs(ts):
@@ -448,12 +451,11 @@ def find_top_preds(preds,thr):
         
     return top_preds
 
-def find_top_preds_func(preds,leaves,thr):
+def find_top_preds_func(preds,thr):
     top_preds={}
     for g,pred in preds.iteritems():
-        tp={w:pred[w] for w in leaves[g]}
-        mx=max(tp.values())*thr
-        top_preds[g]={w:tp[w] for w in tp if tp[w]>mx}        
+        mx=max(pred.values())*thr
+        top_preds[g]={w:pred[w] for w in pred if pred[w]>mx}        
     return top_preds
 
 
@@ -527,17 +529,25 @@ def find_sifter_preds_byspecies(species,my_form_data):
 
 def find_sifter_preds_byfunction(species,functions,my_form_data):
     sifter_choices=my_form_data['sifter_choices']
-    q_results,taxids,unip_accs=find_db_results('by_species',species=species)
-    my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
-    if sifter_choices=='EXP-Model':
-        res_filtered=find_Model2_results(SIFTER_results2,real_terms)
+    ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
+    if ((sifter_choices=='EXP-Model') or ((sifter_choices=='ALL-Model')and(ExpWeight_hidden==0.7))):
+        if sifter_choices=='EXP-Model':
+            mode=1
+        else:
+            mode=0
+        res,taxids,unip_accs=find_db_ready_results('by_species',mode=mode,species=species)
     else:
-        ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
-        res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
-    trimmed_res=trim_results(res_filtered)
-    leaves=find_leave_preds(trimmed_res)
-    res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}
-    top_preds=find_top_preds_func(trimmed_res,leaves,thr=.75)
+        q_results,taxids,unip_accs=find_db_results('by_species',species=species)
+        my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
+        if sifter_choices=='EXP-Model':
+            res_filtered=find_Model2_results(SIFTER_results2,real_terms)
+        else:
+            res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
+        trimmed_res=trim_results(res_filtered)
+        leaves=find_leave_preds(trimmed_res)
+        res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}
+    
+    top_preds=find_top_preds_func(res,thr=.75)
     decs=set(find_go_decs(functions))
     res_top={}
     for gene in top_preds:
@@ -618,8 +628,94 @@ def find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id):
             leaves=find_leave_preds(trimmed_res)
             res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
             return res,taxids,unip_accs,blast_hits,1
-    
 
+    
+def find_go_name_acc(ts):
+    res0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        res0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('term_id','name','acc'))
+    print len(res0)
+    idx_to_go_name={}
+    for w in res0:
+        idx_to_go_name[w['term_id']]=[w['acc'],w['name']]
+    return idx_to_go_name
+
+def make_results_ready(job_id,activ_tab,my_data):
+    if not activ_tab=='by_sequence':
+        res,taxids,unip_accs=my_data
+        terms=list(set([v for w in res.values() for v in w]))
+        idx_to_go_name=find_go_name_acc(terms)
+        result=[]
+        for j,gene in enumerate(res):
+            preds=[]            
+            res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
+            tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
+            if tax_obj:
+                tax_name=tax_obj[0].tax_name
+            else:
+                tax_name=taxids[gene]
+            if len(res_sorted)<=2:
+                end_i=len(res)
+            else:
+                end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
+                if end_i:
+                   end_i=end_i[-1]
+                else:
+                   end_i=1
+    
+            for i, pred  in enumerate(res_sorted):
+                term,score=pred
+                if i<=end_i:                    
+                    preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
+                else:
+                    break
+            result.append([gene,unip_accs[gene],tax_name,taxids[gene],preds])
+    
+        if activ_tab == 'by_protein':
+            infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
+            data=pickle.load(open(infile))
+            my_genes=data['proteins']
+            rest=set(my_genes)-set(res.keys())
+            for j,gene in enumerate(rest):
+                result.append([gene,'?','?','?',[]])
+    else:
+        res,taxids,unip_accs,blast_hits,connected=my_data        
+        terms=list(set([v for w in res.values() for v in w]))
+        idx_to_go_name=find_go_name_acc(terms)
+        result=[]
+        for query, hits in blast_hits.iteritems():
+            result_q=[]
+            for j,hit in enumerate(hits):
+                preds=[]
+                gene=hit[0]
+                if gene not in res:
+                    continue
+                res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
+                tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
+                if tax_obj:
+                    tax_name=tax_obj[0].tax_name
+                else:
+                    tax_name=taxids[gene]
+                if len(res_sorted)<=2:
+                    end_i=len(res)
+                else:
+                    end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
+                    if end_i:
+                       end_i=end_i[-1]
+                    else:
+                       end_i=1
+    
+                for i, pred  in enumerate(res_sorted):
+                    term,score=pred
+                    if i<=end_i:                    
+                        preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
+                    else:
+                        break
+                result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],hit[1],hit[2],'%0.0f'%hit[3],preds])
+            result.append([query,result_q])
+    results={'result':result}
+    return results
 
         
                         
@@ -630,8 +726,9 @@ def find_results(my_form_data,job_id):
     if active_tab == 'by_protein':
         my_genes=data['proteins']
         res,taxids,unip_accs=find_sifter_preds_byprotein(my_genes,my_form_data)
+        results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        pickle.dump([res,taxids,unip_accs],open(outfile,'w'))
+        pickle.dump(results,open(outfile,'w'))
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -641,8 +738,9 @@ def find_results(my_form_data,job_id):
     elif active_tab == 'by_species':
         my_species=data['species']
         res,taxids,unip_accs=find_sifter_preds_byspecies(my_species,my_form_data)
+        results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        pickle.dump([res,taxids,unip_accs],open(outfile,'w'))
+        pickle.dump(results,open(outfile,'w'))
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -653,8 +751,9 @@ def find_results(my_form_data,job_id):
         my_species=data['species']
         my_functions=Term.objects.filter(acc__in=data['functions']).values_list('term_id',flat=True)
         res,taxids,unip_accs=find_sifter_preds_byfunction(my_species,my_functions,my_form_data)
+        results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        pickle.dump([res,taxids,unip_accs],open(outfile,'w'))
+        pickle.dump(results,open(outfile,'w'))
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -664,8 +763,9 @@ def find_results(my_form_data,job_id):
     elif active_tab == 'by_sequence':
         my_sequences=data['sequences']
         res,taxids,unip_accs,blast_hits,connected=find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id)
+        results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs,blast_hits,connected])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        pickle.dump([res,taxids,unip_accs,blast_hits,connected],open(outfile,'w'))
+        pickle.dump(results,open(outfile,'w'))
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
