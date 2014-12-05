@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -91,8 +90,14 @@
     <script type="text/javascript">
       
       $('#reset').click(function() { 
-	reset_forms();
+		reset_forms();
       });
+
+      $('#reset_home_search').click(function() { 
+		reset_forms();
+		   window.location.replace( '/');
+		});
+
 
       $('#clear_text_any').click(function() { 
 	      $("#input_any").val("");
@@ -115,7 +120,18 @@
       });
 
       $(document).ready(function(){
-	
+
+		$("#ssss").text($("#active_tab_hidden").val());	      
+		my_tab=$("#active_tab_hidden").val()
+        $('#mytab a[href="#' + my_tab + '"]').tab('show');
+		if ($("#active_tab_hidden").val()=="by_any"){
+			$('.hideable-options0').hide();
+			$('.hideable-options02').show();		
+		}else{
+			$('.hideable-options0').show();
+			$('.hideable-options02').hide();		
+		}	      
+		
 		$('.navbar li.active').removeClass('active');
 		var url = window.location;
 		// Will only work if string in href matches with location
@@ -126,6 +142,7 @@
 			return this.href == url;
 		}).parent().addClass('active');
 
+	
 	
 	fix_weight($("#ExpWeight_hidden").val())
     
@@ -158,38 +175,92 @@
 	});
 	
 	
+	
 	$('.nav-stacked > li > a').click(function(event){
 	  var id = $(event.target).attr("href").substr(1);
+	  if (id=='by_any'){
+		   window.location.replace( '/');
+		   return;
+	  }
 	  $("#active_tab_hidden").val(id);
 	  $("#ssss").text($("#active_tab_hidden").val());	      
 
 	  reset_forms();
 	});
 	
-    show_results = function(data) {
-		$("#id_q").autocomplete({
+	//show_results = function(data) {
+	//	$("#id_q").autocomplete({
+	//	  source: data.results
+	//	});
+	// };
+	//
+	// $("#id_q").keyup(function(){
+	//  query=$(this).val();
+	//  minimum_length=2
+	//  if(query.length >= minimum_length) {
+	//	  myurl='/search/autocomplete/';
+	//	  $.ajax({
+	//	  url: myurl
+	//	  , data: {
+	//	  'q': query
+	//	  }, success: function(data) {
+	//		  show_results(data)
+	//		}})
+	//	}
+	//});
+	//
+	
+
+	 $("#id_q").keyup(function(){
+		query=$(this).val();
+		field=$("#id_q")
+		dbs='all'
+		find_autocomplete(field,query,dbs)
+	});
+	$("#input_species").keyup(function(){
+		query=$(this).val();
+		field=$("#input_species")
+		dbs='taxid'
+		find_autocomplete(field,query,dbs)
+	});
+	$("#input_function_sp").keyup(function(){
+		query=$(this).val();
+		field=$("#input_function_sp")
+		dbs='taxid'
+		find_autocomplete(field,query,dbs)
+	});
+	$("#input_function").keyup(function(){
+		query=$(this).val();
+		field=$("#input_function")
+		dbs='term'
+		find_autocomplete(field,query,dbs)
+	});
+
+
+	
+	
+
+     });
+      
+	show_results = function(data,field) {
+		field.autocomplete({
 		  source: data.results
 		});
 	 };
-
-	 $("#id_q").keyup(function(){
-		$("#ssss").text($("#active_tab_hidden").val());	      
-	  query=$(this).val();
-	  minimum_length=2
-	  if(query.length >= minimum_length) {
+	 
+	 find_autocomplete=function(field,query,dbs){
+		minimum_length=2
+		if(query.length >= minimum_length) {
 		  myurl='/search/autocomplete/';
 		  $.ajax({
 		  url: myurl
 		  , data: {
-		  'q': query
+		  'q': query, 'dbs':dbs
 		  }, success: function(data) {
-			  show_results(data)
+			  show_results(data,field)
 			}})
 		}
-	});
-
-
-     });
+	}
       
       $('input:radio[name="sifter_choices"]').change(
 	  function(){      
@@ -208,7 +279,7 @@
 	  function(){      
 	      // checks that the clicked radio button is the one of value 'Yes'
 	      // the value of the element is the one that's checked (as noted by @shef in comments)
-	      if ($(this).val() == 'pfam') {
+	  	    if ($(this).val() == 'pfam') {
 			$('#id_pfam').prop('disabled', false);
 			$('#id_numTerms').val('');
 			$('#id_famSize').val('');
@@ -238,7 +309,6 @@
 	      $('input:radio[name=sifter_choices]')[0].checked = true;	      
               $("#more_options_hidden").val('False');
 	      $('#toggleOptions').text("Show advanced options");
-	      $("#ssss").text($("#active_tab_hidden").val());	      
 	      if ($("#active_tab_hidden").val()=="by_any"){
 		$('.hideable-options0').hide();
 		$('.hideable-options02').show();		
@@ -248,8 +318,15 @@
 		}	      
       }
 
+	  var reset_home_search=function(){
+		$('#home_search_form')[0].reset();
+	  
+	  }
       var reset_forms= function() {
 	      $('#main_form')[0].reset();	      
+		  reset_home_search();
+	      
+			
 	      $('textarea').each(function(){ $(this).text(''); $(this).trigger('clearErrors'); $(this).trigger('keydown'); } )
 	      $('#main_form .alert-danger').hide()
 	      $('#main_form .has-error').attr('disabled', 'disabled');
@@ -266,15 +343,19 @@
 	    $("#NExpWeight").text(parseFloat(1-wExp).toFixed(2));
 	  $("#ExpWeight_hidden").val($("#ExpWeight").text().substr());	      	      	
       }
+
+	  
       
 
       $('#goto_by_sequence').click(function(){
-	activaTab("by_sequence");
+		activaTab("by_sequence");
 	});
       function activaTab(tab){
+	  	  
         $('#mytab a[href="#' + tab + '"]').tab('show');
-	reset_forms();
-	$("#active_tab_hidden").val(tab);
+		$("#active_tab_hidden").val(tab);		
+		reset_forms();
+	
       };
 	
 	var displayHist = $("#displayHist")[0].innerHTML;

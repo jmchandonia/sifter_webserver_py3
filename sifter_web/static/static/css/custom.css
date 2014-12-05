@@ -129,8 +129,8 @@ color: #000;
 }
 
 .query-info {
-    margin-left: 1em;
     margin-right: 1em;
+    margin-bottom: .5em;
     border-style: solid;
     border-width: 0 0 0 0;
     border-color: #e7c254;;
@@ -144,8 +144,8 @@ color: #000;
 }
 
 .search-info {
-    margin-left: 1em;
     margin-right: 1em;
+    margin-bottom: .5em;
     border-style: solid;
     border-width: 2px 0 2px 0;
     border-color: #e7c254;;
@@ -181,6 +181,13 @@ tr.row_seperator td {
   background-color: #aaa;
   color: #fff;
 }
+
+tr.row_seperator th {
+  background-color: #bbb;
+  border-bottom-color: #bbb;
+  color: #fff;
+}
+
 
 tr.row_seperator td >a {
   color: #fff;

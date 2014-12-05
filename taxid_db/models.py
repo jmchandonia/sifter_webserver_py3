@@ -20,5 +20,8 @@ class Taxid(models.Model):
         managed = False
         db_table = 'taxid'
 
+    def get_absolute_url(self):
+        return "/predictions/?taxid=%s" % self.tax_id
+
     def __unicode__(self):
         return '%s (taxid:%s)'%(self.tax_name,self.tax_id)

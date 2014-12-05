@@ -1,12 +1,12 @@
 function setExample(i){
 	if (i==1)
-	    document.getElementById('input_any').value = 'Q27238;Q3234';
+	    document.getElementById('id_q').value = 'A8WRK7_CAEBR';
 	else if (i==2)
-	    document.getElementById('input_any').value = 'GO:0019911;GO:0015349;GO:0000978';
+	    document.getElementById('id_q').value = 'GO:0019911';
 	else if (i==3)
-	    document.getElementById('input_any').value = 'Saccharomyces cerevisiae';
+	    document.getElementById('id_q').value = 'Saccharomyces cerevisiae';
 	else if (i==4)
-	    document.getElementById('input_any').value = '9606';
+	    document.getElementById('id_q').value = '4932';
 	else if (i==5)
 	    document.getElementById('input_queries').value = 'A8WRK7_CAEBR';
 	else if (i==6) 

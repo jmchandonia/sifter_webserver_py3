@@ -23,15 +23,17 @@ from haystack.forms import SearchForm
 from haystack.query import EmptySearchQuerySet
 from django.core.paginator import Paginator, InvalidPage
 from django.conf import settings
-RESULTS_PER_PAGE = getattr(settings, 'HAYSTACK_SEARCH_RESULTS_PER_PAGE', 20)
+RESULTS_PER_PAGE = getattr(settings, 'HAYSTACK_SEARCH_RESULTS_PER_PAGE', 50)
 import json
-
+pred_results_per_page=20
 INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
 OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
+from term_db.models import Term
+from django.template import Context, loader
 
 class InputForm(forms.Form):
     #input_any = autocomplete_light.ChoiceField('TermAutocomplete')
-    input_any = forms.CharField(widget=forms.Textarea(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control','id':'input_any'}),label='Input Any Queries', max_length=100000,required=False)
+    #input_any = forms.CharField(widget=forms.Textarea(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control','id':'input_any'}),label='Input Any Queries', max_length=100000,required=False)
     input_queries = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'placeholder':'Enter query proteins','class':'form-control','id':'input_queries'}),label='Input Queries', max_length=100000,required=False)
     query_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'query_uploader'}),required=False)
     input_species = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Enter query species Taxonomy ID','class':'form-control','id':'input_species'}),label='Input Species', max_length=1000,required=False)
@@ -43,9 +45,10 @@ class InputForm(forms.Form):
     input_email = forms.CharField(widget=forms.EmailInput(attrs={'id':'input_email','placeholder':'Enter email','class':'form-control',}),label='Input Email', max_length=100,required=False)
     sifter_choices = forms.ChoiceField(widget=forms.RadioSelect, choices=(('EXP-Model', 'Only use experimental evidence (SIFTER EXP-Model)',)
         , ('ALL-Model', 'Use both experimental and non-experimental evidence (SIFTER ALL-Model)',)),initial='EXP-Model',required=False)
-    active_tab_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'id':'active_tab_hidden'}),initial='by_any',required=False)
+    active_tab_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'id':'active_tab_hidden'}),required=False)
     ExpWeight_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'id':'ExpWeight_hidden'}),initial='0.7',required=False)
     more_options_hidden= forms.BooleanField(widget=forms.HiddenInput(attrs={'id':'more_options_hidden'}),initial=False,required=False)
+    function_selected_hidden= forms.CharField(widget=forms.HiddenInput(attrs={'id':'function_selected_hidden'}),initial='',required=False)
 
     
     def check(self,cleaned_data,my_fields,msg):
@@ -69,7 +72,8 @@ class InputForm(forms.Form):
         elif active_tab=='by_species':
             self.check(cleaned_data,['input_species'],'Species IDs are not entered.')
         elif active_tab=='by_function':
-            self.check(cleaned_data,['input_function','function_sp_uploader'],'GO term IDs are not entered.')
+            if not self.cleaned_data['function_selected_hidden']:
+                self.check(cleaned_data,['input_function','function_sp_uploader'],'GO term IDs are not entered.')                
             self.check(cleaned_data,['input_function_sp','function_sp_uploader'],'Species IDs are not entered.')            
         elif active_tab=='by_sequence':
             self.check(cleaned_data,['input_sequence','sequence_uploader'],'Query sequences are not entered.')
@@ -89,7 +93,7 @@ class InputForm(forms.Form):
         
 class MySearchForm(SearchForm):
     #q = forms.CharField(required=False, widget=forms.TextInput(attrs={'type': 'text'}))
-    q=forms.CharField(widget=forms.TextInput(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control'}),label='Input Any Queries', max_length=100000,required=False)
+    q=forms.CharField(widget=forms.TextInput(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control', 'autocomplete':'off'}),label='Input Any Queries', max_length=100000,required=False)
 
     def no_query_found(self):
         return self.searchqueryset.all()
@@ -102,7 +106,7 @@ class MySearchForm(SearchForm):
             return self.no_query_found()
 
         # Check to see if a q was chosen.
-        if self.cleaned_data['q']:		
+        if self.cleaned_data['q']:        
             sqs1 = sqs.filter(content_auto_name=self.cleaned_data['q'])
             sqs2 = sqs.filter(content_auto_acc=self.cleaned_data['q'])            
             sqs3 = sqs.filter(content_auto_taxname=self.cleaned_data['q'])
@@ -115,54 +119,16 @@ class MySearchForm(SearchForm):
 
 class EstimateForm(forms.Form):
     estim_choices = forms.ChoiceField(widget=forms.RadioSelect, choices=(('params', 'Customized Input',),('pfam', 'Use a Pfam ID',)),initial='params')
-    pfam = forms.CharField(label='PFAM ID', required=False)
+    pfam = forms.CharField( label='PFAM ID', required=False)
     numTerms = forms.IntegerField(label='Number of candidate functions', required=False)
     famSize = forms.IntegerField(label='Family size', required=False)
+    active_choice_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'id':'active_choice_hidden'}),initial='params',required=False)    
+    
+    def set_default(self,field,value):
+        data = self.data.copy()
+        data[field] = value
+        self.data = data
 
-'''def get_query(request):
-    def render_error(response):
-        return render(request, 'query.html',
-            {'form': form, 'response': response, 'displayHist': False})
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = EstimateForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            choices = form.cleaned_data['estim_choices']
-            if choices == 'pfam':
-                pfam = form.cleaned_data['pfam']
-                if not pfam:
-                    return render_error('Please enter a PFAM id')
-                (tableHeader, tableBody, histograms, chartContainers, numTerms) = get_processing_time(pfam)
-                if not tableHeader:
-                    return render_error('Error: PFAM id %s is not in the database' % pfam)
-            else:
-                numTerms = form.cleaned_data['numTerms']
-                famSize = form.cleaned_data['famSize']
-                if not numTerms or numTerms < 0:
-                    return render_error('Please enter a positive integer for the number of GO terms')
-                elif not famSize or famSize < 0:
-                    return render_error('Please enter a positive integer for the family size')
-                (tableHeader, tableBody, histograms, chartContainers, numTerms) = estimate_time(numTerms, famSize)
-            if not histograms:
-                return render(request, 'query.html', {'form': form,
-                    'tableHeader': tableHeader, 'tableBody': tableBody, 'displayHist': False})                
-            return render_to_response('query.html',
-                {'form': form, 'tableHeader': tableHeader, 'tableBody': tableBody, 'histograms': histograms,
-                'displayHist': True, 'chartContainers': chartContainers, 'numTerms': numTerms},
-                RequestContext(request))
-        else:
-            return render(request, 'query.html',
-                {'form': form, 'response': 'Error'}, RequestContext(request))
-
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = EstimateForm()
-        return render(request, 'query.html', {'form': form,})
-
-'''
 def get_complexity(request):
     def render_error(response):
         return render(request, 'complexity.html',
@@ -174,14 +140,31 @@ def get_complexity(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
+            #active_choice=form.cleaned_data['active_choice_hidden']
+            #form.set_default('active_choice_hidden',active_choice)
             choices = form.cleaned_data['estim_choices']
+            form.set_default('estim_choices',choices)
+            
+            if choices=='pfam':
+                form.fields['numTerms'].widget.attrs['disabled'] = 'True'
+                form.fields['famSize'].widget.attrs['disabled'] = 'True'
+            else:
+                form.fields['pfam'].widget.attrs['disabled'] = 'True'
+            
+
+            
+
             if choices == 'pfam':
                 pfam = form.cleaned_data['pfam']
                 if not pfam:
                     return render_error('Please enter a PFAM id')
-                (tableHeader, tableBody, histograms, chartContainers, numTerms) = get_processing_time(pfam)
+                (tableHeader, tableBody, histograms, chartContainers, numTerms,famSize) = get_processing_time(pfam)
                 if not tableHeader:
                     return render_error('Error: PFAM id %s is not in the database' % pfam)
+                else:
+                    form.set_default('numTerms',numTerms)
+                    form.set_default('famSize',famSize)
+                    
             else:
                 numTerms = form.cleaned_data['numTerms']
                 famSize = form.cleaned_data['famSize']
@@ -189,7 +172,7 @@ def get_complexity(request):
                     return render_error('Please enter a positive integer for the number of GO terms')
                 elif not famSize or famSize < 0:
                     return render_error('Please enter a positive integer for the family size')
-                (tableHeader, tableBody, histograms, chartContainers, numTerms) = estimate_time(numTerms, famSize)
+                (tableHeader, tableBody, histograms, chartContainers, numTerms,famSize) = estimate_time(numTerms, famSize)
             if not histograms:
                 return render(request, 'complexity.html', {'form': form,
                     'tableHeader': tableHeader, 'tableBody': tableBody, 'displayHist': False})                
@@ -205,6 +188,7 @@ def get_complexity(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = EstimateForm()
+        form.fields['pfam'].widget.attrs['disabled'] = 'True'
         return render(request, 'complexity.html', {'form': form,})
 
 def delete_old_results():
@@ -221,8 +205,12 @@ def delete_old_results():
     
     
 
-def get_input(request):
+def get_input(request,context={}):
     
+    if context:
+        print context
+        return render_to_response('home.html', context, context_instance=context_class(request))
+        
     searchqueryset=None
     load_all=True
     context_class=RequestContext
@@ -284,7 +272,10 @@ def get_input(request):
                     data={'species':my_species}
                 elif active_tab=='by_function':
                    my_species=form.cleaned_data['input_function_sp']
-                   my_functions=[w for w in form.cleaned_data['input_function'].split(',')]
+                   if not form.cleaned_data['function_selected_hidden']:
+                       my_functions=[w for w in form.cleaned_data['input_function'].split(',')]
+                   else:
+                       my_functions=[form.cleaned_data['function_selected_hidden']]
                    data={'species':form.cleaned_data['input_function_sp'],'functions':my_functions}                
                 elif active_tab=='by_sequence':
                     my_sequences=form.cleaned_data['input_sequence']
@@ -354,6 +345,8 @@ def get_input(request):
         
         #other form processing    
         form = InputForm()
+        print 'ssss'
+        form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_any'
         context['form']=form
         context['response']='Hi'        
         return render_to_response('home.html', context, context_instance=context_class(request))        
@@ -364,7 +357,7 @@ def get_input(request):
 
 
 def show_results(request,job_id):
-    results_per_page=20
+    pred_results_per_page=20
     time.sleep(0.5)
     my_object=SIFTER_Output.objects.filter(job_id=job_id)
     my_msg=[]
@@ -379,7 +372,7 @@ def show_results(request,job_id):
     else:
         my_msg.append(['info','Your SIFTER query results are ready.'])
         results=pickle.load(open(my_object.output_file))
-        paginator = Paginator(results['result'], results_per_page)
+        paginator = Paginator(results['result'], pred_results_per_page)
         try:
             page = paginator.page(int(request.GET.get('page', 1)))
         except PageNotAnInteger:
@@ -390,22 +383,68 @@ def show_results(request,job_id):
             
         return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg})
         
-            
+
+def show_predictions(request):
+    qdict=dict(request.GET.iterlists())
+    if 'term' in qdict:
+        my_function=qdict['term'][0]
+        form = InputForm()
+        form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_function'
+        form.fields['function_selected_hidden'].widget.attrs['value'] = my_function
+        context={}
+        context_class=RequestContext        
+        context['form']=form
+        context['response']='Hi'
+        term=Term.objects.filter(acc=my_function).values('name','acc')[0]
+        context['function_selected']='%s (%s)'%(term['name'],term['acc'])
+        return render(request, 'home.html', context)
+        
+    elif 'taxid' in qdict:
+        job_id=random.randint(1000000,9999999)    
+        while SIFTER_Output.objects.filter(job_id=job_id):
+            job_id=random.randint(1000000,9999999)
+        print job_id
+        
+        infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
+        my_species=qdict['taxid'][0]
+        data={'species':my_species}
+        pickle.dump(data,open(infile,'w'))
+        P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
+                        query_method='by_species', sifter_EXP_choices = True ,
+                        n_proteins=0,n_species=1,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
+                        result_date=datetime.date.today(),input_file=infile,output_file='')
+        P.save()
+        delete_old_results()
+        my_form_data={'sifter_choices':'EXP-Model','ExpWeight_hidden':'0.7'
+        ,'active_tab_hidden':'by_species'}
+        run_sifter_job.delay(my_form_data,job_id)
+        return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
+        
 def autocomplete(request):
+    print 'HHH'
     sqs=SearchQuerySet()
-    sqs1 = sqs.autocomplete(content_auto_name=request.GET.get('q', ''))[:5]
-    sqs2 = sqs.autocomplete(content_auto_acc=request.GET.get('q', ''))[:5]    
-    sqs3 = sqs.autocomplete(content_auto_taxname=request.GET.get('q', ''))[:5]
-    sqs4 = sqs.autocomplete(content_auto_taxid=request.GET.get('q', ''))[:5]
-    sqs5 = sqs.filter(text=request.GET.get('q', ''),django_ct='term_db.term')[:5]
-    sqs6 = sqs.filter(text=request.GET.get('q', ''),django_ct='taxid_db.taxid')[:5]
-    suggestions1 = ["%s (%s)"%(result.object.name,result.object.acc) for result in sqs5+sqs1+sqs2]    
-    suggestions2 = ["%s (taxid:%s)"%(result.object.tax_name,result.object.tax_id) for result in sqs6+sqs3+sqs4]    
-    suggestions=suggestions1+suggestions2
+    dbs=request.GET.get('dbs', '')
+    print dbs
+    if dbs=='all':
+        search_in=['term','taxid']
+    else:
+        search_in=[dbs]
+        
+    suggestions=[]
+    if 'term' in search_in:
+        sqs1 = sqs.autocomplete(content_auto_name=request.GET.get('q', ''))[:5]
+        sqs2 = sqs.autocomplete(content_auto_acc=request.GET.get('q', ''))[:5]    
+        sqs5 = sqs.filter(text=request.GET.get('q', ''),django_ct='term_db.term')[:5]
+        suggestions.extend(["%s (%s)"%(result.object.name,result.object.acc) for result in sqs5+sqs1+sqs2])
+    if 'taxid' in search_in:
+        sqs3 = sqs.autocomplete(content_auto_taxname=request.GET.get('q', ''))[:5]
+        sqs4 = sqs.autocomplete(content_auto_taxid=request.GET.get('q', ''))[:5]
+        sqs6 = sqs.filter(text=request.GET.get('q', ''),django_ct='taxid_db.taxid')[:5]
+        suggestions.extend(["%s (taxid:%s)"%(result.object.tax_name,result.object.tax_id) for result in sqs6+sqs3+sqs4])
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
     the_data = json.dumps({
-        'results': suggestions
+        'results': {{value:'google.com',label:w} for w in suggestions}
     })
     return HttpResponse(the_data, content_type='application/json')
 

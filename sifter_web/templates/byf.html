@@ -1,3 +1,4 @@
+{% if not function_selected %}  
 <div class="query-info">
 <h2>Predict by Function</h2>
 <h4>For a set of query functions, find proteins with high probability of having those functions.</h4>
@@ -5,13 +6,14 @@
     <li>This options search across the given species to identify proteins that are predicted by SIFTER to have any of the query functions as their top functions.</li>
 </ul>
 </div>
-
 <div class="alert alert-danger {%if not form.input_function.errors %} hidden {% endif %}">{{ form.input_function.errors }}</div>
+{%endif%}  
+
 <div class="alert alert-danger {%if not form.input_function_sp.errors %} hidden {% endif %}">{{ form.input_function_sp.errors }}</div>
 
+{% if not function_selected %}
 <div class="form-group {%if form.input_function.errors %} has-error {% endif %}" >
   <fieldset >
-    
   <h3>Enter query molecular functions </h3>
   <div>Paste or upload the GO term ID(s) of your query molecular function(s)</div>
   <div class="row">
@@ -43,6 +45,14 @@
   </div>
 </fieldset>
 </div>
+{% else %}  
+{{form.function_selected_hidden}}
+<div class="alert alert-info" role="alert">
+	<h4>You have selected the following function:</h4>
+	<div><h3>{{function_selected}}</h3> </div>
+	<h4>Now, Please enter a species you want to look in for this function.</h4>
+</div>
+{% endif %}
 <div class="form-group {%if form.input_function_sp.errors %} has-error {% endif %}" >
 <fieldset > 
   <h3>Enter you species</h3>

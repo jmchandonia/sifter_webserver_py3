@@ -23,7 +23,7 @@ def hash(h, key):
 @register.filter
 def in_range(h,k):
     m=max(h)  
-    m=min(k+4,m)
+    m=min(k+9,m)
     return [h[i] for i in range(k-1,m)]
 
 

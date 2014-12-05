@@ -12,12 +12,63 @@ from __future__ import unicode_literals
 from django.db import models
 
 
+class Allsifterdata(models.Model):
+    type = models.TextField(primary_key=True, blank=True)
+    pfam = models.TextField(primary_key=True, blank=True)
+    numterms = models.IntegerField(db_column='numTerms', primary_key=True, blank=True)  # Field name made lowercase.
+    famsize = models.IntegerField(db_column='famSize', primary_key=True, blank=True)  # Field name made lowercase.
+    maxfun = models.IntegerField(db_column='maxFun', primary_key=True, blank=True)  # Field name made lowercase.
+    numel = models.IntegerField(primary_key=True, blank=True)
+    time = models.FloatField(primary_key=True, blank=True)
+    fam = models.TextField(primary_key=True, blank=True)
+
+    class Meta:
+        managed = False
+        db_table = 'AllSifterData'
+
+
 class Errorhistogrambars(models.Model):
-    numelcat = models.IntegerField(db_column='numelCat', primary_key=True, blank=True, null=False)  # Field name made lowercase.
-    famsizecat = models.IntegerField(db_column='famSizeCat', primary_key=True, blank=True, null=False)  # Field name made lowercase.
-    bin = models.FloatField(blank=True, null=False)
-    barheight = models.IntegerField(db_column='barHeight', blank=True, null=False)  # Field name made lowercase.
+    numelcat = models.IntegerField(db_column='numelCat', primary_key=True, blank=True)  # Field name made lowercase.
+    famsizecat = models.IntegerField(db_column='famSizeCat', primary_key=True, blank=True)  # Field name made lowercase.
+    bin = models.FloatField(blank=True)
+    barheight = models.IntegerField(db_column='barHeight', blank=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'ErrorHistogramBars'
+
+
+class Errors(models.Model):
+    numelcat = models.IntegerField(db_column='numelCat', primary_key=True, blank=True)  # Field name made lowercase.
+    famsizecat = models.IntegerField(db_column='famSizeCat', primary_key=True, blank=True)  # Field name made lowercase.
+    error = models.FloatField(blank=True)
+    famsize = models.IntegerField(db_column='famSize', blank=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Errors'
+
+
+class Percentiles(models.Model):
+    numelcat = models.IntegerField(db_column='numelCat', primary_key=True, blank=True)  # Field name made lowercase.
+    famsizecat = models.IntegerField(db_column='famSizeCat', primary_key=True, blank=True)  # Field name made lowercase.
+    per95 = models.FloatField(blank=True)
+    per999 = models.FloatField(blank=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Percentiles'
+
+
+class Sifterdata(models.Model):
+    type = models.TextField(primary_key=True, blank=True)
+    pfam = models.TextField(primary_key=True, blank=True)
+    numterms = models.IntegerField(db_column='numTerms', primary_key=True, blank=True)  # Field name made lowercase.
+    famsize = models.IntegerField(db_column='famSize', primary_key=True, blank=True)  # Field name made lowercase.
+    maxfun = models.IntegerField(db_column='maxFun', primary_key=True, blank=True)  # Field name made lowercase.
+    numel = models.IntegerField(primary_key=True, blank=True)
+    time = models.FloatField(primary_key=True, blank=True)
+
+    class Meta:
+        managed = False
+        db_table = 'SifterData'

@@ -1,37 +1,18 @@
-import numpy as np
-import os
-import sqlite3
-from math import log10
-from numpy import array, linalg, ones
-from scipy import misc, stats
-
+from scipy import misc
 from chartit import DataPool, Chart
-from estimatedb.models import Errorhistogrambars
-
-myFile = os.path.dirname(__file__)
-dbFile = os.path.join(myFile, 'sqlite.db')
-
-# DATADICT['reg'] is a dictionary that maps tags to their corresponding values from DICT_TIME_NC.
-# DATADICT['iea'] is a dictionary that maps tags to their corresponding values from DICT_TIME_NC_IEA.
-dataDict = {}
+from estimatedb.models import Allsifterdata, Errorhistogrambars, Percentiles
 
 # PARAMSDICT[CRIT] is an array of parameters of the least squares regression line
 # for estimating processing time for criteria CRIT
-paramsDict = {}
-              
+paramsDict = {1: [-6.6940979152046394, 1.2175437752942884,   0.61437156459022535],
+              2: [-3.6107074614976109, 0.91343454244972999,  0.45521131812635984],
+              3: [-2.7026843343076519, 0.052132418536663394, 0.93755721899494526]}
+
 # List of dividers based upon the number of elements NUMEL in transition matrix
-numelDivs = []
+numelDivs = [65025.0, 330625.0, 1046529.0]
 
 # List of dividers based upon the family size FAMSIZE
-famSizeDivs = []
-
-# ERRDICT[CAT] is a list of error data corresponding to the category CAT,
-# where error = actual time / estimated time.
-errDict = {}
-
-# PERCENTILEDICT[CAT][PER] is the PERth percentile of the distribution of errors
-# corresponding to the category CAT.
-percentileDict = {}
+famSizeDivs = [567.0, 1637.0, 4989.0]
 
 # Returns the maximum number of simultaneous functions and the resulting number of elements
 # in the transition matrix Q, where each gene has NUMTERMS candidate GO term functions,
@@ -78,190 +59,15 @@ def est_processing_time(numTerms, famSize, maxFun):
     line = paramsDict[crit]
     return pow(10, line[0]) * pow(numel, line[1]) * pow(famSize, line[2])
 
-    
-
-# Returns a dictionary PFAMDICT.
-# PFAMDICT['reg'] is a list of pfam ids from DICT_TIME_NC that do not constitute noise.
-# PFAMDICT['iea'] is a list of pfam ids from DICT_TIME_NC_IEA that do not constitute noise.
-def get_pfams_dict():
-    types = ('reg', 'iea')
-    sourceDicts = (dict_time_nc, dict_time_nc_iea)
-    pfamsDict = {}
-    for i in range(len(types)):
-        type = types[i]
-        sourceDict = sourceDicts[i]
-        pfamsDict[type] = []
-        for pfam, res in sourceDict.iteritems():
-            if res['time'] >= 2 and (res['term'] >= 9 or res['time'] >= 100 or res['size'] >= 1000):
-                pfamsDict[type].append(pfam)
-    return pfamsDict
-
-# Returns if the pfam id with NUMTERMS candidate GO term functions, family size FAMSIZE,
-# and processing time TIME should be included in generation of the parameters for
-# estimating processing time.
-def include_pfam(numTerms, famSize, time):
-    return numTerms >= 9 or famSize >= 4000 or time <= 10
-    
-# Given the pfam ids in PFAMSDICT, adds the parameters for estimating processing time
-# to PARAMSDICT[CRIT] for each criteria CRIT.
-def get_params(pfamsDict):
-    types = ('reg', 'iea')
-    sourceDicts = (dict_time_nc, dict_time_nc_iea)
-    crits = [1, 2, 3]
-    
-    # DATA[CRIT] maps tags 'logNumel', logFamSize', and 'logTime' to lists containing
-    # the number of elements in transition matrix, family size, and processing time
-    # of each pfam id in SOURCEDICTS with criteria CRIT.
-    data = {}
-
-    for crit in crits:
-        data[crit] = {}
-        for tag in ['logNumel', 'logFamSize', 'logTime']:
-            data[crit][tag] = []
-
-    for i in range(len(types)):
-        type = types[i]
-        sourceDict = sourceDicts[i]
-        for pfam in pfamsDict[type]:
-            res = sourceDict[pfam]
-            numTerms = int(res['term'])
-            famSize = int(res['size'])
-            maxFun = int(res['max_fun'])
-            numel = int(res['numel'])
-            time = max(res['time'], 1.0) # set minimum time to 1.0 minutes
-            crit = get_criteria(res['term'], res['max_fun'])
-            if crit in crits and include_pfam(numTerms, famSize, time):
-                data[crit]['logNumel'].append(log10(numel))
-                data[crit]['logFamSize'].append(log10(famSize))
-                data[crit]['logTime'].append(log10(time))
-
-    for crit in crits:
-        logNumels = data[crit]['logNumel']
-        logFamSizes = data[crit]['logFamSize']
-        logTimes = data[crit]['logTime']
-        A = array([ones(len(logNumels)), logNumels, logFamSizes])
-        params = linalg.lstsq(A.T, logTimes)[0] # obtaining the parameters
-        paramsDict[crit] = array(params)    
-
-# Returns if data point (LOGTIME, LOGETIME) corresponding to criteria CRITERIA is an
-# outlier by a factor of FACTOR on the log-log graph of estimated time vs actual time.
-def is_outlier(criteria, logTime, logETime, factor=10):
-    logFactor = log10(factor)
-    return logETime - logTime > logFactor or logETime - logTime < - logFactor \
-        or (criteria == 2 and (logTime < 1 or logETime < 1 or logETime > 3)) \
-        or (criteria == 3 and (logTime > 2.9 or logETime > 2))
-
-# Returns a dictionary OUTLIERSDICT.
-# OUTLIERSDICT['reg'] is a list of pfam ids from DICT_TIME_NC that are outliers
-# on the graph of estimated time vs actual time.
-# OUTLIERSDICT['iea'] is a list of pfam ids from DICT_TIME_NC_IEA that are outliers
-# on the graph of estimated time vs actual time.
-def get_outliers():
-    types = ('reg', 'iea')
-    sourceDicts = (dict_time_nc, dict_time_nc_iea)
-    outliersDict = {}
-    
-    get_params(pfamsDict)
-    
-    for i in range(len(types)):
-        type = types[i]
-        sourceDict = sourceDicts[i]
-        outliersDict[type] = []
-        for pfam, res in sourceDict.iteritems():
-            numTerms = int(res['term'])
-            famSize = int(res['size'])
-            maxFun = int(res['max_fun'])
-            time = res['time']
-            eTime = est_processing_time(numTerms, famSize, maxFun)
-            crit = get_criteria(numTerms, maxFun)
-            if is_outlier(crit, log10(time), log10(eTime)):
-                outliersDict[type].append(pfam)
-    return outliersDict
-
-# Removes the outliers from PFAMSDICT.
-def remove_outliers():
-    types = ('reg', 'iea')
-    for type in types:
-        pfamsDict[type] = [pfam for pfam in pfamsDict[type] if pfam not in outliersDict[type]]
-
-# Returns a dictionary DATADICT.
-# DATADICT['reg'] is a dictionary that maps tags to their corresponding values from DICT_TIME_NC.
-# DATADICT['iea'] is a dictionary that maps tags to their corresponding values from DICT_TIME_NC_IEA.
-# Includes tags 'numTerms', 'famSize', 'maxFun', 'numel', and 'time'.
-def get_data_dict(pfamsDict):
-    types = ('reg', 'iea')
-    sourceDicts = (dict_time_nc, dict_time_nc_iea)
-    dataDict = {}
-    oldTags = ('term', 'size', 'max_fun', 'numel')
-    newTags = ('numTerms', 'famSize', 'maxFun', 'numel')
-    for i in range(len(types)):
-        type = types[i]
-        sourceDict = sourceDicts[i]
-        dataDict[type] = {}
-        for pfam in pfamsDict[type]:
-            dataDict[type][pfam] = {}
-            for j in range(len(oldTags)):
-                dataDict[type][pfam][newTags[j]] = int(sourceDict[pfam][oldTags[j]])
-            dataDict[type][pfam]['time'] = sourceDict[pfam]['time']
-    return dataDict
-
-# Returns two lists NUMELLIST and FAMSIZELIST of the number of elements in transition matrix
-# and family size for pfam ids in DATADICT.
-def get_numels_famSizes(dataDict):
-    types = ('reg', 'iea')
-    numelList = []
-    famSizeList = []
-    for type in types:
-        numelList.extend([d['numel'] for d in dataDict[type].values()])
-        famSizeList.extend([d['famSize'] for d in dataDict[type].values()])
-    return (numelList, famSizeList)    
-    
-# Returns two lists of dividers NUMELDIVS and FAMSIZEDIVS to partition
-# NUMELLIST and FAMSIZELIST into N categories each, forming a total of N^2 categories.
-def get_dividers(numelList, sizeList, n):
-    numelDivs = []
-    famSizeDivs = []
-    for i in range(1, n):
-        per = 100 * float(i) / float(n)
-        numelDivs.append(stats.scoreatpercentile(numelList, per))
-        famSizeDivs.append(stats.scoreatpercentile(sizeList, per))
-    return (numelDivs, famSizeDivs)    
-
-# Adds the error (actual time / estimated time) of each pfam id in DATADICT
-# to ERRDICT[CAT] weighted by the family size FAMSIZE, where CAT is the numel-famSize category.
-def calc_errs(dataDict):
-    for type in dataDict:
-        for pfam in dataDict[type]:
-            res = dataDict[type][pfam]
-            numTerms = res['numTerms']
-            famSize = res['famSize']
-            maxFun = res['maxFun']
-            numel = res['numel']
-            time = res['time']
-            eTime = est_processing_time(numTerms, famSize, maxFun)
-            cat = get_category(numel, famSize)
-            if cat not in errDict:
-                errDict[cat] = []
-            err = time / eTime
-            errDict[cat].append((err, famSize))
-            
-# Stores the PERth percentile of the distribution of errors corresponding to the category CAT
-# in PERCENTILEDICT[CAT][PER] for each percentile in the list PERS.
-# corresponding to the category CAT.
-def calc_upper_bounds(pers):
-    for cat in errDict:
-        percentileDict[cat] = {}
-        errs = []
-        for (err, famSize) in errDict[cat]:
-            errs.extend([err,] * famSize)
-        for per in pers:
-            percentileDict[cat][per] = stats.scoreatpercentile(errs, per)
-
 # Returns the PERth confidence upper bound of the estimated time ETIME, in minutes.
 # The formula is ETIME * X, where X is the PERth percentile of the distribution of errors
 # corresponding to the category CAT.
 def get_upper_bound(eTime, cat, per):
-    return eTime * percentileDict[cat][per]
+    percentiles = Percentiles.objects.filter(numelcat=cat[0]).filter(famsizecat=cat[1])
+    if per == 95:
+        return eTime * percentiles[0].per95
+    else:
+        return eTime * percentiles[0].per999
     
 # Returns the times in TIMES, given in minutes, in consistent units, rounded to EST decimal places.
 def format_times(times):
@@ -269,9 +75,9 @@ def format_times(times):
         return times
     t = times[0]
     if t < 1:
-        return ['%.1f secs' % (60 * t) for t in times]
+        return ['%.1f seconds' % (60 * t) for t in times]
     elif t < 60:
-        return ['%.1f mins' % t for t in times]
+        return ['%.1f minutes' % t for t in times]
     elif t < 60 * 24:
         return ['%.1f hours' % (t / 60) for t in times]
     elif t < 60 * 24 * 365:
@@ -279,22 +85,24 @@ def format_times(times):
     else:
         return ['%.1f years' % (t / 60 / 24 / 365) for t in times]
 
-
-
 # Plots the estimated time distribution by scaling the error distribution of category CAT
 # by estimated time ETIME.
 def plot_histogram(eTime, cat):
     def xScale(err):
-        return round(eTime * err, 1)
+        return round(eTime * err * factor, 1)
         
     data = Errorhistogrambars.objects.filter(numelcat=cat[0]).filter(famsizecat=cat[1])
+    percentiles = Percentiles.objects.filter(numelcat=cat[0]).filter(famsizecat=cat[1])
     bins = sorted([d.bin for d in data])
     binStart = bins[0]
     binWidth = bins[1] - bins[0]
-    pers = sorted(percentileDict[cat].keys())
-    lines = [(percentileDict[cat][per], '%s%% confidence: %.1f minutes' % (str(per), percentileDict[cat][per] * eTime)) for per in pers]
-    lines.insert(0, (1, 'estimated time: %.1f minutes' % eTime))
-
+    times = format_times([eTime, percentiles[0].per95 * eTime, percentiles[0].per999 * eTime])
+    units = times[0].split(' ')[-1]
+    factor = {'seconds': 60, 'minutes': 1, 'hours': 1.0 / 60, 'days': 1.0 / 60 / 24, 'years': 1.0 / 60 / 24 / 365}[units]
+    lines = [(1, 'estimated time: %s' % times[0]),
+             (percentiles[0].per95, '95%% confidence: %s' % times[1]),
+             (percentiles[0].per999, '99.9%% confidence: %s' % times[2])]
+    
     # Step 1: Create a DataPool with the data we want to retrieve
     histData = DataPool(
         series = [{
@@ -332,7 +140,7 @@ def plot_histogram(eTime, cat):
                 },
                 'plotLines': [{
                     'color': 'orange',
-                    'label': {'rotation': 90, 'text': line[1],},
+                    'label': {'rotation': -90, 'style': {'font-size': '12px',}, 'text': line[1], 'align':'right' , 'x':-10, 'y':10},
                     'value': (line[0] - binStart) / binWidth,
                     'width': 2,
                     'zIndex': 5,
@@ -342,7 +150,7 @@ def plot_histogram(eTime, cat):
                 'tickmarkPlacement': 'between',
                 'title': {
                     'style': {'color': '#000000', 'font-size': '15px'},
-                    'text': 'Estimated time',
+                    'text': 'Time (%s)' % units,
                 },
             },
             'yAxis': {
@@ -350,7 +158,7 @@ def plot_histogram(eTime, cat):
                 'labels': {
                     'enabled': False,
                 },
-                'title': {
+                'title': {    
                     'style': {'color': '#000000', 'font-size': '15px'},
                     'text': 'Probability',
                 },
@@ -365,8 +173,9 @@ def estimate_time(numTerms, famSize):
                    '95% Confidence upper bound', '99.9% Confidence upper bound']
     tableBody = []
     histograms = []
-    chartContainers = ','.join(['hist_container%i' % i for i in range(1, numTerms + 1)])
     pers = [95, 99.9]
+    cutoff = 1  # displayed table cuts off after eTime > 2 years
+    stop_next=0
     for i in range(1, numTerms + 1):
         numel = calc_numel(numTerms, i)
         eTime = est_processing_time(numTerms, famSize, i)
@@ -381,15 +190,23 @@ def estimate_time(numTerms, famSize):
             upper = get_upper_bound(eTime, cat, pers[j])
             times.append(upper)
         row.extend(format_times(times))
+        # if estimated time <= 2 years
+        if eTime <= 2 * 365 * 24 * 60:
+            cutoff += 1
+        else:
+            stop_next+=1
         tableBody.append(row)
         histograms.append(plot_histogram(eTime, cat))
-        
-    return (tableHeader, tableBody, histograms, chartContainers, numTerms)
+        if stop_next==1:
+            break
+        print numTerms,cutoff,len(histograms)
+    
+    chartContainers = ','.join(['hist_container%i' % i for i in range(1, cutoff)])        
+    return (tableHeader, tableBody[:cutoff], histograms, chartContainers, numTerms,famSize)
     
 def get_processing_time(pfam):
-    if pfam in dataDict['reg']:
-        numTerms = dataDict['reg'][pfam]['numTerms']
-        famSize = dataDict['reg'][pfam]['famSize']
-        return estimate_time(numTerms, famSize)
+    data = Allsifterdata.objects.filter(type='reg').filter(pfam=pfam)
+    if pfam.startswith('PF') and len(data) > 0:
+        return estimate_time(data[0].numterms, data[0].famsize)
     else:
         return ([], [[]], [], '', 0)

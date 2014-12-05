@@ -12,13 +12,13 @@
                     <div class="query-info toppage">
                     <ul class="list-unstyled">
                         <li>Currently SIFTER has predictions for more than <label>15,932,878</label> proteins across <label>195,863</label> species.</li>
-                        <li>For queries not in our current results, try <a href="#" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
+                        <li>For queries not in our current results, try <a href="javascript:activaTab('by_sequence');" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
                         <li>You can try advanced search from the right menu.</li>
                     </ul>
                     </div>
                     
                    <div  class="hideable-options0" {%if form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>                    
-                    <form method="post" role="form" id="main_form">
+                    <form method="post" role="form" id="main_form" action='/'>
                         {% csrf_token %}
                     <div class="tab-content">
                       <div id="by_protein" class="tab-pane {% if form.active_tab_hidden.value == 'by_protein' %} active{% endif %}">
@@ -102,18 +102,16 @@
 						<div class="text-center">
 						<p>
 						   <button type="submit" class="btn btn-primary">Submit</button>
-							<a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>                       
+							<a id="reset_home_search" href="javascript:void(0)" title="Reset the form to default values">Reset</a>                       
 						</p>
 						</div>
 						{% if query %}
-							<div class="search-info">
-							<h3>Search Results for "<label>{{query}} </label>"</h3>
-							</div>
-							<table class="table">
+							<h3>Are you looking for SIFTER predictions on any of the following Species/Functions?</h3>
+							<table class="table table-bordered ">
 							<thead>
-							  <tr>
+							  <tr class="row_seperator">
 								{% for page in pages %}
-									<th>Search results in {{ page.model}}</th>
+									<th><h3>Found {{page.page.paginator.count}} {{ page.model}}</h3></th>
 								{% endfor %}
 							  </tr>
 							</thead>         
@@ -154,7 +152,7 @@
 										{% for result in page.page.object_list %}											
 											<li><a href="{{ result.object.get_absolute_url }}">{{ result.object}}</li>
 										{% empty %}
-											<p>No results found.</p>
+											No results found
 										{% endfor %}
 										</ul>
 										{% if page.page.has_previous or page.page.has_next %}
@@ -189,7 +187,7 @@
             <div id="mytab">
                 <ul class="nav nav-pills nav-stacked my_sidebar">
                   <li class="nav-header">Quick Search</li>
-                  <li {% if form.active_tab_hidden.value == 'by_any' %} class ="active" {% endif %} id="byany_tab"><a href="#by_any" data-toggle="tab">Search SIFTER</a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_any'%} class ="active" {% endif %} id="byany_tab"><a href="#by_any" data-toggle="tab">Search SIFTER</a></li>
                   <li class="nav-header">Advanced Search</li>
                   <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by protein ID</a></li>
                   <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict by species</a></li>
@@ -204,5 +202,6 @@
 <p>{{ response }}</p>
 
 <p id="ssss">0.3</p>
+<p id="ssss3">0.3</p>
 
 {% endblock %}

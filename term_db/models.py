@@ -24,7 +24,10 @@ class Term(models.Model):
     class Meta:
         managed = False
         db_table = 'term'
-    
+
+    def get_absolute_url(self):
+        return "/predictions/?term=%s" % self.acc
+		
     def __unicode__(self):
         return '%s (%s)'%(self.name, self.acc)
 

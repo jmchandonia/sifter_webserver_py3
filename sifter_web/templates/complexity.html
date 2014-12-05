@@ -17,9 +17,6 @@
       <h4>Find how long running SIFTER will take for your query family on a local machine.</h4>
       </div>
                   
-<!--      <div class="alert alert-danger {%if not form.input_queries.errors %} hidden {% endif %}">{{ form.input_queries.errors }}</div>
-      <div class="form-group {%if form.input_queries.errors %} has-error {% endif %}" >
--->
         <h3>Enter you family information</h3>
         <div>You may enter your PFAM ID to propagate number of candidate functions and family size:</div>
         <form method="post" role="form" id="estim_form" enctype="multipart/form-data">
@@ -50,19 +47,30 @@
                 </div>
               </div>
             </fieldset>
-            <input type="submit" value="Submit" />
+			<button type="submit" class="btn btn-primary">Submit</button>
          </form>
        
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-7">
             <p>{{ response }}</p>
-
-            <table>
-                    <tr>
-                    {% for cell in tableHeader %}
-                            <th>{{ cell }}</th>
-                    {% endfor %}
-                    </tr>
+            {% if tableBody %}
+            <table class="table table-condensed text-center">
+				<thead>			
+                    <tr class="row_seperator">
+					<th class="col-md-2 text-center" style="border-bottom-color:#bbb">Truncation</th>
+					<th class="col-md-4 text-center" style="border-bottom-color:#bbb" colspan="2">Estimated time</th>
+					<th class="col-md-3 text-center" style="border-bottom-color:#bbb" >95% Confidence</th>
+					<th class="col-md-3 text-center" style="border-bottom-color:#bbb" >99.9% Confidence</th>					
+					</tr>
+                    <tr class="row_seperator">
+					<th class="col-md-2 text-center">factor</th>
+					<th class="col-md-2 text-center">(hours)</th>
+					<th class="col-md-2 text-center" ></th>
+					<th class="col-md-3 text-center">upper bound</th>
+					<th class="col-md-3 text-center">upper bound</th>					
+					</tr>
+				</thead>					
+				<tbody>
                     {% for row in tableBody %}
                             <tr class="estim_highlightable">
                             {% for cell in row %}
@@ -70,9 +78,11 @@
                             {% endfor %}
                             </tr>
                     {% endfor %}
+				</tbody>
             </table>
+			{% endif %}
           </div>
-          <div class="col-md-4">
+          <div class="col-md-5">
             <p id="displayHist" class="hidden">{{ displayHist }}</p>
             <p id="numTerms" class="hidden">{{ numTerms }}</p>
             <div id="chart_place"></div>
@@ -84,7 +94,9 @@
     </div>
   </div>
 </div>
+{{ form.active_choice_hidden }}
 
+<p id="ssss2">0.3</p>
 
 
 {% endblock %}

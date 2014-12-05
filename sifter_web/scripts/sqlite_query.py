@@ -16,6 +16,7 @@ from Bio.Blast import NCBIWWW,NCBIXML
 import uniprot as uni
 import operator
 from taxid_db.models import Taxid
+import time
 
 django.setup()
 
@@ -206,22 +207,48 @@ def find_db_results(method,q_genes={},species=''):
 
 def find_db_ready_results(method,q_genes={},mode=1,species=''):
     if method=='by_protein':
+        t = time.time()
         q_results0=[]
         batchs=100
         for i in range(0,int(np.ceil(float(len(q_genes))/float(batchs)))):
             q_results0.extend(SifterResultsReady.objects.filter(uniprot_id__in=q_genes[batchs*i:min(len(q_genes),batchs*(i+1))],mode=mode))
         print len(q_results0)
-    elif method=='by_species':
-        q_results0=SifterResultsReady.objects.filter(tax_id=species,mode=mode)
         
-    q_results={}    
-    taxids={}
-    unip_accs={}
-    for q_res in q_results0:
-        q_gene=q_res.uniprot_id
-        q_results[q_gene]=cPickle.loads(zlib.decompress(q_res.preds).encode('ascii','ignore'))
-        taxids[q_gene]=q_res.tax_id
-        unip_accs[q_gene]=q_res.uniprot_acc
+        elapsed = time.time() - t
+        print "Extract_sql",elapsed
+        t = time.time()
+    
+        q_results={}    
+        taxids={}
+        unip_accs={}
+        for q_res in q_results0:
+            q_gene=q_res.uniprot_id
+            q_results[q_gene]=cPickle.loads(zlib.decompress(q_res.preds).encode('ascii','ignore'))
+            taxids[q_gene]=q_res.tax_id
+            unip_accs[q_gene]=q_res.uniprot_acc
+    
+        elapsed = time.time() - t
+        print "formating",elapsed
+        
+    elif method=='by_species':
+        t = time.time()
+        q_results0=SifterResultsReady.objects.filter(tax_id=species,mode=mode).values('uniprot_id','preds','tax_id','uniprot_acc')
+        elapsed = time.time() - t
+        print "Extract_sql_sp",elapsed
+        t = time.time()
+    
+        q_results={}    
+        taxids={}
+        unip_accs={}
+        for q_res in q_results0:
+            q_gene=q_res['uniprot_id']
+            q_results[q_gene]=cPickle.loads(zlib.decompress(q_res['preds']).encode('ascii','ignore'))
+            taxids[q_gene]=q_res['tax_id']
+            unip_accs[q_gene]=q_res['uniprot_acc']
+    
+        elapsed = time.time() - t
+        print "formating_sp",elapsed
+
     return q_results,taxids,unip_accs
 
 
@@ -641,20 +668,42 @@ def find_go_name_acc(ts):
         idx_to_go_name[w['term_id']]=[w['acc'],w['name']]
     return idx_to_go_name
 
+
+def find_name_taxids(ts):
+    res0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        res0.extend(Taxid.objects.filter(tax_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('tax_id','tax_name'))
+    print len(res0)
+    taxid_2_name={}
+    for w in res0:
+        taxid_2_name[w['tax_id']]=w['tax_name']
+    for w in set(ts)-set(taxid_2_name.keys()):
+        taxid_2_name[w]=w
+    return taxid_2_name
+
 def make_results_ready(job_id,activ_tab,my_data):
     if not activ_tab=='by_sequence':
+        t = time.time()
         res,taxids,unip_accs=my_data
         terms=list(set([v for w in res.values() for v in w]))
         idx_to_go_name=find_go_name_acc(terms)
+        elapsed = time.time() - t
+        print "find_go_name_acc",elapsed
+        t = time.time()
+        taxid_2_name=find_name_taxids(list(set(taxids.values())))
+        elapsed = time.time() - t
+        print "find_name_taxids",elapsed
+        t = time.time()
         result=[]
         for j,gene in enumerate(res):
+            t1 = time.time()    
             preds=[]            
             res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
-            tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
-            if tax_obj:
-                tax_name=tax_obj[0].tax_name
-            else:
-                tax_name=taxids[gene]
+            tax_name=taxid_2_name[taxids[gene]]
+            elapsed = time.time() - t1
+            print "taxid",elapsed
+            t1 = time.time()    
             if len(res_sorted)<=2:
                 end_i=len(res)
             else:
@@ -663,15 +712,25 @@ def make_results_ready(job_id,activ_tab,my_data):
                    end_i=end_i[-1]
                 else:
                    end_i=1
-    
+            elapsed = time.time() - t1
+            print "endi",elapsed
+            t1 = time.time()    
+   
             for i, pred  in enumerate(res_sorted):
                 term,score=pred
                 if i<=end_i:                    
                     preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
                 else:
                     break
+            elapsed = time.time() - t1
+            print "predsappend",elapsed            
+            t1 = time.time()    
             result.append([gene,unip_accs[gene],tax_name,taxids[gene],preds])
-    
+            elapsed = time.time() - t1
+            print "resultappend",elapsed            
+        elapsed = time.time() - t
+        print "all_res",elapsed
+        t = time.time()    
         if activ_tab == 'by_protein':
             infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
             data=pickle.load(open(infile))
@@ -683,6 +742,7 @@ def make_results_ready(job_id,activ_tab,my_data):
         res,taxids,unip_accs,blast_hits,connected=my_data        
         terms=list(set([v for w in res.values() for v in w]))
         idx_to_go_name=find_go_name_acc(terms)
+        taxid_2_name=find_name_taxids(list(set(taxids.values())))
         result=[]
         for query, hits in blast_hits.iteritems():
             result_q=[]
@@ -692,11 +752,7 @@ def make_results_ready(job_id,activ_tab,my_data):
                 if gene not in res:
                     continue
                 res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
-                tax_obj=Taxid.objects.filter(tax_id=taxids[gene])
-                if tax_obj:
-                    tax_name=tax_obj[0].tax_name
-                else:
-                    tax_name=taxids[gene]
+                tax_name=taxid_2_name[taxids[gene]]
                 if len(res_sorted)<=2:
                     end_i=len(res)
                 else:
