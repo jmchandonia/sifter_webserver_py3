@@ -9,15 +9,17 @@ class SIFTER_Output(models.Model):
     query_method = models.CharField(max_length=30)
     sifter_EXP_choices = models.BooleanField(default=True) #True: EXP-Modle, False: ALL-Model
     n_proteins = models.PositiveIntegerField()
-    n_species = models.PositiveIntegerField()
+    species = models.PositiveIntegerField()
     n_functions = models.PositiveIntegerField()
     n_sequences = models.PositiveIntegerField()
     submission_date = models.DateField()
     result_date = models.DateField()
     input_file=models.FilePathField()
     output_file=models.FilePathField()
+    deleted=models.BooleanField(default=False)
+
     def __unicode__(self):
         return '%s'%self.job_id
     
     def was_submitted_recently(self):
-        return self.result_date >= timezone.now() - datetime.timedelta(days=15)
+        return self.result_date >= (timezone.now() - datetime.timedelta(days=15)) and not self.deleted

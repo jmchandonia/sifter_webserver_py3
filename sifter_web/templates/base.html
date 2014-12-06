@@ -214,26 +214,30 @@
 	 $("#id_q").keyup(function(){
 		query=$(this).val();
 		field=$("#id_q")
-		dbs='all'
-		find_autocomplete(field,query,dbs)
+		dbs='all';
+		href=true;
+		find_autocomplete(field,query,dbs,href)
 	});
 	$("#input_species").keyup(function(){
 		query=$(this).val();
 		field=$("#input_species")
-		dbs='taxid'
-		find_autocomplete(field,query,dbs)
+		dbs='taxid';
+		href=true;		
+		find_autocomplete(field,query,dbs,href)
 	});
 	$("#input_function_sp").keyup(function(){
 		query=$(this).val();
 		field=$("#input_function_sp")
-		dbs='taxid'
-		find_autocomplete(field,query,dbs)
+		dbs='taxid';
+		href=false;
+		find_autocomplete(field,query,dbs,href)
 	});
 	$("#input_function").keyup(function(){
 		query=$(this).val();
 		field=$("#input_function")
-		dbs='term'
-		find_autocomplete(field,query,dbs)
+		dbs='term';
+		href=false;		
+		find_autocomplete(field,query,dbs,href)
 	});
 
 
@@ -242,13 +246,22 @@
 
      });
       
-	show_results = function(data,field) {
+	show_results = function(data,field,href) {
 		field.autocomplete({
-		  source: data.results
+		  source: data.results,
+		  select: function( event, ui ) {
+				if (href) {
+					field.val(ui.item.label);
+					var url = ui.item.url;
+					event.preventDefault();
+					window.location.href = url;		  
+				}
+		  }
+
 		});
 	 };
 	 
-	 find_autocomplete=function(field,query,dbs){
+	 find_autocomplete=function(field,query,dbs,href){
 		minimum_length=2
 		if(query.length >= minimum_length) {
 		  myurl='/search/autocomplete/';
@@ -257,7 +270,7 @@
 		  , data: {
 		  'q': query, 'dbs':dbs
 		  }, success: function(data) {
-			  show_results(data,field)
+			  show_results(data,field,href)
 			}})
 		}
 	}

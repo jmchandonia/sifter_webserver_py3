@@ -29,6 +29,7 @@ pred_results_per_page=20
 INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
 OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
 from term_db.models import Term
+from taxid_db.models import Taxid
 from django.template import Context, loader
 
 class InputForm(forms.Form):
@@ -192,14 +193,16 @@ def get_complexity(request):
         return render(request, 'complexity.html', {'form': form,})
 
 def delete_old_results():
-    olddate = datetime.date.today()+datetime.timedelta(days=-15)
+    olddate = datetime.date.today()+datetime.timedelta(days=-5)
     old_job_ids=SIFTER_Output.objects.filter(result_date__lte=olddate).values_list('job_id',flat=True)
     for job_id in old_job_ids:
-        print job_id
+        print 'jobid',job_id
         infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
+        print infile,os.path.exists(infile)
         if os.path.exists(infile):
             os.remove(infile)
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
+        print outfile,os.path.exists(outfile)                
         if os.path.exists(outfile):
             os.remove(outfile)
     
@@ -260,7 +263,7 @@ def get_input(request,context={}):
                 print job_id
                 
                 infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
-                my_species=''
+                my_species=0
                 my_functions=[]
                 my_proteins=[]
                 n_sequences=0
@@ -284,8 +287,8 @@ def get_input(request,context={}):
                 pickle.dump(data,open(infile,'w'))
                 P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                                 query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
-                                n_proteins=len(my_proteins),n_species=len(my_species),n_functions=len(my_functions),n_sequences=n_sequences,submission_date=datetime.date.today(),
-                                result_date=datetime.date.today(),input_file=infile,output_file='')
+                                n_proteins=len(my_proteins),species=my_species,n_functions=len(my_functions),n_sequences=n_sequences,submission_date=datetime.date.today(),
+                                result_date=datetime.date.today(),input_file=infile,output_file='',deleted=False)
                 P.save()
                 delete_old_results()
                 my_form_data={'sifter_choices':form.cleaned_data['sifter_choices'],'ExpWeight_hidden':form.cleaned_data['ExpWeight_hidden']
@@ -363,25 +366,53 @@ def show_results(request,job_id):
     my_msg=[]
     if not len(my_object)==1:
         my_msg.append(['danger','Error in the job_id. Number of hits=%s'%(len(my_object))])       
-        return render(request, 'results.html', {'my_object':'','result':'','pending':False,'my_msg':my_msg})
+        return render(request, 'results.html', {'my_object':'','result':'','pending':False,'my_msg':my_msg,'species':''})
     my_object=my_object[0]
-    print my_object.input_file,my_object.output_file
+    species=Taxid.objects.filter(tax_id=my_object.species)
+    if species:
+        species=species[0]
+        
+    print 'species',species
     if my_object.output_file=='':
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
-        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg})        
+        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species})        
     else:
         my_msg.append(['info','Your SIFTER query results are ready.'])
         results=pickle.load(open(my_object.output_file))
-        paginator = Paginator(results['result'], pred_results_per_page)
-        try:
-            page = paginator.page(int(request.GET.get('page', 1)))
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
-            page = paginator.page(1)
-        except EmptyPage:
-            page = paginator.page(paginator.num_pages)
+        
+        if not my_object.query_method =='by_sequence':
+            paginator = Paginator(results['result'], pred_results_per_page)
+            try:
+                page = paginator.page(int(request.GET.get('page', 1)))
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                page = paginator.page(1)
+            except EmptyPage:
+                page = paginator.page(paginator.num_pages)
+            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species})
+        else:
+            paginator = Paginator([[i,j] for i,w in enumerate(results['result']) for j in range(len(w[1]))], pred_results_per_page)
+            try:
+                page = paginator.page(int(request.GET.get('page', 1)))
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                page = paginator.page(1)
+            except EmptyPage:
+                page = paginator.page(paginator.num_pages)
+            res=results['result']
+            formated_res=[]
+            res_in_page={}
+            for w in page:
+                i,j=w
+                if i not in res_in_page:
+                    res_in_page[i]=[]
+                res_in_page[i].append(j)
+            for q in sorted(res_in_page.keys()):                
+                formated_res.append([results['result'][q][0],[results['result'][q][1][j] for j in res_in_page[q]]])
             
-        return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg})
+            return render(request, 'results.html', {'my_object':my_object,'result':page,'formated_res':formated_res,'pending':False,'my_msg':my_msg,'species':species})
+          
+            
         
 
 def show_predictions(request):
@@ -411,7 +442,7 @@ def show_predictions(request):
         pickle.dump(data,open(infile,'w'))
         P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
                         query_method='by_species', sifter_EXP_choices = True ,
-                        n_proteins=0,n_species=1,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
+                        n_proteins=0,species=my_species,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
                         result_date=datetime.date.today(),input_file=infile,output_file='')
         P.save()
         delete_old_results()
@@ -435,16 +466,16 @@ def autocomplete(request):
         sqs1 = sqs.autocomplete(content_auto_name=request.GET.get('q', ''))[:5]
         sqs2 = sqs.autocomplete(content_auto_acc=request.GET.get('q', ''))[:5]    
         sqs5 = sqs.filter(text=request.GET.get('q', ''),django_ct='term_db.term')[:5]
-        suggestions.extend(["%s (%s)"%(result.object.name,result.object.acc) for result in sqs5+sqs1+sqs2])
+        suggestions.extend([{'url':result.object.get_absolute_url(),'label':"%s (%s)"%(result.object.name,result.object.acc)} for result in sqs5+sqs1+sqs2])
     if 'taxid' in search_in:
         sqs3 = sqs.autocomplete(content_auto_taxname=request.GET.get('q', ''))[:5]
         sqs4 = sqs.autocomplete(content_auto_taxid=request.GET.get('q', ''))[:5]
         sqs6 = sqs.filter(text=request.GET.get('q', ''),django_ct='taxid_db.taxid')[:5]
-        suggestions.extend(["%s (taxid:%s)"%(result.object.tax_name,result.object.tax_id) for result in sqs6+sqs3+sqs4])
+        suggestions.extend([{'url':result.object.get_absolute_url(),'label':"%s (taxid:%s)"%(result.object.tax_name,result.object.tax_id)} for result in sqs6+sqs3+sqs4])
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
     the_data = json.dumps({
-        'results': {{value:'google.com',label:w} for w in suggestions}
+        'results': suggestions
     })
     return HttpResponse(the_data, content_type='application/json')
 

@@ -619,7 +619,10 @@ def find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id):
                         hit_id={'P_GI':gi_num}
                     else:
                         hit_id={'all':aa.hit_id}
-                    hits[record.query].append({'hit_id':hit_id,'bits':aa.hsps[0].bits,'eval':aa.hsps[0].expect,'ident':round(aa.hsps[0].identities/float(aa.hsps[0].align_length)*100)})
+                    hits[record.query].append({'hit_id':hit_id,'bits':aa.hsps[0].bits,'eval':aa.hsps[0].expect,
+                                               'ident':round(aa.hsps[0].identities/float(aa.hsps[0].align_length)*100),
+                                               'Q_cov':round(abs(float(aa.hsps[0].query_end-aa.hsps[0].query_start))/record.query_length*100)
+                                               })
         mapped_gis=Idmap.objects.filter(other_id__in=gis, db='GI').values_list('other_id','unip_id')
         mapped_gis={w[0]:w[1] for w in mapped_gis}
         #mapped_gis=uni.map(gis, f='P_GI', t='ID') # map single id
@@ -631,7 +634,7 @@ def find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id):
                 if hit['hit_id'].keys()[0]=='P_GI':
                     gi=hit['hit_id']['P_GI']
                     if gi in mapped_gis:
-                        blast_hits[record].append([mapped_gis[gi],hit['bits'],hit['eval'],hit['ident']])
+                        blast_hits[record].append([mapped_gis[gi],hit['bits'],hit['eval'],hit['ident'],hit['Q_cov']])
                         q_genes.append(mapped_gis[gi])
 
         sifter_choices=my_form_data['sifter_choices']
@@ -768,7 +771,7 @@ def make_results_ready(job_id,activ_tab,my_data):
                         preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
                     else:
                         break
-                result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],hit[1],hit[2],'%0.0f'%hit[3],preds])
+                result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],'%d'%hit[1],hit[2],'%0.0f'%hit[3],'%0.0f'%hit[4],preds])
             result.append([query,result_q])
     results={'result':result}
     return results
