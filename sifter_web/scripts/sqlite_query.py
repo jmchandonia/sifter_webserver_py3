@@ -584,7 +584,7 @@ def find_sifter_preds_byfunction(species,functions,my_form_data):
     unip_accs={k:v for k,v in unip_accs.iteritems() if k in res_top}    
     return res_top,taxids,unip_accs
 
-def find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id):
+def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
    
     blast_hits={}
     connected=0
@@ -821,7 +821,7 @@ def find_results(my_form_data,job_id):
         return True
     elif active_tab == 'by_sequence':
         my_sequences=data['sequences']
-        res,taxids,unip_accs,blast_hits,connected=find_sifter_preds_byfsequence(my_sequences,my_form_data,job_id)
+        res,taxids,unip_accs,blast_hits,connected=find_sifter_preds_bysequence(my_sequences,my_form_data,job_id)
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs,blast_hits,connected])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle.dump(results,open(outfile,'w'))

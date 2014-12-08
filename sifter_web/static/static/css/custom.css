@@ -194,6 +194,19 @@ tr.row_seperator td >a {
 }
 
 
+tr.row_seperator_search th {
+  background-color: #6ea6d7;
+  border-bottom-color: #6ea6d7;
+  color: #fff;
+}
+
+
+tr.row_seperator_search th  h3{
+    margin-top: .1em;
+    margin-bottom: .1em;	
+}
+
+
 
 .hidden {
     display: none;

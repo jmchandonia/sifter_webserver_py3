@@ -7,6 +7,8 @@ from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
 from sifter_web.tasks import run_sifter_job
 from results.models import SIFTER_Output
+from sifter_results_ready_db.models import SifterResults as SifterResultsReady
+from idmap_db.models import Idmap
 import datetime
 import random
 import pickle
@@ -25,7 +27,8 @@ from django.core.paginator import Paginator, InvalidPage
 from django.conf import settings
 RESULTS_PER_PAGE = getattr(settings, 'HAYSTACK_SEARCH_RESULTS_PER_PAGE', 50)
 import json
-pred_results_per_page=20
+pred_results_per_page=1000
+pred_results_per_page_sq=1
 INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
 OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
 from term_db.models import Term
@@ -94,10 +97,28 @@ class InputForm(forms.Form):
         
 class MySearchForm(SearchForm):
     #q = forms.CharField(required=False, widget=forms.TextInput(attrs={'type': 'text'}))
-    q=forms.CharField(widget=forms.TextInput(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control', 'autocomplete':'off'}),label='Input Any Queries', max_length=100000,required=False)
+    q=forms.CharField(widget=forms.TextInput(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control', 'autocomplete':'off'}),label='Input Any Queries', max_length=100000,required=True)
 
     def no_query_found(self):
         return self.searchqueryset.all()
+
+    def check(self,cleaned_data,my_fields,msg):
+        enered_field=[]
+        for my_field in my_fields:            
+            my_field_data = cleaned_data.get(my_field)
+            if not my_field_data:
+                enered_field.append(my_field)
+        if not (set(my_fields)-set(enered_field)):
+            for my_field in my_fields:
+                my_field_data = cleaned_data.get(my_field)
+                if not my_field_data:
+                    print msg
+                    self._errors[my_field] = ErrorList([msg])
+                    break
+    def clean(self):
+        print 'aaaa'
+        cleaned_data=super(MySearchForm, self).clean()    
+        self.check(cleaned_data,['q'],'Search iterm is not entered.')
 
     def search(self):
         # First, store the SearchQuerySet received from other processing.
@@ -116,7 +137,13 @@ class MySearchForm(SearchForm):
             sqs=sqs5|sqs1|sqs2|sqs3|sqs4
             sqs_term=sqs.filter(django_ct='term_db.term')            
             sqs_taxid=sqs.filter(django_ct='taxid_db.taxid')
-        return [{'model':'Species','results':sqs_taxid},{'model':'Functions','results':sqs_term}]
+            sqs7=list(set(SifterResultsReady.objects.filter(uniprot_id=self.cleaned_data['q']).values_list('uniprot_id',flat=True)))
+            #sqs8=list(set(SifterResultsReady.objects.filter(uniprot_acc=self.cleaned_data['q']).values_list('uniprot_id',flat=True)))
+            sqs8=Idmap.objects.filter(other_id=self.cleaned_data['q'], db='ID').values_list('unip_id',flat=True)
+            sqs_unip=list(set(sqs8)|set(sqs7))
+            print sqs7,sqs8,sqs_unip
+            sqs_unip=[{'name':w, 'url':'/predictions/?protein=%s' % w} for w in sqs_unip]
+        return [{'model':'Proteins','results':sqs_unip},{'model':'Species','results':sqs_taxid},{'model':'Functions','results':sqs_term}]
 
 class EstimateForm(forms.Form):
     estim_choices = forms.ChoiceField(widget=forms.RadioSelect, choices=(('params', 'Customized Input',),('pfam', 'Use a Pfam ID',)),initial='params')
@@ -320,6 +347,16 @@ def get_input(request,context={}):
         else:
             search_form = MySearchForm(searchqueryset=searchqueryset, load_all=load_all)
         
+        print results
+        if results:
+            if len(results[0]['results'])==0 and len(results[1]['results'])==0 and len(results[2]['results'])==1:                            
+                return HttpResponseRedirect('/predictions/?term=%s'%results[2]['results'][0].acc)
+            elif len(results[0]['results'])==0 and len(results[1]['results'])==1 and len(results[2]['results'])==0:                            
+                return HttpResponseRedirect('/predictions/?taxid=%s'%results[1]['results'][0].taxid)
+            if len(results[0]['results'])==1 and len(results[1]['results'])==0 and len(results[2]['results'])==0:                            
+                return HttpResponseRedirect('/predictions/?protein=%s'%results[0]['results'][0]['name'])
+        
+        
         paginators=[]
         pages=[]
         for i,result in enumerate(results):
@@ -337,11 +374,11 @@ def get_input(request,context={}):
             'query': query,
             'suggestion': None,
         }
-        for result in results:
+        '''for result in results:
             if result['results'].query.backend.include_spelling:
                 context['suggestion'] = search_form.get_suggestion()
             spelling = result['results'].spelling_suggestion(query)
-            context['suggestion']= spelling
+            context['suggestion']= spelling'''
         
         if extra_context:
             context.update(extra_context)
@@ -360,7 +397,6 @@ def get_input(request,context={}):
 
 
 def show_results(request,job_id):
-    pred_results_per_page=20
     time.sleep(0.5)
     my_object=SIFTER_Output.objects.filter(job_id=job_id)
     my_msg=[]
@@ -390,8 +426,8 @@ def show_results(request,job_id):
             except EmptyPage:
                 page = paginator.page(paginator.num_pages)
             return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species})
-        else:
-            paginator = Paginator([[i,j] for i,w in enumerate(results['result']) for j in range(len(w[1]))], pred_results_per_page)
+        else:            
+            paginator = Paginator(results['result'], pred_results_per_page_sq)
             try:
                 page = paginator.page(int(request.GET.get('page', 1)))
             except PageNotAnInteger:
@@ -399,18 +435,7 @@ def show_results(request,job_id):
                 page = paginator.page(1)
             except EmptyPage:
                 page = paginator.page(paginator.num_pages)
-            res=results['result']
-            formated_res=[]
-            res_in_page={}
-            for w in page:
-                i,j=w
-                if i not in res_in_page:
-                    res_in_page[i]=[]
-                res_in_page[i].append(j)
-            for q in sorted(res_in_page.keys()):                
-                formated_res.append([results['result'][q][0],[results['result'][q][1][j] for j in res_in_page[q]]])
-            
-            return render(request, 'results.html', {'my_object':my_object,'result':page,'formated_res':formated_res,'pending':False,'my_msg':my_msg,'species':species})
+            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species})
           
             
         
@@ -450,14 +475,34 @@ def show_predictions(request):
         ,'active_tab_hidden':'by_species'}
         run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
+    elif 'protein' in qdict:
+        job_id=random.randint(1000000,9999999)    
+        while SIFTER_Output.objects.filter(job_id=job_id):
+            job_id=random.randint(1000000,9999999)
+        print job_id
         
+        infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
+        my_proteins=[qdict['protein'][0]] 
+        print 'my_proteins',my_proteins
+        data={'proteins':my_proteins}
+        pickle.dump(data,open(infile,'w'))
+        P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
+                        query_method='by_protein', sifter_EXP_choices = True ,
+                        n_proteins=1,species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
+                        result_date=datetime.date.today(),input_file=infile,output_file='')
+        P.save()
+        delete_old_results()
+        my_form_data={'sifter_choices':'EXP-Model','ExpWeight_hidden':'0.7'
+        ,'active_tab_hidden':'by_protein'}
+        run_sifter_job.delay(my_form_data,job_id)
+        return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})        
 def autocomplete(request):
     print 'HHH'
     sqs=SearchQuerySet()
     dbs=request.GET.get('dbs', '')
     print dbs
     if dbs=='all':
-        search_in=['term','taxid']
+        search_in=['term','taxid','unip']
     else:
         search_in=[dbs]
         
@@ -472,6 +517,10 @@ def autocomplete(request):
         sqs4 = sqs.autocomplete(content_auto_taxid=request.GET.get('q', ''))[:5]
         sqs6 = sqs.filter(text=request.GET.get('q', ''),django_ct='taxid_db.taxid')[:5]
         suggestions.extend([{'url':result.object.get_absolute_url(),'label':"%s (taxid:%s)"%(result.object.tax_name,result.object.tax_id)} for result in sqs6+sqs3+sqs4])
+    if 'unip' in search_in:
+        if len(request.GET.get('q', ''))>7:
+            sqs7=list(set(SifterResultsReady.objects.filter(uniprot_id=request.GET.get('q', '')).values_list('uniprot_id',flat=True)))
+            suggestions.extend([{'url':'/predictions/?protein=%s'%w,'label':w} for w in sqs7])
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
     the_data = json.dumps({

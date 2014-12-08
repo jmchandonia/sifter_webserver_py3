@@ -106,18 +106,24 @@
 						</p>
 						</div>
 						{% if query %}
-							<h3>Are you looking for SIFTER predictions on any of the following Species/Functions?</h3>
+							<div class="alert alert-info" role="alert">
+								<h3>From the following search results, please select the Proteins/Species/Functions you are looking for SIFTER predictions in:</h3>
+							</div>
 							<table class="table table-bordered ">
 							<thead>
-							  <tr class="row_seperator">
+							  <tr class="row_seperator_search">
 								{% for page in pages %}
+									{%if page.page.object_list %}
 									<th><h3>Found {{page.page.paginator.count}} {{ page.model}}</h3></th>
+									{%endif%}
 								{% endfor %}
 							  </tr>
 							</thead>         
 							<tbody > 
 								<tr>
 								{% for page in pages %}
+								{%if page.page.object_list %}
+								
 								{% with forloop.counter0 as this_page %}								
 									<td>
 										{% if page.page.has_previous or page.page.has_next %}
@@ -131,7 +137,7 @@
 											{%endif%}
 											{% with paginators|hash:this_page as paginator %}
 											{% for n in paginator.page_range|in_range:page.page.number %}
-												<li class="{%if n == page.page.number %} active {%else%} disabled{% endif %}">
+												<li class="{%if n == page.page.number %} active {%else%} {% endif %}">
 												<a href="?q={{ query }}{% for page2 in pages %}{% if not forloop.counter0 == this_page %}{% if page2.page.has_previous or page2.page.has_next %}
 												&amp;page-{{forloop.counter0}}={{page2.page.number}}{% endif %}{% endif %}{% endfor %}
 												&amp;page-{{this_page}}={{n}}">												
@@ -149,11 +155,19 @@
 										{%endif%}
 									
 										<ul class="list-unstyled">
-										{% for result in page.page.object_list %}											
-											<li><a href="{{ result.object.get_absolute_url }}">{{ result.object}}</li>
-										{% empty %}
-											No results found
-										{% endfor %}
+										{%if not page.model == 'Proteins' %}
+											{% for result in page.page.object_list %}											
+												<li><a href="{{ result.object.get_absolute_url }}">{{ result.object}}</li>
+											{% empty %}
+												No results found
+											{% endfor %}
+										{%else%}
+											{% for result in page.page.object_list %}											
+												<li><a href="{{ result.url }}">{{ result.name}}</li>
+											{% empty %}
+												No results found
+											{% endfor %}										
+										{%endif%}
 										</ul>
 										{% if page.page.has_previous or page.page.has_next %}
 											<div>
@@ -172,6 +186,7 @@
 										{% endif %}
 									</td>
 								{% endwith %}
+								{%endif%}								
 								{% endfor %}		
 								</tr>                
 							</tbody>
