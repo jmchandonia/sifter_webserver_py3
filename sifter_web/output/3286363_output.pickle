@@ -1,0 +1,62 @@
+(dp0
+S'nopreds'
+p1
+(lp2
+S'/lab/64/app/python/python_mohammad/SIFTER_jobs/webserver/sample_webs/SIFTER_webserver/sifter_web/output/3286363_nopreds.txt'
+p3
+aI1
+asS'result'
+p4
+(lp5
+(lp6
+VA8WRK7_CAEBR
+p7
+aVA8WRK7
+p8
+aVCaenorhabditis briggsae
+p9
+aI6238
+a(lp10
+(lp11
+VGO:0015349
+p12
+aVthyroid hormone transmembrane transporter activity
+p13
+aS'0.82'
+p14
+aa(lp15
+VGO:0015132
+p16
+aVprostaglandin transmembrane transporter activity
+p17
+aS'0.22'
+p18
+aa(lp19
+VGO:0015125
+p20
+aVbile acid transmembrane transporter activity
+p21
+aS'0.19'
+p22
+aa(lp23
+VGO:0015238
+p24
+aVdrug transmembrane transporter activity
+p25
+aS'0.18'
+p26
+aa(lp27
+VGO:0015198
+p28
+aVoligopeptide transporter activity
+p29
+aS'0.18'
+p30
+aa(lp31
+VGO:0015347
+p32
+aVsodium-independent organic anion transmembrane transporter activity
+p33
+aS'0.18'
+p34
+aaaas.

@@ -60,7 +60,8 @@
                 <li><label>Species:</label> {{species}}</li>{%endif%}
                 {% if my_object.query_method == 'by_sequence'%}<li><label>Number of Query Sequences:</label> {{my_object.n_sequences}}</li>{%endif%}
                 {% if not my_object.output_file == '' and not my_object.query_method == 'by_sequence'%}              
-                <li><label>Number of Proteins with Predictions:</label> {{result.paginator.count}}</li>
+                <li><label>Number of Proteins with Predictions:</label> {{result.paginator.count}}</li>                
+                {% if nopreds %}<li><label>Number of Proteins without Predictions:</label>{{nopreds.1}} (available <a href="{{nopreds.0}}">here</a>){%endif%}                
                 {%endif%}
               </ul>                      
             </div>

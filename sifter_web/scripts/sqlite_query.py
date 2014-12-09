@@ -207,17 +207,13 @@ def find_db_results(method,q_genes={},species=''):
 
 def find_db_ready_results(method,q_genes={},mode=1,species=''):
     if method=='by_protein':
-        t = time.time()
         q_results0=[]
         batchs=100
         for i in range(0,int(np.ceil(float(len(q_genes))/float(batchs)))):
             q_results0.extend(SifterResultsReady.objects.filter(uniprot_id__in=q_genes[batchs*i:min(len(q_genes),batchs*(i+1))],mode=mode))
         print len(q_results0)
         
-        elapsed = time.time() - t
-        print "Extract_sql",elapsed
-        t = time.time()
-    
+   
         q_results={}    
         taxids={}
         unip_accs={}
@@ -227,15 +223,9 @@ def find_db_ready_results(method,q_genes={},mode=1,species=''):
             taxids[q_gene]=q_res.tax_id
             unip_accs[q_gene]=q_res.uniprot_acc
     
-        elapsed = time.time() - t
-        print "formating",elapsed
         
     elif method=='by_species':
-        t = time.time()
         q_results0=SifterResultsReady.objects.filter(tax_id=species,mode=mode).values('uniprot_id','preds','tax_id','uniprot_acc')
-        elapsed = time.time() - t
-        print "Extract_sql_sp",elapsed
-        t = time.time()
     
         q_results={}    
         taxids={}
@@ -246,8 +236,6 @@ def find_db_ready_results(method,q_genes={},mode=1,species=''):
             taxids[q_gene]=q_res['tax_id']
             unip_accs[q_gene]=q_res['uniprot_acc']
     
-        elapsed = time.time() - t
-        print "formating_sp",elapsed
 
     return q_results,taxids,unip_accs
 
@@ -509,7 +497,14 @@ def find_leave_preds(preds):
     return leaves
     
         
-def find_sifter_preds_byprotein(q_genes,my_form_data):
+def find_sifter_preds_byprotein(q_genes,my_form_data,job_id):
+    
+    acc_ids=Idmap.objects.filter(other_id__in=q_genes, db='ID').values_list('unip_id','other_id')
+    accs_ids_maps={w[1]:w[0] for w in acc_ids}
+    q_genes=[accs_ids_maps[w] if w in accs_ids_maps else w for w in q_genes]
+    data={'proteins':q_genes}
+    infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
+    pickle.dump(data,open(infile,'w'))
     sifter_choices=my_form_data['sifter_choices']
     ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
     print sifter_choices,ExpWeight_hidden*2
@@ -686,27 +681,17 @@ def find_name_taxids(ts):
     return taxid_2_name
 
 def make_results_ready(job_id,activ_tab,my_data):
+    results={}
     if not activ_tab=='by_sequence':
-        t = time.time()
         res,taxids,unip_accs=my_data
         terms=list(set([v for w in res.values() for v in w]))
         idx_to_go_name=find_go_name_acc(terms)
-        elapsed = time.time() - t
-        print "find_go_name_acc",elapsed
-        t = time.time()
         taxid_2_name=find_name_taxids(list(set(taxids.values())))
-        elapsed = time.time() - t
-        print "find_name_taxids",elapsed
-        t = time.time()
         result=[]
         for j,gene in enumerate(res):
-            t1 = time.time()    
             preds=[]            
             res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
             tax_name=taxid_2_name[taxids[gene]]
-            elapsed = time.time() - t1
-            print "taxid",elapsed
-            t1 = time.time()    
             if len(res_sorted)<=2:
                 end_i=len(res)
             else:
@@ -715,9 +700,6 @@ def make_results_ready(job_id,activ_tab,my_data):
                    end_i=end_i[-1]
                 else:
                    end_i=1
-            elapsed = time.time() - t1
-            print "endi",elapsed
-            t1 = time.time()    
    
             for i, pred  in enumerate(res_sorted):
                 term,score=pred
@@ -725,22 +707,18 @@ def make_results_ready(job_id,activ_tab,my_data):
                     preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
                 else:
                     break
-            elapsed = time.time() - t1
-            print "predsappend",elapsed            
-            t1 = time.time()    
             result.append([gene,unip_accs[gene],tax_name,taxids[gene],preds])
-            elapsed = time.time() - t1
-            print "resultappend",elapsed            
-        elapsed = time.time() - t
-        print "all_res",elapsed
-        t = time.time()    
         if activ_tab == 'by_protein':
             infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
             data=pickle.load(open(infile))
             my_genes=data['proteins']
-            rest=set(my_genes)-set(res.keys())
-            for j,gene in enumerate(rest):
-                result.append([gene,'?','?','?',[]])
+            rest=list(set(my_genes)-set(res.keys()))
+            if rest:
+                nopred_file=os.path.join(OUTPUT_DIR,"%s_nopreds.txt"%job_id)
+                nopred_file_o=open(nopred_file,'w')
+                nopred_file_o.write('List of genes with no predictions: \n'+'\n'.join(rest))
+                nopred_file_o.close()
+                results['nopreds']=[nopred_file,len(rest)]
     else:
         res,taxids,unip_accs,blast_hits,connected=my_data        
         terms=list(set([v for w in res.values() for v in w]))
@@ -773,7 +751,7 @@ def make_results_ready(job_id,activ_tab,my_data):
                         break
                 result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],'%d'%hit[1],hit[2],'%0.0f'%hit[3],'%0.0f'%hit[4],preds])
             result.append([query,result_q])
-    results={'result':result}
+    results['result']=result
     return results
 
         
@@ -784,7 +762,7 @@ def find_results(my_form_data,job_id):
     data=pickle.load(open(input_file,'r'))
     if active_tab == 'by_protein':
         my_genes=data['proteins']
-        res,taxids,unip_accs=find_sifter_preds_byprotein(my_genes,my_form_data)
+        res,taxids,unip_accs=find_sifter_preds_byprotein(my_genes,my_form_data,job_id)
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle.dump(results,open(outfile,'w'))

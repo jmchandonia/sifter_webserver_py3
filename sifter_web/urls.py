@@ -8,6 +8,9 @@ from sifter_web.views import get_input,show_results,get_complexity,do_basic_sear
 
 from haystack.views import SearchView, search_view_factory
 from haystack.forms import HighlightedSearchForm
+import os
+
+OUTPUT_DIR=os.path.join(os.path.dirname(__file__),"output")
 
 urlpatterns = patterns('',
     # Examples:
@@ -21,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^search/', include('haystack.urls')),
     url(r'^search/autocomplete', autocomplete),
     url(r'^search3/', do_basic_search),
+    url(r'^downloads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': OUTPUT_DIR}),
 )
 urlpatterns += patterns('haystack.views',
     url(r'^search4/', search_view_factory(

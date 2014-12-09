@@ -25,15 +25,19 @@ from haystack.forms import SearchForm
 from haystack.query import EmptySearchQuerySet
 from django.core.paginator import Paginator, InvalidPage
 from django.conf import settings
-RESULTS_PER_PAGE = getattr(settings, 'HAYSTACK_SEARCH_RESULTS_PER_PAGE', 50)
 import json
-pred_results_per_page=1000
-pred_results_per_page_sq=1
-INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
-OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
 from term_db.models import Term
 from taxid_db.models import Taxid
 from django.template import Context, loader
+import re
+from django.core.files import File 
+
+RESULTS_PER_PAGE = getattr(settings, 'HAYSTACK_SEARCH_RESULTS_PER_PAGE', 50)
+pred_results_per_page=1000
+pred_results_per_page_sq=1
+INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
+OUTPUT_DIR=os.path.join(os.path.dirname(__file__),"output")
+
 
 class InputForm(forms.Form):
     #input_any = autocomplete_light.ChoiceField('TermAutocomplete')
@@ -60,7 +64,7 @@ class InputForm(forms.Form):
         for my_field in my_fields:            
             my_field_data = cleaned_data.get(my_field)
             if not my_field_data:
-                enered_field.append(my_field)
+                enered_field.append(my_field)                    
         if not (set(my_fields)-set(enered_field)):
             for my_field in my_fields:
                 my_field_data = cleaned_data.get(my_field)
@@ -102,23 +106,7 @@ class MySearchForm(SearchForm):
     def no_query_found(self):
         return self.searchqueryset.all()
 
-    def check(self,cleaned_data,my_fields,msg):
-        enered_field=[]
-        for my_field in my_fields:            
-            my_field_data = cleaned_data.get(my_field)
-            if not my_field_data:
-                enered_field.append(my_field)
-        if not (set(my_fields)-set(enered_field)):
-            for my_field in my_fields:
-                my_field_data = cleaned_data.get(my_field)
-                if not my_field_data:
-                    print msg
-                    self._errors[my_field] = ErrorList([msg])
-                    break
-    def clean(self):
-        print 'aaaa'
-        cleaned_data=super(MySearchForm, self).clean()    
-        self.check(cleaned_data,['q'],'Search iterm is not entered.')
+    
 
     def search(self):
         # First, store the SearchQuerySet received from other processing.
@@ -295,7 +283,8 @@ def get_input(request,context={}):
                 my_proteins=[]
                 n_sequences=0
                 if active_tab=='by_protein':
-                    my_proteins=[w for w in form.cleaned_data['input_queries'].split(',')]
+                    splited=re.split(' |,|;|\n',form.cleaned_data['input_queries'])
+                    my_proteins=list(set([w for w in splited if w]))
                     data={'proteins':my_proteins}
                 elif active_tab=='by_species':
                     my_species=form.cleaned_data['input_species']
@@ -303,7 +292,8 @@ def get_input(request,context={}):
                 elif active_tab=='by_function':
                    my_species=form.cleaned_data['input_function_sp']
                    if not form.cleaned_data['function_selected_hidden']:
-                       my_functions=[w for w in form.cleaned_data['input_function'].split(',')]
+                       splited=re.split(' |,|;\n',form.cleaned_data['input_function'])
+                       my_functions=list(set([w for w in splited if w]))
                    else:
                        my_functions=[form.cleaned_data['function_selected_hidden']]
                    data={'species':form.cleaned_data['input_function_sp'],'functions':my_functions}                
@@ -402,7 +392,7 @@ def show_results(request,job_id):
     my_msg=[]
     if not len(my_object)==1:
         my_msg.append(['danger','Error in the job_id. Number of hits=%s'%(len(my_object))])       
-        return render(request, 'results.html', {'my_object':'','result':'','pending':False,'my_msg':my_msg,'species':''})
+        return render(request, 'results.html', {'my_object':'','result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':''})
     my_object=my_object[0]
     species=Taxid.objects.filter(tax_id=my_object.species)
     if species:
@@ -411,10 +401,15 @@ def show_results(request,job_id):
     print 'species',species
     if my_object.output_file=='':
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
-        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species})        
+        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':''})        
     else:
         my_msg.append(['info','Your SIFTER query results are ready.'])
         results=pickle.load(open(my_object.output_file))
+        nopreds=''
+        if 'nopreds' in results:
+            nopreds=['/downloads/%s_nopreds.txt'%job_id,results['nopreds'][1]]
+            
+            
         
         if not my_object.query_method =='by_sequence':
             paginator = Paginator(results['result'], pred_results_per_page)
@@ -425,7 +420,7 @@ def show_results(request,job_id):
                 page = paginator.page(1)
             except EmptyPage:
                 page = paginator.page(paginator.num_pages)
-            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species})
+            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds})
         else:            
             paginator = Paginator(results['result'], pred_results_per_page_sq)
             try:
@@ -435,7 +430,7 @@ def show_results(request,job_id):
                 page = paginator.page(1)
             except EmptyPage:
                 page = paginator.page(paginator.num_pages)
-            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species})
+            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds})
           
             
         

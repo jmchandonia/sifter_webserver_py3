@@ -72,6 +72,7 @@ ROOT_URLCONF = 'sifter_web.urls'
 
 WSGI_APPLICATION = 'sifter_web.wsgi.application'
 
+MyDB_DIR = os.path.join(os.path.dirname(BASE_DIR),"my_dbs")
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -83,35 +84,35 @@ DATABASES = {
     },        
     'term_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, "my_dbs","term_db.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"term_db.sqlite3"),
     },
     'weight_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, "my_dbs","weight_db.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"weight_db.sqlite3"),
     },
     'sifter_results_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, "my_dbs","sifter_results_cmp_small.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_wREST.sqlite3"),
     },
     'term_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, "my_dbs","term_db.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"term_db.sqlite3"),
     },
     'taxid_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, "my_dbs","taxid_db.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"taxid_db.sqlite3"),
     },
     'estimatedb': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, "my_dbs",'estimate.sqlite3'),
+        'NAME': os.path.join(MyDB_DIR,'estimate.sqlite3'),
     },
     'sifter_results_ready_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/lab/app/python/python_mohammad/SIFTER_jobs/webserver/sifter_results_cmp_ready_leaves.sqlite3',
+        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_ready_leaves_wREST.db"),
     },
     'idmap_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/lab/app/python/python_mohammad/SIFTER_jobs/webserver/idmap_db.sqlite3',
+        'NAME': os.path.join(MyDB_DIR,"idmap_db.sqlite3"),
     },
 }
 DATABASE_ROUTERS = [
