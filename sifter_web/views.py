@@ -19,7 +19,6 @@ from scripts.estimate_time import estimate_time, get_processing_time
 from estimatedb.models import Errorhistogrambars
 import numpy as np
 from django.db.models import Q as Q_lookup
-import autocomplete_light
 from haystack.query import SearchQuerySet
 from haystack.forms import SearchForm
 from haystack.query import EmptySearchQuerySet
@@ -40,7 +39,6 @@ OUTPUT_DIR=os.path.join(os.path.dirname(__file__),"output")
 
 
 class InputForm(forms.Form):
-    #input_any = autocomplete_light.ChoiceField('TermAutocomplete')
     #input_any = forms.CharField(widget=forms.Textarea(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control','id':'input_any'}),label='Input Any Queries', max_length=100000,required=False)
     input_queries = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'placeholder':'Enter query proteins','class':'form-control','id':'input_queries'}),label='Input Queries', max_length=100000,required=False)
     query_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'query_uploader'}),required=False)
@@ -288,6 +286,36 @@ def get_input(request,context={}):
                     data={'proteins':my_proteins}
                 elif active_tab=='by_species':
                     my_species=form.cleaned_data['input_species']
+                    
+                    sqs = SearchQuerySet()
+            
+                    # Check to see if a q was chosen.
+                    if my_species:        
+                        sqs3 = sqs.filter(content_auto_taxname=my_species)
+                        sqs4 = sqs.filter(content_auto_taxid=my_species)
+                        sqs5 = sqs.filter(text=my_species)
+                        sqs=sqs3|sqs4|sqs5
+                        sqs_taxid=sqs.filter(django_ct='taxid_db.taxid')
+                        print sqs_taxid
+                        if not len(sqs_taxid)==1:
+                            context['form']=form
+                            context['response']=form.cleaned_data['ExpWeight_hidden']
+                            sqs_sp_results=[{'model':'Species','results':sqs_taxid}]
+                            context['sqs_sp_results']=sqs_sp_results
+                            paginators=[]
+                            pages=[]
+                            for i,result in enumerate(sqs_sp_results):
+                                paginator=Paginator(result['results'], results_per_page or RESULTS_PER_PAGE)
+                                paginators.append(paginator)
+                                try:
+                                    pages.append({'model':result['model'],'page':paginator.page(int(request.GET.get('page-%s'%i, 1)))})
+                                except InvalidPage:
+                                    raise Http404("No such page of results!")
+                                
+                            context['pages']= pages
+                            context['paginators']= paginators
+                            print pages
+                            return render_to_response('home.html', context, context_instance=context_class(request))        
                     data={'species':my_species}
                 elif active_tab=='by_function':
                    my_species=form.cleaned_data['input_function_sp']
@@ -491,6 +519,7 @@ def show_predictions(request):
         ,'active_tab_hidden':'by_protein'}
         run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})        
+
 def autocomplete(request):
     print 'HHH'
     sqs=SearchQuerySet()
