@@ -1,4 +1,5 @@
-from scipy import misc
+#from scipy import misc
+import numpy as np
 from chartit import DataPool, Chart
 from estimatedb.models import Allsifterdata, Errorhistogrambars, Percentiles
 
@@ -14,13 +15,70 @@ numelDivs = [65025.0, 330625.0, 1046529.0]
 # List of dividers based upon the family size FAMSIZE
 famSizeDivs = [567.0, 1637.0, 4989.0]
 
+
+def comb(N, k, exact=False, repetition=False):
+    """
+    The number of combinations of N things taken k at a time.
+    This is often expressed as "N choose k".
+    Parameters
+    ----------
+    N : int, ndarray
+        Number of things.
+    k : int, ndarray
+        Number of elements taken.
+    exact : bool, optional
+        If `exact` is False, then floating point precision is used, otherwise
+        exact long integer is computed.
+    repetition : bool, optional
+        If `repetition` is True, then the number of combinations with
+        repetition is computed.
+    Returns
+    -------
+    val : int, ndarray
+        The total number of combinations.
+    Notes
+    -----
+    - Array arguments accepted only for exact=False case.
+    - If k > N, N < 0, or k < 0, then a 0 is returned.
+    Examples
+    --------
+    >>> k = np.array([3, 4])
+    >>> n = np.array([10, 10])
+    >>> sc.comb(n, k, exact=False)
+    array([ 120.,  210.])
+    >>> sc.comb(10, 3, exact=True)
+    120L
+    >>> sc.comb(10, 3, exact=True, repetition=True)
+    220L
+    """
+    if repetition:
+        return comb(N + k - 1, k, exact)
+    if exact:
+        N = int(N)
+        k = int(k)
+        if (k > N) or (N < 0) or (k < 0):
+            return 0
+        val = 1
+        for j in xrange(min(k, N-k)):
+            val = (val*(N-j))//(j+1)
+        return val
+    else:
+        k,N = asarray(k), asarray(N)
+        cond = (k <= N) & (N >= 0) & (k >= 0)
+        vals = binom(N, k)
+        if isinstance(vals, np.ndarray):
+            vals[~cond] = 0
+        elif not cond:
+            vals = np.float64(0)
+        return vals
+
 # Returns the maximum number of simultaneous functions and the resulting number of elements
 # in the transition matrix Q, where each gene has NUMTERMS candidate GO term functions,
 # such that the width of Q is less than or equal to threshold THR.
 def max_fun_possible(numTerms, thr=1500):
     width = 0
     for i in range(1, numTerms + 1):
-        sum = width + misc.comb(numTerms, i, exact=1)
+        sum = width + comb(numTerms, i, exact=1)
         if sum > thr:
             return [i - 1, pow(width, 2)]
         else:
@@ -31,7 +89,7 @@ def max_fun_possible(numTerms, thr=1500):
 # gene has a maximum of MAXFUN of the NUMTERMS candidate GO term functions.
 # The formula is given by NUMEL = (sum from I = 1 to MAXFUN of (NUMTERMS choose I))^2
 def calc_numel(numTerms, maxFun):
-    return pow(sum([float(misc.comb(numTerms, i, exact=True)) for i in range(1, maxFun + 1)]), 2)
+    return pow(sum([float(comb(numTerms, i, exact=True)) for i in range(1, maxFun + 1)]), 2)
     
 # Returns the criteria to which the data point with NUMTERMS candidate GO term functions
 # and MAXFUN truncation factor belongs.
