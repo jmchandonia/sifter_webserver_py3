@@ -316,6 +316,7 @@ def get_input(request,context={}):
                             context['paginators']= paginators
                             print pages
                             return render_to_response('home.html', context, context_instance=context_class(request))        
+                    my_species=sqs_taxid[0].object.tax_id
                     data={'species':my_species}
                 elif active_tab=='by_function':
                    my_species=form.cleaned_data['input_function_sp']

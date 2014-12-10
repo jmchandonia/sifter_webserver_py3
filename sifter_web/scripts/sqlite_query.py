@@ -13,7 +13,6 @@ import os
 import datetime
 import django
 from Bio.Blast import NCBIWWW,NCBIXML
-import uniprot as uni
 import operator
 from taxid_db.models import Taxid
 import time
