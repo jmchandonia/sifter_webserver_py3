@@ -1,79 +1,99 @@
-{% if not function_selected %}  
+{{form.function_selected_hidden}}
+{{form.spf_selected_hidden}}
 <div class="query-info">
 <h2>Predict by Function</h2>
 <h4>For a set of query functions, find proteins with high probability of having those functions.</h4>
 <ul class="list-unstyled">
-    <li>This options search across the given species to identify proteins that are predicted by SIFTER to have any of the query functions as their top functions.</li>
+    <li>This option searches across the given species to identify proteins that are predicted by SIFTER to have any of the query functions as their top predictions.</li>
 </ul>
 </div>
-<div class="alert alert-danger {%if not form.input_function.errors %} hidden {% endif %}">{{ form.input_function.errors }}</div>
-{%endif%}  
-
-<div class="alert alert-danger {%if not form.input_function_sp.errors %} hidden {% endif %}">{{ form.input_function_sp.errors }}</div>
-
-{% if not function_selected %}
-<div class="form-group {%if form.input_function.errors %} has-error {% endif %}" >
-  <fieldset >
-  <h3>Enter query molecular functions </h3>
-  <div>Paste or upload the GO term ID(s) of your query molecular function(s)</div>
-  <div class="row">
-    <div class="col-md-10 col-sm-9 col-xs-9">
-      <div class="text-right">
-      <a id="example9" class="sample" href="javascript:setExample(9)">Example 1</a>
-      <a id="example10" class="sample" href="javascript:setExample(10)">Example 2</a>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-10 col-sm-9 col-xs-9">
-      {{form.input_function}}
-      <div class="row">
-        <div class="col-md-9 col-sm-9 col-xs-9">
-        - OR - <label for="function_uploader">Upload the list of your functions as a text file:</label>
-        </div>
-        <div class="col-md-3 col-sm-3 col-xs-3">
-          <div class="text-right"><a id="clear_text_function" href="javascript:void(0)" title="clear_text_function">Clear</a></div>
-        </div>
-      </div>
-      {{form.function_uploader}}
-    </div>
-    <div class="col-md-2 col-sm-3 col-xs-3">
-      <div class="text-left">	
-	<small>separate IDs by a space, comma, semicolon, or enter one ID per line</small>
-      </div>
-    </div>        
-  </div>
-</fieldset>
+<div  class="hideable-options-esp" {%if not form.error_sp_hidden.value  %} style="display: none" {% endif %}>                    
+<div class="alert alert-danger">No results were found for your query species.</div>
 </div>
-{% else %}  
-{{form.function_selected_hidden}}
-<div class="alert alert-info" role="alert">
-	<h4>You have selected the following function:</h4>
-	<div><h3>{{function_selected}}</h3> </div>
-	<h4>Now, Please enter a species you want to look in for this function.</h4>
+<div  class="hideable-options-f0" {%if not form.function_selected_hidden.value  %} style="display: none" {% endif %}>                    
+	<div class="alert alert-danger {%if not form.input_function.errors %} hidden {% endif %}">{{ form.input_function.errors }}</div>
 </div>
-{% endif %}
-<div class="form-group {%if form.input_function_sp.errors %} has-error {% endif %}" >
-<fieldset > 
-  <h3>Enter you species</h3>
-  <div>Paste the name or NCBI taxonomy ID of your query species</div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="text-right">
-      <a id="example11" class="sample" href="javascript:setExample(11)">Example 1</a>
-      <a id="example12" class="sample" href="javascript:setExample(12)">Example 2</a>
-      </div>
-    </div>
-  </div>
-  <div class="row">     
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      {{form.input_function_sp}}
-      <div class="row">
-        <div class="col-md-offset-9 col-md-3">
-          <div class="text-right"><a id="clear_text_function_sp" href="javascript:void(0)" title="clear_text_function_sp">Clear</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</fieldset>
-</div>	    
+
+<div  class="hideable-options-sf0" {%if not form.spf_selected_hidden.value  %} style="display: none" {% endif %}>                    
+	<div class="alert alert-danger {%if not form.input_function_sp.errors %} hidden {% endif %}">{{ form.input_function_sp.errors }}</div>
+</div>
+
+<div  class="hideable-options-f0" {%if not form.function_selected_hidden.value  %} style="display: none" {% endif %}>                    
+	<div class="form-group {%if form.input_function.errors %} has-error {% endif %}" >
+	  <fieldset >
+	  <h3>Enter query molecular functions </h3>
+	  <div>Paste or upload the GO term ID(s) of your query molecular function(s)</div>
+	  <div class="row">
+		<div class="col-md-10 col-sm-9 col-xs-9">
+		  <div class="text-right">
+		  <a id="example9" class="sample" href="javascript:setExample(9)">Example 1</a>
+		  <a id="example10" class="sample" href="javascript:setExample(10)">Example 2</a>
+		  </div>
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col-md-10 col-sm-9 col-xs-9">
+		  {{form.input_function}}
+		  <div class="row">
+			<div class="col-md-9 col-sm-9 col-xs-9">
+			- OR - <label for="function_uploader">Upload the list of your functions as a text file:</label>
+			</div>
+			<div class="col-md-3 col-sm-3 col-xs-3">
+			  <div class="text-right"><a id="clear_text_function" href="javascript:void(0)" title="clear_text_function">Clear</a></div>
+			</div>
+		  </div>
+		  {{form.function_uploader}}
+		</div>
+		<div class="col-md-2 col-sm-3 col-xs-3">
+		  <div class="text-left">	
+		<small>separate IDs by a space, comma, semicolon, or enter one ID per line</small>
+		  </div>
+		</div>        
+	  </div>
+	</fieldset>
+	</div>
+</div>
+<div  class="hideable-options-f1" {%if form.function_selected_hidden.value   %} style="display: none" {% endif %}>
+	<div class="alert alert-info" role="alert">
+		<h4>You have selected the following function:</h4>
+		<div><h3>{{function_selected}}</h3> </div>
+		<div  class="hideable-options-sf0" {%if not form.spf_selected_hidden.value  %} style="display: none" {% endif %}>
+			<h4>Now, Please enter a species you want to look in for this function.</h4>
+		</div>
+	</div>
+</div>
+
+<div  class="hideable-options-sf0" {%if not form.spf_selected_hidden.value  %} style="display: none" {% endif %}>
+	<div class="form-group {%if form.input_function_sp.errors %} has-error {% endif %}" >
+	<fieldset > 
+	  <h3>Enter your species</h3>
+	  <div>Paste the name or NCBI taxonomy ID of your query species</div>
+	  <div class="row">
+		<div class="col-md-12">
+		  <div class="text-right">
+		  <a id="example11" class="sample" href="javascript:setExample(11)">Example 1</a>
+		  <a id="example12" class="sample" href="javascript:setExample(12)">Example 2</a>
+		  </div>
+		</div>
+	  </div>
+	  <div class="row">     
+		<div class="col-md-12 col-sm-12 col-xs-12">
+		  {{form.input_function_sp}}
+		  <div class="row">
+			<div class="col-md-offset-9 col-md-3">
+			  <div class="text-right"><a id="clear_text_function_sp" href="javascript:void(0)" title="clear_text_function_sp">Clear</a></div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</fieldset>
+	</div>	    
+</div>
+
+<div  class="hideable-options-sf1" {%if form.spf_selected_hidden.value %} style="display: none" {% endif %}>
+	<div class="alert alert-info" role="alert">
+		<h4>You have selected the following species:</h4>
+		<div><h3>{{spf_selected}}</h3> </div>
+		<h4>Now, please complete and submit your query.</h4>
+	</div>
+</div>

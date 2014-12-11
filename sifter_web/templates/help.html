@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block get_input %}
+<div class="container custom-container">
+<h2>Help with SIFTER web server</h2>
+<div>
+	<a name="top"><h3>Contents</h3></a>
+	<ul>
+		<li><a href="#quickSearch">Quick Search</a></li>
+        <ul>
+            <a href="#confidenceScore">Confidence Score</a></li>
+        </ul>
+		<li><a href="#advancedSearch">Advanced Search</a></li>
+		<ul>
+			<li><a href="#predictByProtein">Predict by Protein</a></li>
+			<li><a href="#predictBySpecies">Predict by Species</a></li>
+			<li><a href="#predictByFunction">Predict by Function</a></li>
+			<li><a href="#predictBySequence">Predict by Sequence</a></li>
+		</ul>
+		<li><a href="#runSifterLocally">Run SIFTER Locally</a></li>
+	</ul>
+</div>
+<div class="query-info helppage">
+	<h2><a name="quickSearch">Quick Search</a></h2>
+	<h4>Welcome to the SIFTER web server. The home page provides a quick
+	   search option, where you can search for SIFTER predictions for a
+	   protein, species, or molecular function. You can enter a Uniprot ID,
+	   Uniprot accession number, species name, tax ID, GO term ID, or
+	   molecular function name.</h4>
+</div>
+<div class="query-info">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<h4>We provide suggestions of queries as you are typing.
+			   In the example below, we provide the closest searches to the user's
+			   query "sulfate". Clicking on any of the suggestions will
+               automatically search for that query.</h4>
+			<img src="/media/help/quick_search/quick_autocomplete.png"
+				 alt="quick_autocomplete.png" style="width:1000px;">
+			<h4>If your query matches multiple proteins, species, or functions in our
+			   database, we provide a list of all matches so that you can select the
+			   protein, species, or function that you are looking for.</h4>
+			<img src="/media/help/quick_search/quick_disambiguation.png"
+				 alt="quick_disambiguation.png" style="width:1000px;">
+			<h4>You can click on one of the four examples to see examples of queries.
+			   Here we show a search for the protein with Uniprot accession number
+			   A8WRK7_CAEBR.</h4>
+			<img src="/media/help/quick_search/quick_ex1.png"
+				 alt="quick_ex1.png" style="width:1000px;">
+			<h4>When you press submit, you should see the following screen, which
+			   provides the details of the search and a Job ID.</h4>
+			<h4>If you save the Job ID, you can come back later and retrieve the
+			   results when SIFTER finishes processing the query. The results will be
+			   stored on the provided link for 15 days.</h4>
+			<img src="/media/help/quick_search/quick_ex1_progress.png"
+				 alt="quick_ex1_progress" style="width:1000px;">
+			<h4>Here are the results from the example query. For each protein,
+			   we display a table of the molecular functions (GO term ID and name)
+			   with the highest confidence scores for that protein. Each molecular
+			   function links to a corresponding search in the AmiGO database.</h4>
+			<img src="/media/help/quick_search/quick_ex1_results.png"
+				 alt="quick_ex1_results.png" style="width:1000px;">
+			<h4>In this example, the protein A8WRK7_CAEBR in the species
+			   <em>C. briggsae</em> has a confidence score of 0.82 for the
+			   molecular function "thyroid hormone transmembrane transporter activity"
+			   (GO: 0015349).</h4>
+			<h4>Our quick search is a general search that handles proteins, species,
+			   or functions. For searches more specific to the type of your query,
+			   check out the "Advanced Search" section.</h4>
+			<img src="/media/help/quick_search/search_types.png"
+				 alt="search_types.png" style="width:500px;">
+
+			<div><a href="#top">Back to top</a></div>
+		</div>
+	</div>
+</div>
+
+<div class="query-info helppage">
+	<h3><a name="confidenceScore">Confidence Score</a></h3>
+</div>
+<div class="query-info">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+            <h4>The confidence score is a number between 0 and 1 that shows
+               how confident SIFTER is on the prediction results. It is defined
+               based on the number of candidate functions, the family size, and
+               the frequency and distribution of candidate terms in the tree.
+               Click <a href="../about/">here</a> to learn more.</h4>
+			<div><a href="#top">Back to top</a></div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="query-info helppage">
+	<a name="advancedSearch"><h2>Advanced Search</h2></a>
+	<h4>There are four types of advanced search: predict by protein, predict
+	   by species, predict by function, and predict by sequence.</h4>
+</div>
+<div class="query-info">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<h4>For all advanced searches, you can choose between two SIFTER schemes
+			   for incorporating existing annotations. SIFTER EXP-Model, the default
+			   option, only uses experimental evidence, whereas SIFTER ALL-Model
+			   includes both experimental and non-experimental evidence.</h4>		
+			<img src="/media/help/advanced_search/advanced_options.png"
+				 alt="advanced_options.png" style="width:500px;">
+			<h4>Just click on "Show advanced options" to choose a scheme.</h4>
+			<h4>In addition, if you provide your email address, we will send the
+			   SIFTER predictions directly to you via email once they are available.</h4>
+			<img src="/media/help/advanced_search/email.png"
+				 alt="email.png" style="width:1000px;">
+			<div><a href="#top">Back to top</a></div>
+		</div>
+	</div>
+</div>
+
+
+<div class="query-info helppage">
+	<h3><a name="predictByProtein">Predict by Protein</a></h3>
+	<h4>"Predict by Protein ID" retrieves the SIFTER predictions for your protein
+	   or proteins of interest.</h4>
+</div>
+<div class="query-info">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<img src="/media/help/advanced_search/protein.png"
+				 alt="protein.png" style="width:1000px;">
+			<h4>You can enter a single protein Uniprot ID or accession number,
+			   or you can provide a list of proteins separated by commas.
+			   In the example below, we search for a list of 100 Uniprot accession
+			   numbers.</h4>
+			<img src="/media/help/advanced_search/protein_ex2.png"
+				 alt="protein_ex2.png" style="width:1000px;">
+			<h4>You can also upload a text file of the same format.</h4>
+			<div><a href="#top">Back to top</a></div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="query-info helppage">
+	<h3><a name="predictBySpecies">Predict by Species</a></h3>
+	<h4>"Predict by Species" retrieves the SIFTER predictions on all proteins
+	   in your species of interest.</h4>
+</div>
+<div class="query-info">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<img src="/media/help/advanced_search/species.png"
+				 alt="species.png" style="width:1000px;">
+			<h4>You can enter the name or the tax ID of your species. Here we search for
+			   predictions on all of the proteins in the species <em>S. cerevisiae</em>.</h4>
+			<img src="/media/help/advanced_search/species_ex2.png"
+				 alt="species_ex2.png" style="width:1000px;">
+            <h4>Here are the SIFTER predictions for proteins in <em>Homo sapiens</em> (tax ID 9606).</h4>
+			<img src="/media/help/advanced_search/species_ex1_results.png"
+				 alt="species_ex1_results.png" style="width:1000px;">
+			<div><a href="#top">Back to top</a></div>
+		</div>
+	</div>
+</div>
+   
+	 
+
+
+
+
+<div class="query-info helppage">
+	<h3><a name="predictByFunction">Predict by function</a></h3>
+	<h4>"Predict by Function" retrieves the SIFTER predictions on all proteins
+	   in your species of interest with at least one of the specified molecular
+	   functions of interest or their descendants as the top predicted functions.</h4>
+</div>
+<div class="query-info">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<img src="/media/help/advanced_search/function.png"
+				 alt="function.png" style="width:1000px;">
+			<h4>As in "Predict by Protein ID", you can specify a single GO term ID,
+			   a list of comma-separated GO term IDs, or a text file in the same format.
+			   In the species section, you can enter the name or the tax ID of your
+			   species of interest. For example, you can search for proteins in
+			   <em>S. cerevisiae</em> that have one or more of the functions
+			   GO:0019911, GO:0015349, or GO:0000978 or any of their descendants.</h4>
+			<img src="/media/help/advanced_search/function_ex2.png"
+				 alt="function_ex2.png" style="width:1000px;">
+            <h4>Here are the SIFTER predictions for that search.</h4>
+			<img src="/media/help/advanced_search/function_ex2_results.png"
+				 alt="function_ex2_results.png" style="width:1000px;">
+			<div><a href="#top">Back to top</a></div>
+		</div>
+	</div>
+</div>
+	 
+
+
+
+<div class="query-info helppage">
+	<h3><a name="predictBySequence">Predict by sequence</a></h3>
+	<h4>If your query does not match any of our current results, check out
+	   "Predict by Sequence". We will BLAST search your query protein sequence(s)
+	   across all proteins for which SIFTER has predictions to find the
+	   closest homologs to your query sequence(s).</h4>
+</div>
+<div class="query-info">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<img src="/media/help/advanced_search/sequence.png"
+				 alt="sequence.png" style="width:1000px;">
+			<h4>To predict by sequence, you can enter up to 10 protein sequences in
+			   FASTA format or upload a FASTA format file. Here is an example query
+			   with two protein sequences in FASTA format.</h4>
+			<img src="/media/help/advanced_search/sequence_ex2.png"
+				 alt="sequence_ex2.png" style="width:1000px;">
+			<h4>In the results page, we indicate the number of sequence in our database
+			   that are homologous to your query sequence(s).</h4>
+			<img src="/media/help/advanced_search/sequence_ex1_results.png"
+				 alt="sequence_ex1_results.png" style="width:1000px;">
+			<h4>In addition to the Uniprot accession number, species name, molecular functions,
+			   and confidence scores for each homolog, we also provide BLAST specific results:
+			   the bit score, E-value, percent identity, and query coverage.</h4>
+			<div><a href="#top">Back to top</a></div>
+		</div>
+	</div>
+</div>
+	 
+	 
+<div class="query-info helppage">
+	<h2><a name="runSifterLocally">Run SIFTER locally</a></h2>
+	<h4>If you have downloaded SIFTER and want to know how long it will run
+	   on your protein family of interest, check out the complexity tab.</h4>
+</div>
+<div class="query-info">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<img src="/media/help/complexity_search/complexity.png"
+				 alt="complexity.png" style="width:1000px;">
+            <h4>Since the processing time complexity of SIFTER is exponential in the
+               number of candidate molecular functions, SIFTER provides the truncation level
+               as an additional parameter to set the maximum number of molecular functions
+               any protein is assigned. This significantly reduces the time complexity
+               of SIFTER with minimal impact on the prediction results. In order to select
+               the truncation level that maximizes prediction accuracy without exceeding
+               your expected waiting time, you must have an estimate of the processing time
+               of SIFTER given the input protein family for each truncation level.
+               We provide this estimate on the complexity tab of this website to guide you
+               in choosing the truncation level that well balances this trade-off.</h4>      
+            <h4>We use a predictive model trained on existing SIFTER data to estimate
+               the processing time of SIFTER. Just enter the PFam ID of that family
+               or provide the number of candidate molecular functions and family size
+               of that family and press submit.</h4>
+			<h4>Here is an example that searches for the protein family with PFam ID
+			   PF00735, which has 11 candidate molecular functions and family size 2609.</h4>
+			<img src="/media/help/complexity_search/complexity_pfam.png"
+				 alt="complexity_pfam.png" style="width:1000px;">
+			<h4>When you press submit, the web page displays a table of estimated times.
+			   Each row contains the truncation level, the estimated time in hours and in
+			   user-friendly units, and the 95% and 99.9% confidence upper bounds for the
+			   estimated time, also in the same units. (95% confidence upper bound means
+			   that the actual time will be less than that bound with probability 0.95).</h4>
+			<img src="/media/help/complexity_search/complexity_table.png"
+				 alt="complexity_table.png" style="width:1000px;">
+			<h4>When your mouse hovers over one of the rows, the web page highlights that
+			   row and displays the corresponding relative probability distribution of
+			   the estimated time for that row.</h4>
+			<img src="/media/help/complexity_search/complexity_truncation_6.png"
+				 alt="complexity_truncation_6.png" style="width:1000px;">
+			<h4>Here is the distribution of estimated time for truncation level 6.
+			   The vertical lines on the distribution indicate the estimated time
+			   (22.4 hours) and 95% and 99.9% confidence upper bounds (70.7 hours
+			   and 87.5 hours).</h4>
+			<div style="margin-left:auto;margin-right:auto;width:700px">
+                <img src="/media/help/complexity_search/complexity_distribution.png"
+                     alt="complexity_distribution.png" style="width:700px;">
+            </div>
+			<div><a href="#top">Back to top</a></div>
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}

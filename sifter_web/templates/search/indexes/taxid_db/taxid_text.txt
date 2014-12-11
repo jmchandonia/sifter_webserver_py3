@@ -1,3 +1,4 @@
 {{ object.title }}
 {{ object.tax_name}}
 {{ object.tax_id}}
+{{ object.short_name}}

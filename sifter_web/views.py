@@ -42,10 +42,10 @@ class InputForm(forms.Form):
     #input_any = forms.CharField(widget=forms.Textarea(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control','id':'input_any'}),label='Input Any Queries', max_length=100000,required=False)
     input_queries = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'placeholder':'Enter query proteins','class':'form-control','id':'input_queries'}),label='Input Queries', max_length=100000,required=False)
     query_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'query_uploader'}),required=False)
-    input_species = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Enter query species Taxonomy ID','class':'form-control','id':'input_species'}),label='Input Species', max_length=1000,required=False)
+    input_species = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Enter query species Taxonomy ID','class':'form-control','id':'input_species','autocomplete':'off'}),label='Input Species', max_length=1000,required=False)
     input_function = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'placeholder':'Enter query functions','class':'form-control','id':'input_function'}),label='Input Function', max_length=100000,required=False)
     function_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'function_uploader'}),required=False)
-    input_function_sp = forms.CharField(widget=forms.Textarea(attrs={'rows':1, 'placeholder':'Enter query functions','class':'form-control','id':'input_function_sp'}),label='Input Function Sp', max_length=100000,required=False)
+    input_function_sp = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Enter query functions','class':'form-control','id':'input_function_sp','autocomplete':'off'}),label='Input Function Sp', max_length=100000,required=False)
     input_sequence = forms.CharField(widget=forms.Textarea(attrs={'rows':10, 'placeholder':'Enter query sequences','class':'form-control','id':'input_sequence'}),label='Input Sequences', max_length=100000,required=False)
     sequence_uploader = forms.FileField(widget=forms.FileInput(attrs={'id':'sequence_uploader'}),required=False)
     input_email = forms.CharField(widget=forms.EmailInput(attrs={'id':'input_email','placeholder':'Enter email','class':'form-control',}),label='Input Email', max_length=100,required=False)
@@ -55,6 +55,9 @@ class InputForm(forms.Form):
     ExpWeight_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'id':'ExpWeight_hidden'}),initial='0.7',required=False)
     more_options_hidden= forms.BooleanField(widget=forms.HiddenInput(attrs={'id':'more_options_hidden'}),initial=False,required=False)
     function_selected_hidden= forms.CharField(widget=forms.HiddenInput(attrs={'id':'function_selected_hidden'}),initial='',required=False)
+    sp_selected_hidden= forms.CharField(widget=forms.HiddenInput(attrs={'id':'sp_selected_hidden'}),initial='',required=False)
+    spf_selected_hidden= forms.CharField(widget=forms.HiddenInput(attrs={'id':'spf_selected_hidden'}),initial='',required=False)
+    error_sp_hidden= forms.CharField(widget=forms.HiddenInput(attrs={'id':'error_sp_hidden'}),initial='',required=False)
 
     
     def check(self,cleaned_data,my_fields,msg):
@@ -76,11 +79,13 @@ class InputForm(forms.Form):
         if active_tab=='by_protein':
             self.check(cleaned_data,['input_queries','query_uploader'],'Query proteins are not entered.')
         elif active_tab=='by_species':
-            self.check(cleaned_data,['input_species'],'Species IDs are not entered.')
+            if not self.cleaned_data['sp_selected_hidden']:        
+                self.check(cleaned_data,['input_species'],'Species IDs are not entered.')
         elif active_tab=='by_function':
             if not self.cleaned_data['function_selected_hidden']:
                 self.check(cleaned_data,['input_function','function_sp_uploader'],'GO term IDs are not entered.')                
-            self.check(cleaned_data,['input_function_sp','function_sp_uploader'],'Species IDs are not entered.')            
+            if not self.cleaned_data['spf_selected_hidden']:
+                self.check(cleaned_data,['input_function_sp','function_sp_uploader'],'Species IDs are not entered.')            
         elif active_tab=='by_sequence':
             self.check(cleaned_data,['input_sequence','sequence_uploader'],'Query sequences are not entered.')
 
@@ -142,6 +147,16 @@ class EstimateForm(forms.Form):
         data = self.data.copy()
         data[field] = value
         self.data = data
+
+
+def show_help(request):
+    return render(request, 'help.html')
+
+def show_about(request):
+    return render(request, 'about.html')
+
+def show_download(request):
+    return render(request, 'download.html')
 
 def get_complexity(request):
     def render_error(response):
@@ -285,52 +300,39 @@ def get_input(request,context={}):
                     my_proteins=list(set([w for w in splited if w]))
                     data={'proteins':my_proteins}
                 elif active_tab=='by_species':
-                    my_species=form.cleaned_data['input_species']
-                    
-                    sqs = SearchQuerySet()
-            
-                    # Check to see if a q was chosen.
-                    if my_species:        
-                        sqs3 = sqs.filter(content_auto_taxname=my_species)
-                        sqs4 = sqs.filter(content_auto_taxid=my_species)
-                        sqs5 = sqs.filter(text=my_species)
-                        sqs=sqs3|sqs4|sqs5
-                        sqs_taxid=sqs.filter(django_ct='taxid_db.taxid')
-                        print sqs_taxid
-                        if not len(sqs_taxid)==1:
-                            context['form']=form
-                            context['response']=form.cleaned_data['ExpWeight_hidden']
-                            sqs_sp_results=[{'model':'Species','results':sqs_taxid}]
-                            context['sqs_sp_results']=sqs_sp_results
-                            paginators=[]
-                            pages=[]
-                            for i,result in enumerate(sqs_sp_results):
-                                paginator=Paginator(result['results'], results_per_page or RESULTS_PER_PAGE)
-                                paginators.append(paginator)
-                                try:
-                                    pages.append({'model':result['model'],'page':paginator.page(int(request.GET.get('page-%s'%i, 1)))})
-                                except InvalidPage:
-                                    raise Http404("No such page of results!")
-                                
-                            context['pages']= pages
-                            context['paginators']= paginators
-                            print pages
-                            return render_to_response('home.html', context, context_instance=context_class(request))        
-                    my_species=sqs_taxid[0].object.tax_id
+                    if not form.cleaned_data['sp_selected_hidden']:
+                        my_species=form.cleaned_data['input_species']                
+                        if my_species:
+                            return HttpResponseRedirect('/search_options/?q=%s'%my_species)                            
+                    else:
+                        my_species=form.cleaned_data['sp_selected_hidden']
                     data={'species':my_species}
                 elif active_tab=='by_function':
-                   my_species=form.cleaned_data['input_function_sp']
-                   if not form.cleaned_data['function_selected_hidden']:
-                       splited=re.split(' |,|;\n',form.cleaned_data['input_function'])
-                       my_functions=list(set([w for w in splited if w]))
-                   else:
-                       my_functions=[form.cleaned_data['function_selected_hidden']]
-                   data={'species':form.cleaned_data['input_function_sp'],'functions':my_functions}                
+                    if not form.cleaned_data['function_selected_hidden']:
+                        splited=re.split(' |,|;\n',form.cleaned_data['input_function'])
+                        my_functions=list(set([w for w in splited if w]))
+                    else:
+                        splited=re.split(' |,|;\n',form.cleaned_data['function_selected_hidden'])
+                        my_functions=list(set([w for w in splited if w]))
+                
+                    if not form.cleaned_data['spf_selected_hidden']:
+                        my_species=form.cleaned_data['input_function_sp']
+                        if my_species:
+                            if my_functions:
+                                my_functions_string='&my_f='+','.join(my_functions)
+                            else:
+                                my_functions_string=''
+                            return HttpResponseRedirect('/search_options/?fq=%s%s'%(my_species,my_functions_string))                                                        
+                    else:
+                        my_species=form.cleaned_data['spf_selected_hidden']
+
+                    data={'species':my_species,'functions':my_functions}                
                 elif active_tab=='by_sequence':
                     my_sequences=form.cleaned_data['input_sequence']
                     n_sequences=len(my_sequences)
                     data={'sequences':my_sequences}                
                 pickle.dump(data,open(infile,'w'))
+                print data
                 P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                                 query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
                                 n_proteins=len(my_proteins),species=my_species,n_functions=len(my_functions),n_sequences=n_sequences,submission_date=datetime.date.today(),
@@ -348,6 +350,28 @@ def get_input(request,context={}):
             form.set_default('more_options_hidden',more_options)
             sifter_choices_val=form.cleaned_data['sifter_choices']
             form.set_default('sifter_choices',sifter_choices_val)
+            function_selected_hidden=form.cleaned_data['function_selected_hidden']
+            form.fields['function_selected_hidden'].widget.attrs['value']=function_selected_hidden
+            spf_selected_hidden=form.cleaned_data['spf_selected_hidden']
+            form.fields['spf_selected_hidden'].widget.attrs['value']=spf_selected_hidden
+            sp_selected_hidden=form.cleaned_data['sp_selected_hidden']
+            form.fields['sp_selected_hidden'].widget.attrs['value']=sp_selected_hidden
+            error_sp_hidden=form.cleaned_data['error_sp_hidden']
+            form.fields['error_sp_hidden'].widget.attrs['value']=error_sp_hidden
+            
+            if function_selected_hidden:
+                my_functions_string=function_selected_hidden
+                my_functions=my_functions_string.split(',')                
+                if len(my_functions)==1:
+                    my_function=my_functions[0]
+                    term=Term.objects.filter(acc=my_function).values('name','acc')
+                    if term:
+                        term=term[0]
+                        context['function_selected']='%s (%s)'%(term['name'],term['acc'])
+                    else:
+                        context['function_selected']=my_function
+                else:
+                    context['function_selected']=my_functions_string
             
             context['form']=form
             context['response']=form.cleaned_data['ExpWeight_hidden']        
@@ -407,11 +431,78 @@ def get_input(request,context={}):
         print 'ssss'
         form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_any'
         context['form']=form
-        context['response']='Hi'        
+        context['response']='Hi'
+        context['no_results']=False
+        if results:
+            if len(results[0]['results'])==0 and len(results[1]['results'])==0 and len(results[2]['results'])==0:
+                context['no_results']=True
         return render_to_response('home.html', context, context_instance=context_class(request))        
         
 
     #return render(request, 'home.html', context)
+
+def show_search_options(request):
+    results_per_page=None
+    context_class=RequestContext        
+
+    qdict=dict(request.GET.iterlists())
+    fq_flag=0
+    if ('q' in qdict) or ('fq' in qdict):
+        if 'q' in qdict:
+            my_species=qdict['q'][0]
+        else:
+            my_species=qdict['fq'][0]
+            fq_flag=1
+            if 'my_f' in qdict:
+                my_functions_string='&my_f='+qdict['my_f'][0]
+            else:
+                my_functions_string=''
+        sqs = SearchQuerySet()
+        sqs3 = sqs.filter(content_auto_taxname=my_species)
+        sqs4 = sqs.filter(content_auto_taxid=my_species)
+        sqs5 = sqs.filter(text=my_species)
+        sqs=sqs3|sqs4|sqs5
+        sqs_taxid=sqs.filter(django_ct='taxid_db.taxid')
+        if len(sqs_taxid)>1:
+            context_search={}
+            if fq_flag==0:
+                sqs_sp_results=[{'model':'Species','results':[{'name':'%s (taxid:%s)'%(w.object.tax_name,w.object.tax_id), 'url':'/predictions/?s-taxid=%s' % w.object.tax_id} for w in sqs_taxid]}]
+            else:
+                sqs_sp_results=[{'model':'Species','results':[{'name':'%s (taxid:%s)'%(w.object.tax_name,w.object.tax_id), 'url':'/predictions/?sf-taxid=%s%s' % (w.object.tax_id,my_functions_string)} for w in sqs_taxid]}]                                                
+            
+            context_search['sqs_sp_results']=sqs_sp_results
+            paginators=[]
+            pages=[]
+            for i,result in enumerate(sqs_sp_results):
+                paginator=Paginator(result['results'], results_per_page or RESULTS_PER_PAGE)
+                paginators.append(paginator)
+                try:
+                    pages.append({'model':result['model'],'page':paginator.page(int(request.GET.get('page', 1)))})
+                except InvalidPage:
+                    raise Http404("No such page of results!")
+                
+            context_search['pages']= pages
+            context_search['paginators']= paginators
+            context_search['query']= my_species
+            #return HttpResponseRedirect('/search_options/?sp=%s'%my_species,context_search)                                
+            return render_to_response('search_options.html', context_search, context_instance=context_class(request))
+        elif len(sqs_taxid)==1:
+            tid=sqs_taxid[0].object.tax_id
+            return HttpResponseRedirect('/predictions/?s-taxid=%s'%tid, {'results':''})
+        else:
+            form = InputForm()
+            if fq_flag==0:
+                form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_species'
+            else:
+                form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_function'
+            context={}
+            context_class=RequestContext        
+            context['form']=form
+            context['response']='Hi'
+            form.fields['error_sp_hidden'].widget.attrs['value']='1'
+            return render(request, 'home.html', context)
+            
+    
 
 
 
@@ -520,6 +611,49 @@ def show_predictions(request):
         ,'active_tab_hidden':'by_protein'}
         run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})        
+    elif 's-taxid' in qdict:
+        my_species=qdict['s-taxid'][0]
+        form = InputForm()
+        form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_species'
+        form.fields['sp_selected_hidden'].widget.attrs['value'] = my_species
+        context={}
+        context_class=RequestContext        
+        context['form']=form
+        context['response']='Hi'
+        taxid=Taxid.objects.filter(tax_id=my_species).values('tax_name','tax_id')[0]
+        context['sp_selected']='%s (%s)'%(taxid['tax_name'],taxid['tax_id'])
+        return render(request, 'home.html', context)
+    elif 'sf-taxid' in qdict:
+        my_species=qdict['sf-taxid'][0]
+        form = InputForm()
+        form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_function'
+        form.fields['spf_selected_hidden'].widget.attrs['value'] = my_species
+        context={}
+        if 'my_f' in qdict:
+            my_functions_string=qdict['my_f'][0]
+            print my_functions_string
+            if my_functions_string:
+                my_functions=my_functions_string.split(',')                
+                print my_functions
+                if len(my_functions)==1:
+                    my_function=my_functions[0]
+                    term=Term.objects.filter(acc=my_function).values('name','acc')
+                    if term:
+                        term=term[0]
+                        form.fields['function_selected_hidden'].widget.attrs['value']=term['acc']
+                        context['function_selected']='%s (%s)'%(term['name'],term['acc'])
+                    else:
+                        form.fields['function_selected_hidden'].widget.attrs['value']=my_function
+                        context['function_selected']=my_function
+                else:
+                    form.fields['function_selected_hidden'].widget.attrs['value']=my_functions_string
+                    context['function_selected']=my_functions_string
+        context_class=RequestContext        
+        context['form']=form
+        context['response']='Hi'
+        taxid=Taxid.objects.filter(tax_id=my_species).values('tax_name','tax_id')[0]
+        context['spf_selected']='%s (%s)'%(taxid['tax_name'],taxid['tax_id'])
+        return render(request, 'home.html', context)
 
 def autocomplete(request):
     print 'HHH'

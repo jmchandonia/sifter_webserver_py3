@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block get_input %}
+<div class="container custom-container">
+<div class="query-info helppage">
+	<h2><a name="quickSearch">Complexity Analysis</a></h2>
+	<h3>To find out how much running your SIFTER query will take on a local machine click <a href='{% url "complexity" %}'>here</a>.</h3>
+</div>
+{%endblock%}

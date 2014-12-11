@@ -45,7 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djcelery',
     'chartit',
-	'haystack',
+    'haystack',
     'results',
     'graphs',
     'term_db',
@@ -99,7 +99,7 @@ DATABASES = {
     },
     'taxid_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(MyDB_DIR,"taxid_db.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"taxid_db_wP.sqlite3"),
     },
     'estimatedb': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -166,3 +166,8 @@ if DEBUG:
     
     
     
+SEND_BROKEN_LINK_EMAILS=True    
+ADMINS = (
+    ('SIFTER', 'sifter@compbio.berkeley.edu'),
+    ('Mohammad Sahraeian', 'sahraeian.m@gmail.com'),
+)

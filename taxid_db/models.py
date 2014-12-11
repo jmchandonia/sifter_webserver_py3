@@ -15,6 +15,7 @@ from django.db import models
 class Taxid(models.Model):
     tax_id = models.IntegerField(primary_key=True, blank=True)
     tax_name = models.TextField(blank=True)
+    short_name = models.TextField(blank=True)
 
     class Meta:
         managed = False

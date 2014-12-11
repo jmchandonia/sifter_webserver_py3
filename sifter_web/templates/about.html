@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block get_input %}
+<div class="container custom-container">
+<div class="query-info helppage">
+	<h2><a name="quickSearch">SIFTER Protein Function Prediction</a></h2>
+	<p>We are awash in proteins discovered through high-throughput sequencing projects. 
+	As only a minuscule fraction of these have been experimentally characterized, 
+	computational methods are widely used for automated annotation. 
+	Unfortunately, these predictions have littered the databases with erroneous information, 
+	for a variety of reasons including the propagation of errors and the systematic flaws in BLAST and related methods. 
+	We have developed a statistical approach to predicting protein function that uses a protein family's phylogenetic tree, 
+	as the natural structure for representing protein relationships<small><sup><a href="#ref_sifter_GR">1</a>,<a href="#ref_sifter_PCB">2</a></sup></small>. We overlay on this all known protein functions in the family. 
+	We use a model of function evolution to then infer the functions of all other protein functions. Even our initial implementations 
+	of this method, called SIFTER (Statistical Inference of Function Through Evolutionary Relationships) have performed better than other methods in widespread use. 
+	SIFTER was recently honored as the best-performing sequence-based method in the Critical Assessment of Function Annotation <small><sup><a href="#ref_cafa1">3</a></sup></small>.  </p>
+</div>
+<div class="row">
+	<div class="col-md-offset-2 col-md-8 text-center">
+		<img src="/media/about/sifter_method.png"
+			 alt="quick_autocomplete.png" style="width:800px;">
+	</div>
+	<div class="col-md-offset-2 col-md-8 text-center">
+		<img src="/media/about/sifter_cafa.png"
+			 alt="quick_autocomplete.png" style="width:800px;">
+	</div>
+</div>
+<div class="query-info">
+<h2>References</h2>
+<br><a id="ref_sifter_GR">1</a>. Engelhardt BE, Jordan MI, Srouji JR, Brenner SE. 2011. Genome-scale phylogenetic function annotation of large and diverse protein families.<i>Genome Research 21</i>:1969-1980. doi:<a href=http://dx.doi.org/10.1101/gr.104687.109>10.1101/gr.104687.109</a>
+[<a href="http://compbio.berkeley.edu/people/brenner/pubs/Engelhardt-2011-GR-phylogenetic_annotation.pdf">PDF 1.2M</a>]
+<br><a id="ref_sifter_PCB">2</a>. Engelhardt BE, Jordan MI, Muratore KE, Brenner SE. 2005. Protein molecular function prediction by Bayesian phylogenomics. 
+<i>PLoS Computational Biology 1</i>:e45. doi:<a href=http://dx.doi.org/10.1371/journal.pcbi.0010045>10.1371/journal.pcbi.0010045</a>
+[<a href="http://compbio.berkeley.edu/people/brenner/pubs/engelhardt-2005-ploscb-sifter.pdf">PDF 1.4M</a>]
+<br><a id="ref_cafa_1">3</a>. Radivojac P, et al. 2013. A large-scale evaluation of computational protein function prediction. <em>Nature Methods 10</em>:221-227. doi:<a href="http://dx.doi.org/10.1038/nmeth.2340">10.1038/nmeth.2340</a> [<a href="http://compbio.berkeley.edu/people/brenner/pubs/radivojac-2013-nmeth-cafa.pdf">PDF 720K</a>]
+</div>
+{%endblock%}

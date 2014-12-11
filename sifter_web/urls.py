@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from sifter_web.views import get_input,show_results,get_complexity,do_basic_search,autocomplete,show_predictions
+from sifter_web.views import get_input,show_results,get_complexity,do_basic_search,autocomplete,show_predictions,show_help,show_about,show_search_options,show_download
 
 from haystack.views import SearchView, search_view_factory
 from haystack.forms import HighlightedSearchForm
@@ -15,9 +15,13 @@ OUTPUT_DIR=os.path.join(os.path.dirname(__file__),"output")
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', get_input,name='home'),
+    url(r'^help/', show_help,name='help'),
+    url(r'^about/', show_about,name='about'),
+    url(r'^download/', show_download,name='download'),
     url(r'^results-id=(\d{7})$', show_results,name='results'),
     url(r'^predictions/$', show_predictions,name='predictions'),
     url(r'^complexity/$', get_complexity,name='complexity'),
+    url(r'^search_options/$', show_search_options,name='search_options'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^search/', include('haystack.urls')),

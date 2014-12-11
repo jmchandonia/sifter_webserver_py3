@@ -62,7 +62,8 @@
       <hr>
 
       <footer>
-        <p>&copy; Company 2014</p>
+	<small>Privacy Policy: While your SIFTER queries will be kept secure, we may use them for data analysis and improvement of SIFTER webserver.</small>
+        <!--<p>&copy; Company 2014</p>-->
       </footer>
     </div> <!-- /container -->
 
@@ -130,6 +131,35 @@
 			$('.hideable-options0').show();
 			$('.hideable-options02').hide();		
 		}	      
+
+		if ($("#function_selected_hidden").val()==""){
+			$('.hideable-options-f0').show();
+			$('.hideable-options-f1').hide();
+		}else{
+			$('.hideable-options-f0').hide();
+			$('.hideable-options-f1').show();
+		}	      
+		if ($("#spf_selected_hidden").val()==""){
+			$('.hideable-options-sf0').show();
+			$('.hideable-options-sf1').hide();
+		}else{
+			$('.hideable-options-sf0').hide();
+			$('.hideable-options-sf1').show();
+		}	      
+		if ($("#sp_selected_hidden").val()==""){
+			$('.hideable-options-s0').show();
+			$('.hideable-options-s1').hide();
+		}else{
+			$('.hideable-options-s0').hide();
+			$('.hideable-options-s1').show();
+		}	      
+
+		if ($("#error_sp_hidden").val()==""){
+			$('.hideable-options-esp').hide();
+		}else{
+			$('.hideable-options-esp').show();
+		}	      
+
 		
 		$('.navbar li.active').removeClass('active');
 		var url = window.location;
@@ -327,7 +357,20 @@
 		}else{
 		$('.hideable-options0').show();
 		$('.hideable-options02').hide();		
-		}	      
+		}
+		$('.hideable-options-f0').show();
+		$('.hideable-options-sf0').show();
+		$('.hideable-options-f1').hide();
+		$('.hideable-options-sf1').hide();
+		$('.hideable-options-s0').show();
+		$('.hideable-options-s1').hide();
+		$('.hideable-options-s1').hide();
+		$('.hideable-options-esp').hide();
+		$("#function_selected_hidden").val('');		
+		$("#spf_selected_hidden").val('');		
+		$("#sp_selected_hidden").val('');		
+		$("#error_sp_hidden").val('');		
+		
       }
 
 	  var reset_home_search=function(){
