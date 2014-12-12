@@ -80,7 +80,7 @@ MyDB_DIR = os.path.join(os.path.dirname(BASE_DIR),"my_dbs")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/data_more/SIFER_webserver/sifter_web/src/sifter_webserver/db.sqlite3',
+        'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
     },        
     'term_db': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -108,7 +108,7 @@ DATABASES = {
     },
     'sifter_results_ready_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_ready_leaves_wREST.db"),
+        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_ready_leaves_wREST.sqlite3"),
     },
     'idmap_db': {
         'ENGINE': 'django.db.backends.sqlite3',

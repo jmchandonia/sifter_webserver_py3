@@ -28,11 +28,11 @@ CELERY_IMPORTS = ("tasks",)
 SECRET_KEY = '=e@&t9o*8k%hxyuc6x8==!&ujxocc@1^(czt7p4urb+1m$#5xm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False #True
+DEBUG = True
 
-TEMPLATE_DEBUG = False #True
+TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ["sifter.berkeley.edu"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -80,7 +80,7 @@ MyDB_DIR = os.path.join(os.path.dirname(BASE_DIR),"my_dbs")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR,"db.sqlite3"),
+        'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
     },        
     'term_db': {
         'ENGINE': 'django.db.backends.sqlite3',
