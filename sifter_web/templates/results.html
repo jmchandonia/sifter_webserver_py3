@@ -24,7 +24,7 @@
   
   {% if my_object.output_file == ''%}
   <div class="row">
-    <meta http-equiv='refresh' content='5'>      
+    <meta http-equiv='refresh' content='15'>      
     <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
       <div class="panel panel-default panel-wb">
         <div class="panel-heading">
@@ -33,8 +33,8 @@
         <div class="panel-body">
         <p>You may check here or the following address to see your SIFTER results once it is ready:</p>
         <p><a href="/results-id={{my_object.job_id}}">/results-id={{my_object.job_id}}</a></p>
-        <p>This page is reloaded every 5 seconds.</p>
-        <p>If you have provided your email address, the result will be send to you once it is ready. </p>
+        <p>This page is reloaded every 15 seconds.</p>
+<!--        <p>If you have provided your email address, the result will be send to you once it is ready. </p> -->
         <p>The SIFTER predictions for your query can be accessed through the above link for the next 15 days.</p>                      
         </div>
       </div>
@@ -83,7 +83,7 @@
   {% if not my_object.output_file == ''%}
     {% if my_object.query_method == 'by_sequence' %}
       
-          <div class="alert alert-{{msg.0}}"><h4>Here we report the SIFTER predictions for the homologs (found by top BLAST hits) of your query sequences. <h4></div>
+          <div class="alert alert-info"><h4>Here we report the SIFTER predictions for the homologs (found by top BLAST hits) of your query sequences. </h4></div>
     {%endif%}
 
   <div class="row">
