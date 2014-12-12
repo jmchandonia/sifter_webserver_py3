@@ -15,7 +15,7 @@
                         <li>For queries not in our current results, try <a href="javascript:activaTab('by_sequence');" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
                         <li>Citation:</li>
                         <ul>
-							<li> - Engelhardt BE, Jordan MI, Srouji JR, Brenner SE. 2011. Genome-scale phylogenetic function annotation of large and diverse protein families.<i>Genome Research 21</i>:1969-1980. doi:<a href=http://dx.doi.org/10.1101/gr.104687.109>10.1101/gr.104687.109</a></li>
+							<li> Engelhardt BE, Jordan MI, Srouji JR, Brenner SE. 2011. Genome-scale phylogenetic function annotation of large and diverse protein families.<i>Genome Research 21</i>:1969-1980. doi:<a href=http://dx.doi.org/10.1101/gr.104687.109>10.1101/gr.104687.109</a></li>
 						</ul>
                     </ul>
                     </div>
@@ -237,10 +237,10 @@
                   <li class="nav-header">Quick Search</li>
                   <li {% if form.active_tab_hidden.value == 'by_any'%} class ="active" {% endif %} id="byany_tab"><a href="#by_any" data-toggle="tab">Search SIFTER</a></li>
                   <li class="nav-header">Advanced Search</li>
-                  <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by <b>protein</b> ID</a></li>
-                  <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict for all proteins of a <b>species</b></a></li>
-                  <li {% if form.active_tab_hidden.value == 'by_function' %} class ="active" {% endif %} id="byfunction_tab"><a href="#by_function" data-toggle="tab">Find proteins predicted with given <b>functions</b> in a species</a></li>
-                  <li {% if form.active_tab_hidden.value == 'by_sequence' %} class ="active" {% endif %} id="bysequence_tab"><a href="#by_sequence" data-toggle="tab">Find predictions for homologs of given <b>sequence</b></a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by <b>Protein</b> ID</a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict for all proteins of a <b>Species</b></a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_function' %} class ="active" {% endif %} id="byfunction_tab"><a href="#by_function" data-toggle="tab">Find proteins that have given <b>Functions</b></a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_sequence' %} class ="active" {% endif %} id="bysequence_tab"><a href="#by_sequence" data-toggle="tab">Predict for homologs of given <b>Sequences</b></a></li>
                 </ul>
             </div>
         </div>
