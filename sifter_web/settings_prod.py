@@ -108,7 +108,7 @@ DATABASES = {
     },
     'sifter_results_ready_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_ready_leaves_wREST.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_ready_leaves_wREST.db"),
     },
     'idmap_db': {
         'ENGINE': 'django.db.backends.sqlite3',

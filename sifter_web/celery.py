@@ -2,6 +2,10 @@ from __future__ import absolute_import
 
 from celery import Celery
 
+import os
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sifter_web.settings')
+
 
 app = Celery('sifter_web',
              broker='amqp://',

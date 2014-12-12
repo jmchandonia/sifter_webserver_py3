@@ -332,7 +332,9 @@ def get_input(request,context={}):
                     n_sequences=len(my_sequences)
                     data={'sequences':my_sequences}                
                 pickle.dump(data,open(infile,'w'))
-                print data
+                os.system("chmod 775 %s"%infile)
+		os.system("chgrp sifter-group %s"%infile)
+		print data
                 P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                                 query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
                                 n_proteins=len(my_proteins),species=my_species,n_functions=len(my_functions),n_sequences=n_sequences,submission_date=datetime.date.today(),
