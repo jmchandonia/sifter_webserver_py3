@@ -13,9 +13,8 @@
                     <ul class="list-unstyled">
                         <li>Currently SIFTER has predictions for <label>16,853,547</label> proteins across <label>232,403</label> species.</li>
                         <li>For queries not in our current results, try <a href="javascript:activaTab('by_sequence');" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
-                        <li>You can try advanced search from the right menu.</li>
-                        <li>If you used our webserver please cite us as:</li>
-                        <li> - Sahraeian SME, Luo K, Brenner SE. 2015. SIFTER-webserver: phylogeny-based protein function prediction.<i>submitted.</i></li>
+                        <li>Citation:</li>
+                        <li> - Engelhardt BE, Jordan MI, Srouji JR, Brenner SE. 2011. Genome-scale phylogenetic function annotation of large and diverse protein families.<i>Genome Research 21</i>:1969-1980. doi:<a href=http://dx.doi.org/10.1101/gr.104687.109>10.1101/gr.104687.109</a></li>
                     </ul>
                     </div>
                    {{form.error_sp_hidden}}
@@ -77,7 +76,7 @@
                     </fieldset>
                     </div>
                     </div>
-                     <div class="form-group">
+                     <div class="form-group" style="display: none" >
                         <fieldset>
                         <div class="row">
                           <div class="col-md-12 col-sm-12 col-xs-12">
@@ -236,10 +235,10 @@
                   <li class="nav-header">Quick Search</li>
                   <li {% if form.active_tab_hidden.value == 'by_any'%} class ="active" {% endif %} id="byany_tab"><a href="#by_any" data-toggle="tab">Search SIFTER</a></li>
                   <li class="nav-header">Advanced Search</li>
-                  <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by protein ID</a></li>
-                  <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict by species</a></li>
-                  <li {% if form.active_tab_hidden.value == 'by_function' %} class ="active" {% endif %} id="byfunction_tab"><a href="#by_function" data-toggle="tab">Predict by function</a></li>
-                  <li {% if form.active_tab_hidden.value == 'by_sequence' %} class ="active" {% endif %} id="bysequence_tab"><a href="#by_sequence" data-toggle="tab">Predict by sequence</a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_protein' %} class ="active" {% endif %} id="byprotein_tab"><a href="#by_protein" data-toggle="tab">Predict by <b>protein</b> ID</a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_species' %} class ="active" {% endif %} id="byspecies_tab"><a href="#by_species" data-toggle="tab">Predict for all proteins of a <b>species</b></a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_function' %} class ="active" {% endif %} id="byfunction_tab"><a href="#by_function" data-toggle="tab">Find proteins predicted with given <b>functions</b> in a species</a></li>
+                  <li {% if form.active_tab_hidden.value == 'by_sequence' %} class ="active" {% endif %} id="bysequence_tab"><a href="#by_sequence" data-toggle="tab">Find predictions for homologs of given <b>sequence</b></a></li>
                 </ul>
             </div>
         </div>

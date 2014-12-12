@@ -1,5 +1,5 @@
 <div class="query-info">
-<h2>Predict by Protein ID</h2>
+<h2>Predict by <b>Protein</b> ID</h2>
 <h4>Find SIFTER predictions for your query proteins.</h4>
 </div>
             
@@ -7,7 +7,7 @@
 <div class="form-group {%if form.input_queries.errors %} has-error {% endif %}" >
   <fieldset >
   <h3>Enter query proteins </h3>
-  <div>Paste or upload the Uniprot IDs or Accession numbers of your query proteins</div>
+  <div>Paste the Uniprot IDs or Accession numbers of your query proteins</div>
   <div class="row">
     <div class="col-md-10 col-sm-9 col-xs-9">
       <div class="text-right">
@@ -20,14 +20,14 @@
     <div class="col-md-10 col-sm-9 col-xs-9">
       {{form.input_queries}}      
       <div class="row">
-	<div class="col-md-9 col-sm-9 col-xs-9">
+<!--	<div class="col-md-9 col-sm-9 col-xs-9">
 	- OR - <label for="query_uploader">Upload the list of your proteins as a text file:</label>
-	</div>
+	</div> -->
 	<div class="col-md-3 col-sm-3 col-xs-3">
 	  <div class="text-right"><a id="clear_text" href="javascript:void(0)" title="clear_text">Clear</a></div>
 	</div>
       </div>
-      {{form.query_uploader}}
+      <!--{{form.query_uploader}}-->
     </div>
     <div class="col-md-2 col-sm-3 col-xs-3">
       <div class="text-left">	
