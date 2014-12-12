@@ -25,7 +25,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^search/', include('haystack.urls')),
     url(r'^search/autocomplete', autocomplete),
-    url(r'^search3/', do_basic_search),
     url(r'^downloads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': OUTPUT_DIR}),
 )
 
