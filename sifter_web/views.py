@@ -333,8 +333,7 @@ def get_input(request,context={}):
                     data={'sequences':my_sequences}                
                 pickle.dump(data,open(infile,'w'))
                 os.system("chmod 775 %s"%infile)
-		os.system("chgrp sifter-group %s"%infile)
-		print data
+                os.system("chgrp sifter-group %s"%infile)
                 P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                                 query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
                                 n_proteins=len(my_proteins),species=my_species,n_functions=len(my_functions),n_sequences=n_sequences,submission_date=datetime.date.today(),
@@ -582,6 +581,8 @@ def show_predictions(request):
         my_species=qdict['taxid'][0]
         data={'species':my_species}
         pickle.dump(data,open(infile,'w'))
+        os.system("chmod 775 %s"%infile)
+        os.system("chgrp sifter-group %s"%infile)
         P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
                         query_method='by_species', sifter_EXP_choices = True ,
                         n_proteins=0,species=my_species,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
@@ -603,6 +604,8 @@ def show_predictions(request):
         print 'my_proteins',my_proteins
         data={'proteins':my_proteins}
         pickle.dump(data,open(infile,'w'))
+        os.system("chmod 775 %s"%infile)
+        os.system("chgrp sifter-group %s"%infile)
         P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
                         query_method='by_protein', sifter_EXP_choices = True ,
                         n_proteins=1,species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),

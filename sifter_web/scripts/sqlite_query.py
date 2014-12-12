@@ -504,6 +504,8 @@ def find_sifter_preds_byprotein(q_genes,my_form_data,job_id):
     data={'proteins':q_genes}
     infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
     pickle.dump(data,open(infile,'w'))
+    os.system("chmod 775 %s"%infile)
+    os.system("chgrp sifter-group %s"%infile)
     sifter_choices=my_form_data['sifter_choices']
     ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
     print sifter_choices,ExpWeight_hidden*2
