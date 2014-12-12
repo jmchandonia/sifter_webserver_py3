@@ -257,7 +257,6 @@ def estimate_time(numTerms, famSize):
         histograms.append(plot_histogram(eTime, cat))
         if stop_next==1:
             break
-        print numTerms,cutoff,len(histograms)
     
     chartContainers = ','.join(['hist_container%i' % i for i in range(1, cutoff)])        
     return (tableHeader, tableBody[:cutoff], histograms, chartContainers, numTerms,famSize)

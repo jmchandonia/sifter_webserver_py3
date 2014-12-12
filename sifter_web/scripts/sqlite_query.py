@@ -185,7 +185,6 @@ def find_db_results(method,q_genes={},species=''):
         batchs=100
         for i in range(0,int(np.ceil(float(len(q_genes))/float(batchs)))):
             q_results0.extend(SifterResults.objects.filter(uniprot_id__in=q_genes[batchs*i:min(len(q_genes),batchs*(i+1))]))
-        print len(q_results0)
     elif method=='by_species':
         q_results0=SifterResults.objects.filter(tax_id=species)
         
@@ -210,7 +209,6 @@ def find_db_ready_results(method,q_genes={},mode=1,species=''):
         batchs=100
         for i in range(0,int(np.ceil(float(len(q_genes))/float(batchs)))):
             q_results0.extend(SifterResultsReady.objects.filter(uniprot_id__in=q_genes[batchs*i:min(len(q_genes),batchs*(i+1))],mode=mode))
-        print len(q_results0)
         
    
         q_results={}    
@@ -303,7 +301,8 @@ def find_processed_results(q_results):
                         continue
                     results[gid][code0].append([weights_all[fam][code0],res,fam])
         SIFTER_results[gene]=results
-    print 'bads',bads
+    if bads:
+        print 'bads',bads
 
     SIFTER_results2={}
     for gene in SIFTER_results.keys():
@@ -508,7 +507,6 @@ def find_sifter_preds_byprotein(q_genes,my_form_data,job_id):
     os.system("chgrp sifter-group %s"%infile)
     sifter_choices=my_form_data['sifter_choices']
     ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
-    print sifter_choices,ExpWeight_hidden*2
     if ((sifter_choices=='EXP-Model') or ((sifter_choices=='ALL-Model')and(ExpWeight_hidden==0.7))):
         if sifter_choices=='EXP-Model':
             mode=1
@@ -635,7 +633,6 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
 
         sifter_choices=my_form_data['sifter_choices']
         ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
-        print sifter_choices,ExpWeight_hidden*2
         if ((sifter_choices=='EXP-Model') or ((sifter_choices=='ALL-Model')and(ExpWeight_hidden==0.7))):
             if sifter_choices=='EXP-Model':
                 mode=1
@@ -661,7 +658,6 @@ def find_go_name_acc(ts):
     batchs=100
     for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
         res0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('term_id','name','acc'))
-    print len(res0)
     idx_to_go_name={}
     for w in res0:
         idx_to_go_name[w['term_id']]=[w['acc'],w['name']]
@@ -673,7 +669,6 @@ def find_name_taxids(ts):
     batchs=100
     for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
         res0.extend(Taxid.objects.filter(tax_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('tax_id','tax_name'))
-    print len(res0)
     taxid_2_name={}
     for w in res0:
         taxid_2_name[w['tax_id']]=w['tax_name']

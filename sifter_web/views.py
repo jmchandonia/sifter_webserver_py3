@@ -132,7 +132,6 @@ class MySearchForm(SearchForm):
             #sqs8=list(set(SifterResultsReady.objects.filter(uniprot_acc=self.cleaned_data['q']).values_list('uniprot_id',flat=True)))
             sqs8=Idmap.objects.filter(other_id=self.cleaned_data['q'], db='ID').values_list('unip_id',flat=True)
             sqs_unip=list(set(sqs8)|set(sqs7))
-            print sqs7,sqs8,sqs_unip
             sqs_unip=[{'name':w, 'url':'/predictions/?protein=%s' % w} for w in sqs_unip]
         return [{'model':'Proteins','results':sqs_unip},{'model':'Species','results':sqs_taxid},{'model':'Functions','results':sqs_term}]
 
@@ -205,7 +204,6 @@ def get_complexity(request):
             if not histograms:
                 return render(request, 'complexity.html', {'form': form,
                     'tableHeader': tableHeader, 'tableBody': tableBody, 'displayHist': False})                
-            print chartContainers
             return render_to_response('complexity.html',
                 {'form': form, 'tableHeader': tableHeader, 'tableBody': tableBody, 'histograms': histograms,
                 'displayHist': True, 'chartContainers': chartContainers, 'numTerms': numTerms},
@@ -224,13 +222,10 @@ def delete_old_results():
     olddate = datetime.date.today()+datetime.timedelta(days=-5)
     old_job_ids=SIFTER_Output.objects.filter(result_date__lte=olddate).values_list('job_id',flat=True)
     for job_id in old_job_ids:
-        print 'jobid',job_id
         infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
-        print infile,os.path.exists(infile)
         if os.path.exists(infile):
             os.remove(infile)
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        print outfile,os.path.exists(outfile)                
         if os.path.exists(outfile):
             os.remove(outfile)
     
@@ -239,7 +234,6 @@ def delete_old_results():
 def get_input(request,context={}):
     
     if context:
-        print context
         return render_to_response('home.html', context, context_instance=context_class(request))
         
     searchqueryset=None
@@ -288,7 +282,6 @@ def get_input(request,context={}):
                 job_id=random.randint(1000000,9999999)
                 while SIFTER_Output.objects.filter(job_id=job_id):
                     job_id=random.randint(1000000,9999999)
-                print job_id
                 
                 infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
                 my_species=0
@@ -386,12 +379,10 @@ def get_input(request,context={}):
             search_form = MySearchForm(request.GET, searchqueryset=searchqueryset, load_all=load_all)
             if search_form.is_valid():
                 query = search_form.cleaned_data['q']
-                print query
                 results = search_form.search()
         else:
             search_form = MySearchForm(searchqueryset=searchqueryset, load_all=load_all)
         
-        print results
         if results:
             if len(results[0]['results'])==0 and len(results[1]['results'])==0 and len(results[2]['results'])==1:                            
                 return HttpResponseRedirect('/predictions/?term=%s'%results[2]['results'][0].acc)
@@ -429,7 +420,6 @@ def get_input(request,context={}):
         
         #other form processing    
         form = InputForm()
-        print 'ssss'
         form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_any'
         context['form']=form
         context['response']='Hi'
@@ -519,7 +509,6 @@ def show_results(request,job_id):
     if species:
         species=species[0]
         
-    print 'species',species
     if my_object.output_file=='':
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
         return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':''})        
@@ -575,7 +564,6 @@ def show_predictions(request):
         job_id=random.randint(1000000,9999999)    
         while SIFTER_Output.objects.filter(job_id=job_id):
             job_id=random.randint(1000000,9999999)
-        print job_id
         
         infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
         my_species=qdict['taxid'][0]
@@ -597,11 +585,9 @@ def show_predictions(request):
         job_id=random.randint(1000000,9999999)    
         while SIFTER_Output.objects.filter(job_id=job_id):
             job_id=random.randint(1000000,9999999)
-        print job_id
-        
+			
         infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
         my_proteins=[qdict['protein'][0]] 
-        print 'my_proteins',my_proteins
         data={'proteins':my_proteins}
         pickle.dump(data,open(infile,'w'))
         os.system("chmod 775 %s"%infile)
@@ -636,10 +622,8 @@ def show_predictions(request):
         context={}
         if 'my_f' in qdict:
             my_functions_string=qdict['my_f'][0]
-            print my_functions_string
             if my_functions_string:
                 my_functions=my_functions_string.split(',')                
-                print my_functions
                 if len(my_functions)==1:
                     my_function=my_functions[0]
                     term=Term.objects.filter(acc=my_function).values('name','acc')
@@ -661,10 +645,8 @@ def show_predictions(request):
         return render(request, 'home.html', context)
 
 def autocomplete(request):
-    print 'HHH'
     sqs=SearchQuerySet()
     dbs=request.GET.get('dbs', '')
-    print dbs
     if dbs=='all':
         search_in=['term','taxid','unip']
     else:
@@ -691,43 +673,3 @@ def autocomplete(request):
         'results': suggestions
     })
     return HttpResponse(the_data, content_type='application/json')
-
-    
-def do_basic_search(request, template='search/search.html', load_all=True, form_class=MySearchForm, searchqueryset=None, context_class=RequestContext, extra_context=None, results_per_page=None):
-    query = ''
-    results = EmptySearchQuerySet()
-    if request.GET.get('q'):
-        form = form_class(request.GET, searchqueryset=searchqueryset, load_all=load_all)
-
-        if form.is_valid():
-            query = form.cleaned_data['q']
-            results = form.search()
-            results=results[0]['results']|results[1]['results']
-    else:
-        form = form_class(searchqueryset=searchqueryset, load_all=load_all)
-
-    paginator = Paginator(results, results_per_page or RESULTS_PER_PAGE)
-    try:
-        page = paginator.page(int(request.GET.get('page', 1)))
-    except InvalidPage:
-        raise Http404("No such page of results!")
-
-    context = {
-        'form': form,
-        'page': page,
-        'paginator': paginator,
-        'query': query,
-        'suggestion': None,
-    }
-
-    if results.query.backend.include_spelling:
-        context['suggestion'] = form.get_suggestion()
-
-    spelling = results.spelling_suggestion(query)
-    context['suggestion']= spelling
-    print 'spelling',spelling,results.query.backend.include_spelling,SearchQuerySet().spelling_suggestion('protain')
-
-    if extra_context:
-        context.update(extra_context)
-
-    return render_to_response(template, context, context_instance=context_class(request))

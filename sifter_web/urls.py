@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from sifter_web.views import get_input,show_results,get_complexity,do_basic_search,autocomplete,show_predictions,show_help,show_about,show_search_options,show_download
+from sifter_web.views import get_input,show_results,get_complexity,autocomplete,show_predictions,show_help,show_about,show_search_options,show_download
 
 from haystack.views import SearchView, search_view_factory
 from haystack.forms import HighlightedSearchForm
@@ -22,28 +22,12 @@ urlpatterns = patterns('',
     url(r'^predictions/$', show_predictions,name='predictions'),
     url(r'^complexity/$', get_complexity,name='complexity'),
     url(r'^search_options/$', show_search_options,name='search_options'),
-    # url(r'^blog/', include('blog.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^search/', include('haystack.urls')),
     url(r'^search/autocomplete', autocomplete),
     url(r'^search3/', do_basic_search),
     url(r'^downloads/(?P<path>.*)$', 'django.views.static.serve', {'document_root': OUTPUT_DIR}),
 )
-urlpatterns += patterns('haystack.views',
-    url(r'^search4/', search_view_factory(
-        view_class=        SearchView,
-        template='search/autocomplete.html',
-        form_class=HighlightedSearchForm,
-    ), name='haystack_search2'),
-)
-urlpatterns += patterns('haystack.views',
-    url(r'^search2/', search_view_factory(
-        view_class=        SearchView,
-        template='search/search2.html',
-        form_class=HighlightedSearchForm,
-    ), name='haystack_search2'),
-)
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
