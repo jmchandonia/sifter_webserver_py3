@@ -585,7 +585,6 @@ def show_predictions(request):
         job_id=random.randint(1000000,9999999)    
         while SIFTER_Output.objects.filter(job_id=job_id):
             job_id=random.randint(1000000,9999999)
-			
         infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
         my_proteins=[qdict['protein'][0]] 
         data={'proteins':my_proteins}
