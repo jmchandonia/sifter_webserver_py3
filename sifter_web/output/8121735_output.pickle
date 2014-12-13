@@ -1,0 +1,81 @@
+(dp0
+S'result'
+p1
+(lp2
+(lp3
+VUBP30_HUMAN
+p4
+aVQ70CQ3
+p5
+aVHomo sapiens
+p6
+aI9606
+a(lp7
+(lp8
+VGO:0004843
+p9
+aVubiquitin-specific protease activity
+p10
+aS'0.87'
+p11
+aa(lp12
+VGO:0070064
+p13
+aVproline-rich region binding
+p14
+aS'0.46'
+p15
+aa(lp16
+VGO:0003729
+p17
+aVmRNA binding
+p18
+aS'0.46'
+p19
+aa(lp20
+VGO:0008270
+p21
+aVzinc ion binding
+p22
+aS'0.46'
+p23
+aa(lp24
+VGO:0044325
+p25
+aVion channel binding
+p26
+aS'0.46'
+p27
+aa(lp28
+VGO:0004197
+p29
+aVcysteine-type endopeptidase activity
+p30
+aS'0.46'
+p31
+aa(lp32
+VGO:0004221
+p33
+aVubiquitin thiolesterase activity
+p34
+aS'0.46'
+p35
+aa(lp36
+VGO:0002039
+p37
+aVp53 binding
+p38
+aS'0.46'
+p39
+aa(lp40
+VGO:0019901
+p41
+aVprotein kinase binding
+p42
+aS'0.46'
+p43
+aaaasS'downloadfile'
+p44
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/8121735_download.txt'
+p45
+s.

@@ -1,0 +1,10 @@
+SIFTER Predictions for Job ID 2381026: 
+
+Uniprot ID: GR43A_DROME
+Species: Drosophila melanogaster
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0033038	bitter taste receptor activity	0.82
+		GO:0009882	blue light photoreceptor activity	0.05
+		GO:0046982	protein heterodimerization activity	0.05
+		GO:0004984	olfactory receptor activity	0.05
+

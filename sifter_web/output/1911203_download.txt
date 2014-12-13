@@ -1,0 +1,117 @@
+SIFTER Predictions for Job ID 1911203: 
+
+Uniprot ID: F1SU64_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.82
+		GO:0008119	thiopurine S-methyltransferase activity	0.05
+
+Uniprot ID: F1RMG9_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.78
+		GO:0008119	thiopurine S-methyltransferase activity	0.21
+		GO:0042169	SH2 domain binding	0.18
+		GO:0015267	channel activity	0.18
+		GO:0016505	peptidase activator activity involved in apoptotic process	0.18
+		GO:0015075	ion transmembrane transporter activity	0.18
+		GO:0005509	calcium ion binding	0.18
+		GO:0042802	identical protein binding	0.18
+		GO:0032403	protein complex binding	0.18
+		GO:0017075	syntaxin-1 binding	0.18
+		GO:0047485	protein N-terminus binding	0.18
+		GO:0015485	cholesterol binding	0.18
+		GO:0019956	chemokine binding	0.18
+
+Uniprot ID: F1SKR1_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.78
+		GO:0008119	thiopurine S-methyltransferase activity	0.21
+		GO:0042169	SH2 domain binding	0.18
+		GO:0015267	channel activity	0.18
+		GO:0016505	peptidase activator activity involved in apoptotic process	0.18
+		GO:0015075	ion transmembrane transporter activity	0.18
+		GO:0005509	calcium ion binding	0.18
+		GO:0042802	identical protein binding	0.18
+		GO:0032403	protein complex binding	0.18
+		GO:0017075	syntaxin-1 binding	0.18
+		GO:0047485	protein N-terminus binding	0.18
+		GO:0015485	cholesterol binding	0.18
+		GO:0019956	chemokine binding	0.18
+
+Uniprot ID: F1RF33_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.82
+		GO:0008119	thiopurine S-methyltransferase activity	0.15
+
+Uniprot ID: F1SKR4_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.91
+		GO:0008119	thiopurine S-methyltransferase activity	0.27
+		GO:0042169	SH2 domain binding	0.21
+		GO:0015267	channel activity	0.21
+		GO:0016505	peptidase activator activity involved in apoptotic process	0.21
+		GO:0015075	ion transmembrane transporter activity	0.21
+		GO:0005509	calcium ion binding	0.21
+		GO:0042802	identical protein binding	0.21
+		GO:0032403	protein complex binding	0.21
+		GO:0017075	syntaxin-1 binding	0.21
+		GO:0047485	protein N-terminus binding	0.21
+		GO:0015485	cholesterol binding	0.21
+		GO:0019956	chemokine binding	0.21
+
+Uniprot ID: F1RNK3_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.91
+		GO:0008119	thiopurine S-methyltransferase activity	0.23
+
+Uniprot ID: F1SKR2_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.91
+		GO:0008119	thiopurine S-methyltransferase activity	0.26
+		GO:0042169	SH2 domain binding	0.2
+		GO:0015267	channel activity	0.2
+		GO:0016505	peptidase activator activity involved in apoptotic process	0.2
+		GO:0015075	ion transmembrane transporter activity	0.2
+		GO:0005509	calcium ion binding	0.2
+		GO:0042802	identical protein binding	0.2
+		GO:0032403	protein complex binding	0.2
+		GO:0017075	syntaxin-1 binding	0.2
+		GO:0047485	protein N-terminus binding	0.2
+		GO:0015485	cholesterol binding	0.2
+		GO:0019956	chemokine binding	0.2
+
+Uniprot ID: F1S8X5_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.81
+		GO:0008119	thiopurine S-methyltransferase activity	0.14
+
+Uniprot ID: F1SKR8_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.78
+		GO:0008119	thiopurine S-methyltransferase activity	0.27
+
+Uniprot ID: F1S3D3_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.79
+		GO:0008119	thiopurine S-methyltransferase activity	0.3
+
+Uniprot ID: C3UP60_PIG
+Species: Sus scrofa
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019911	structural constituent of myelin sheath	0.83
+		GO:0042169	SH2 domain binding	0.05
+		GO:0019956	chemokine binding	0.05
+		GO:0042802	identical protein binding	0.04
+		GO:0032403	protein complex binding	0.04
+		GO:0017075	syntaxin-1 binding	0.04
+		GO:0047485	protein N-terminus binding	0.04
+

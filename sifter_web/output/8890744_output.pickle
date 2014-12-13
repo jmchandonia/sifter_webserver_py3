@@ -1,0 +1,32 @@
+(dp0
+S'result'
+p1
+(lp2
+(lp3
+VFLII_ECOLI
+p4
+aVP52612
+p5
+aVEscherichia coli K-12
+p6
+aI83333
+a(lp7
+(lp8
+VGO:0042802
+p9
+aVidentical protein binding
+p10
+aS'0.88'
+p11
+aa(lp12
+VGO:0003723
+p13
+aVRNA binding
+p14
+aS'0.69'
+p15
+aaaasS'downloadfile'
+p16
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/8890744_download.txt'
+p17
+s.

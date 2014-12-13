@@ -1,0 +1,21 @@
+SIFTER Predictions for Job ID 1071414: 
+
+Uniprot ID: LEU3_DESVH
+Species: Desulfovibrio vulgaris str. Hildenborough
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004657	proline dehydrogenase activity	0.92
+		GO:0003862	3-isopropylmalate dehydrogenase activity	0.6
+
+Uniprot ID: Q725V6_DESVH
+Species: Desulfovibrio vulgaris str. Hildenborough
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004657	proline dehydrogenase activity	0.79
+		GO:0071949	FAD binding	0.74
+
+Uniprot ID: Q725Y0_DESVH
+Species: Desulfovibrio vulgaris str. Hildenborough
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0051287	NAD binding	0.27
+		GO:0004657	proline dehydrogenase activity	0.21
+		GO:0009055	electron carrier activity	0.18
+

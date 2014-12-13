@@ -1,0 +1,46 @@
+SIFTER Predictions for Job ID 6294366: 
+
+Uniprot ID: G0ZQF0_9GAMM
+Species: Aeromonas sp. NCIMB 882
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004825	methionine-tRNA ligase activity	0.89
+
+Uniprot ID: G0ZQW9_9GAMM
+Species: Aeromonas sp. NCIMB 882
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0008094	DNA-dependent ATPase activity	0.92
+		GO:0000287	magnesium ion binding	0.92
+		GO:0005515	protein binding	0.92
+		GO:0030145	manganese ion binding	0.92
+		GO:0004520	endodeoxyribonuclease activity	0.92
+		GO:0005524	ATP binding	0.92
+		GO:0003697	single-stranded DNA binding	0.92
+		GO:0000150	recombinase activity	0.92
+
+Uniprot ID: G0ZQ68_9GAMM
+Species: Aeromonas sp. NCIMB 882
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0042802	identical protein binding	0.89
+		GO:0004108	citrate (Si)-synthase activity	0.88
+
+Uniprot ID: G0ZPX9_9GAMM
+Species: Aeromonas sp. NCIMB 882
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0042803	protein homodimerization activity	0.66
+		GO:0051082	unfolded protein binding	0.53
+
+Uniprot ID: G0ZPQ0_9GAMM
+Species: Aeromonas sp. NCIMB 882
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0003918	DNA topoisomerase type II (ATP-hydrolyzing) activity	0.9
+		GO:0005524	ATP binding	0.84
+		GO:0000287	magnesium ion binding	0.77
+		GO:0046982	protein heterodimerization activity	0.77
+
+Uniprot ID: G0ZQN2_9GAMM
+Species: Aeromonas sp. NCIMB 882
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0000287	magnesium ion binding	0.93
+		GO:0008986	pyruvate, water dikinase activity	0.85
+		GO:0008965	phosphoenolpyruvate-protein phosphotransferase activity	0.65
+

@@ -1,0 +1,192 @@
+(dp0
+S'result'
+p1
+(lp2
+(lp3
+VG0ZQF0_9GAMM
+p4
+aVG0ZQF0
+p5
+aVAeromonas sp. NCIMB 882
+p6
+aI1055668
+a(lp7
+(lp8
+VGO:0004825
+p9
+aVmethionine-tRNA ligase activity
+p10
+aS'0.89'
+p11
+aaaa(lp12
+VG0ZQW9_9GAMM
+p13
+aVG0ZQW9
+p14
+ag6
+aI1055668
+a(lp15
+(lp16
+VGO:0008094
+p17
+aVDNA-dependent ATPase activity
+p18
+aS'0.92'
+p19
+aa(lp20
+VGO:0000287
+p21
+aVmagnesium ion binding
+p22
+aS'0.92'
+p23
+aa(lp24
+VGO:0005515
+p25
+aVprotein binding
+p26
+aS'0.92'
+p27
+aa(lp28
+VGO:0030145
+p29
+aVmanganese ion binding
+p30
+aS'0.92'
+p31
+aa(lp32
+VGO:0004520
+p33
+aVendodeoxyribonuclease activity
+p34
+aS'0.92'
+p35
+aa(lp36
+VGO:0005524
+p37
+aVATP binding
+p38
+aS'0.92'
+p39
+aa(lp40
+VGO:0003697
+p41
+aVsingle-stranded DNA binding
+p42
+aS'0.92'
+p43
+aa(lp44
+VGO:0000150
+p45
+aVrecombinase activity
+p46
+aS'0.92'
+p47
+aaaa(lp48
+VG0ZQ68_9GAMM
+p49
+aVG0ZQ68
+p50
+ag6
+aI1055668
+a(lp51
+(lp52
+VGO:0042802
+p53
+aVidentical protein binding
+p54
+aS'0.89'
+p55
+aa(lp56
+VGO:0004108
+p57
+aVcitrate (Si)-synthase activity
+p58
+aS'0.88'
+p59
+aaaa(lp60
+VG0ZPX9_9GAMM
+p61
+aVG0ZPX9
+p62
+ag6
+aI1055668
+a(lp63
+(lp64
+VGO:0042803
+p65
+aVprotein homodimerization activity
+p66
+aS'0.66'
+p67
+aa(lp68
+VGO:0051082
+p69
+aVunfolded protein binding
+p70
+aS'0.53'
+p71
+aaaa(lp72
+VG0ZPQ0_9GAMM
+p73
+aVG0ZPQ0
+p74
+ag6
+aI1055668
+a(lp75
+(lp76
+VGO:0003918
+p77
+aVDNA topoisomerase type II (ATP-hydrolyzing) activity
+p78
+aS'0.9'
+p79
+aa(lp80
+g37
+ag38
+aS'0.84'
+p81
+aa(lp82
+g21
+ag22
+aS'0.77'
+p83
+aa(lp84
+VGO:0046982
+p85
+aVprotein heterodimerization activity
+p86
+aS'0.77'
+p87
+aaaa(lp88
+VG0ZQN2_9GAMM
+p89
+aVG0ZQN2
+p90
+ag6
+aI1055668
+a(lp91
+(lp92
+g21
+ag22
+aS'0.93'
+p93
+aa(lp94
+VGO:0008986
+p95
+aVpyruvate, water dikinase activity
+p96
+aS'0.85'
+p97
+aa(lp98
+VGO:0008965
+p99
+aVphosphoenolpyruvate-protein phosphotransferase activity
+p100
+aS'0.65'
+p101
+aaaasS'downloadfile'
+p102
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/6294366_download.txt'
+p103
+s.

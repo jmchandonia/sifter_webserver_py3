@@ -1,0 +1,67 @@
+(dp0
+S'result'
+p1
+(lp2
+(lp3
+VABCAC_HUMAN
+p4
+aVQ86UK0
+p5
+aVHomo sapiens
+p6
+aI9606
+a(lp7
+(lp8
+VGO:0005524
+p9
+aVATP binding
+p10
+aS'0.63'
+p11
+aa(lp12
+VGO:0017127
+p13
+aVcholesterol transporter activity
+p14
+aS'0.56'
+p15
+aa(lp16
+VGO:0019905
+p17
+aVsyntaxin binding
+p18
+aS'0.55'
+p19
+aa(lp20
+VGO:0034186
+p21
+aVapolipoprotein A-I binding
+p22
+aS'0.53'
+p23
+aa(lp24
+VGO:0034188
+p25
+aVapolipoprotein A-I receptor activity
+p26
+aS'0.53'
+p27
+aa(lp28
+VGO:0031267
+p29
+aVsmall GTPase binding
+p30
+aS'0.52'
+p31
+aa(lp32
+VGO:0042803
+p33
+aVprotein homodimerization activity
+p34
+aS'0.47'
+p35
+aaaasS'downloadfile'
+p36
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/8305178_download.txt'
+p37
+s.

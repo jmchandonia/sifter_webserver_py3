@@ -1,0 +1,60 @@
+(dp0
+S'result'
+p1
+(lp2
+(lp3
+VA8WRK7_CAEBR
+p4
+aVA8WRK7
+p5
+aVCaenorhabditis briggsae
+p6
+aI6238
+a(lp7
+(lp8
+VGO:0015349
+p9
+aVthyroid hormone transmembrane transporter activity
+p10
+aS'0.82'
+p11
+aa(lp12
+VGO:0015132
+p13
+aVprostaglandin transmembrane transporter activity
+p14
+aS'0.22'
+p15
+aa(lp16
+VGO:0015125
+p17
+aVbile acid transmembrane transporter activity
+p18
+aS'0.19'
+p19
+aa(lp20
+VGO:0015238
+p21
+aVdrug transmembrane transporter activity
+p22
+aS'0.18'
+p23
+aa(lp24
+VGO:0015198
+p25
+aVoligopeptide transporter activity
+p26
+aS'0.18'
+p27
+aa(lp28
+VGO:0015347
+p29
+aVsodium-independent organic anion transmembrane transporter activity
+p30
+aS'0.18'
+p31
+aaaasS'downloadfile'
+p32
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/3629526_download.txt'
+p33
+s.

@@ -1,0 +1,12 @@
+SIFTER Predictions for Job ID 6965572: 
+
+Uniprot ID: A8WRK7_CAEBR
+Species: Caenorhabditis briggsae
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.82
+		GO:0015132	prostaglandin transmembrane transporter activity	0.22
+		GO:0015125	bile acid transmembrane transporter activity	0.19
+		GO:0015238	drug transmembrane transporter activity	0.18
+		GO:0015198	oligopeptide transporter activity	0.18
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.18
+

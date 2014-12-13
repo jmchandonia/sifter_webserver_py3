@@ -1,0 +1,60 @@
+(dp0
+S'result'
+p1
+(lp2
+(lp3
+VA16L1_HUMAN
+p4
+aVQ676U5
+p5
+aVHomo sapiens
+p6
+aI9606
+a(lp7
+(lp8
+VGO:0030674
+p9
+aVprotein binding, bridging
+p10
+aS'0.65'
+p11
+aa(lp12
+VGO:0042803
+p13
+aVprotein homodimerization activity
+p14
+aS'0.39'
+p15
+aa(lp16
+VGO:0005080
+p17
+aVprotein kinase C binding
+p18
+aS'0.33'
+p19
+aa(lp20
+VGO:0051010
+p21
+aVmicrotubule plus-end binding
+p22
+aS'0.32'
+p23
+aa(lp24
+VGO:0005086
+p25
+aVARF guanyl-nucleotide exchange factor activity
+p26
+aS'0.31'
+p27
+aa(lp28
+VGO:0048306
+p29
+aVcalcium-dependent protein binding
+p30
+aS'0.31'
+p31
+aaaasS'downloadfile'
+p32
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/1104247_download.txt'
+p33
+s.

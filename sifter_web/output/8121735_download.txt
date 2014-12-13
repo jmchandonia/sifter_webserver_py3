@@ -1,0 +1,15 @@
+SIFTER Predictions for Job ID 8121735: 
+
+Uniprot ID: UBP30_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004843	ubiquitin-specific protease activity	0.87
+		GO:0070064	proline-rich region binding	0.46
+		GO:0003729	mRNA binding	0.46
+		GO:0008270	zinc ion binding	0.46
+		GO:0044325	ion channel binding	0.46
+		GO:0004197	cysteine-type endopeptidase activity	0.46
+		GO:0004221	ubiquitin thiolesterase activity	0.46
+		GO:0002039	p53 binding	0.46
+		GO:0019901	protein kinase binding	0.46
+
