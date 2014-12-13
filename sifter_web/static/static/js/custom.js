@@ -8,7 +8,7 @@ function setExample(i){
 	else if (i==4)
 	    document.getElementById('id_q').value = '4932';
 	else if (i==5)
-	    document.getElementById('input_queries').value = 'A8WRK7_CAEBR';
+	    document.getElementById('input_queries').value = 'PA24B_MOUSE';
 	else if (i==6) 
             document.getElementById('input_queries').value= 'RISC_MOUSE\nPADI2_RAT\nPGFS_RAT\nMOS_XENLA\n1B48_HUMAN\nABCAC_HUMAN\nACY3_HUMAN\nATS12_HUMAN\nCA2D4_HUMAN\nCYTS_HUMAN\nDIRA1_HUMAN\nDIRA2_HUMAN\nDMP4_HUMAN\nFUCO2_HUMAN\nGNT2A_HUMAN\nGNT2C_HUMAN\nH2A3_HUMAN\nMOS_HUMAN\nMYO1B_HUMAN\nNEK10_HUMAN\nPGAM4_HUMAN\nPHLB3_HUMAN\nPKRI1_HUMAN\nRISC_HUMAN\nVWA2_HUMAN\nZDH14_HUMAN\nZDH15_HUMAN\nZDHC1_HUMAN\nZDHC2_HUMAN\nZDHC3_HUMAN';
         else if (i==7) 

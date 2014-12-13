@@ -301,7 +301,7 @@ def get_input(request,context={}):
                 n_sequences=0
                 if active_tab=='by_protein':
                     splited=re.split(' |,|;|\n',form.cleaned_data['input_queries'].strip())
-                    my_proteins=list(set([w for w in splited if w]))
+                    my_proteins=list(set([w.strip() for w in splited if w]))
                     data={'proteins':my_proteins}
                 elif active_tab=='by_species':
                     if not form.cleaned_data['sp_selected_hidden']:
