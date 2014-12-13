@@ -126,19 +126,21 @@ class MySearchForm(SearchForm):
 
         # Check to see if a q was chosen.
         if self.cleaned_data['q']:        
-            sqs1 = sqs.filter(content_auto_name=self.cleaned_data['q'])
-            sqs2 = sqs.filter(content_auto_acc=self.cleaned_data['q'])            
-            sqs3 = sqs.filter(content_auto_taxname=self.cleaned_data['q'])
-            sqs4 = sqs.filter(content_auto_taxid=self.cleaned_data['q'])
-            sqs5 = sqs.filter(text=self.cleaned_data['q'])
-            sqs=sqs5|sqs1|sqs2|sqs3|sqs4
-            sqs_term=sqs.filter(django_ct='term_db.term')            
-            sqs_taxid=sqs.filter(django_ct='taxid_db.taxid')
-            sqs7=list(set(SifterResultsReady.objects.filter(uniprot_id=self.cleaned_data['q']).values_list('uniprot_id',flat=True)))
-            #sqs8=list(set(SifterResultsReady.objects.filter(uniprot_acc=self.cleaned_data['q']).values_list('uniprot_id',flat=True)))
-            sqs8=Idmap.objects.filter(other_id=self.cleaned_data['q'], db='ID').values_list('unip_id',flat=True)
-            sqs_unip=list(set(sqs8)|set(sqs7))
-            sqs_unip=[{'name':w, 'url':'/predictions/?protein=%s' % w} for w in sqs_unip]
+            q=self.cleaned_data['q'].strip()
+            if q:
+                sqs1 = sqs.filter(content_auto_name=q)
+                sqs2 = sqs.filter(content_auto_acc=q)            
+                sqs3 = sqs.filter(content_auto_taxname=q)
+                sqs4 = sqs.filter(content_auto_taxid=q)
+                sqs5 = sqs.filter(text=q)
+                sqs=sqs5|sqs1|sqs2|sqs3|sqs4
+                sqs_term=sqs.filter(django_ct='term_db.term')            
+                sqs_taxid=sqs.filter(django_ct='taxid_db.taxid')
+                sqs7=list(set(SifterResultsReady.objects.filter(uniprot_id=q).values_list('uniprot_id',flat=True)))
+                #sqs8=list(set(SifterResultsReady.objects.filter(uniprot_acc=q).values_list('uniprot_id',flat=True)))
+                sqs8=Idmap.objects.filter(other_id=q, db='ID').values_list('unip_id',flat=True)
+                sqs_unip=list(set(sqs8)|set(sqs7))
+                sqs_unip=[{'name':w, 'url':'/predictions/?protein=%s' % w} for w in sqs_unip]
         return [{'model':'Proteins','results':sqs_unip},{'model':'Species','results':sqs_taxid},{'model':'Functions','results':sqs_term}]
 
 class EstimateForm(forms.Form):
@@ -298,12 +300,12 @@ def get_input(request,context={}):
                 my_proteins=[]
                 n_sequences=0
                 if active_tab=='by_protein':
-                    splited=re.split(' |,|;|\n',form.cleaned_data['input_queries'])
+                    splited=re.split(' |,|;|\n',form.cleaned_data['input_queries'].strip())
                     my_proteins=list(set([w for w in splited if w]))
                     data={'proteins':my_proteins}
                 elif active_tab=='by_species':
                     if not form.cleaned_data['sp_selected_hidden']:
-                        my_species=form.cleaned_data['input_species']                
+                        my_species=form.cleaned_data['input_species'].strip()
                         if my_species:
                             return HttpResponseRedirect('/search_options/?q=%s'%my_species)                            
                     else:
@@ -311,14 +313,14 @@ def get_input(request,context={}):
                     data={'species':my_species}
                 elif active_tab=='by_function':
                     if not form.cleaned_data['function_selected_hidden']:
-                        splited=re.split(' |,|;\n',form.cleaned_data['input_function'])
+                        splited=re.split(' |,|;\n',form.cleaned_data['input_function'].strip())
                         my_functions=list(set([w for w in splited if w]))
                     else:
                         splited=re.split(' |,|;\n',form.cleaned_data['function_selected_hidden'])
                         my_functions=list(set([w for w in splited if w]))
                 
                     if not form.cleaned_data['spf_selected_hidden']:
-                        my_species=form.cleaned_data['input_function_sp']
+                        my_species=form.cleaned_data['input_function_sp'].strip()
                         if my_species:
                             if my_functions:
                                 my_functions_string='&my_f='+','.join(my_functions)
@@ -458,13 +460,14 @@ def show_search_options(request):
             else:
                 my_functions_string=''
         
-        sqs0=list(set(Taxid.objects.filter(tax_id=my_species).values_list('tax_id',flat=True)))
-        if sqs0:
-            tid=my_species
-            if fq_flag==0:
-                  return HttpResponseRedirect('/predictions/?s-taxid=%s'%tid, {'results':''})
-            else:
-                  return HttpResponseRedirect('/predictions/?sf-taxid=%s%s'%(tid,my_functions_string), {'results':''})
+        if my_species.isdigit():
+            sqs0=list(set(Taxid.objects.filter(tax_id=my_species).values_list('tax_id',flat=True)))
+            if sqs0:
+                tid=my_species
+                if fq_flag==0:
+                      return HttpResponseRedirect('/predictions/?s-taxid=%s'%tid, {'results':''})
+                else:
+                      return HttpResponseRedirect('/predictions/?sf-taxid=%s%s'%(tid,my_functions_string), {'results':''})
         sqs = SearchQuerySet()
         sqs3 = sqs.filter(content_auto_taxname=my_species)
         sqs4 = sqs.filter(content_auto_taxid=my_species)
