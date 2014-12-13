@@ -32,7 +32,7 @@
         </div>
         <div class="panel-body">
         <p>You may check here or the following address to see your SIFTER results once it is ready:</p>
-        <p><a href="/results-id={{my_object.job_id}}">/results-id={{my_object.job_id}}</a></p>
+        <p><a href="http://sifter.berkeley.edu/results-id={{my_object.job_id}}">http://sifter.berkeley.edu/results-id={{my_object.job_id}}</a></p>
         <p>This page is reloaded every 15 seconds.</p>
 <!--        <p>If you have provided your email address, the result will be send to you once it is ready. </p> -->
         <p>The SIFTER predictions for your query can be accessed through the above link for the next 15 days.</p>                      
@@ -83,7 +83,11 @@
   {% if not my_object.output_file == ''%}
     {% if my_object.query_method == 'by_sequence' %}
       
+  <div class="row">
+    <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
           <div class="alert alert-info"><h4>Here we report the SIFTER predictions for the homologs (found by top BLAST hits) of your query sequences. </h4></div>
+	</div>
+  </div>
     {%endif%}
 
   <div class="row">
@@ -99,10 +103,10 @@
         </div>
         <div class="panel-body">
 	    {% if result %}		
+          {% if downloadfile %}<label><a href="{{downloadfile}}">Download link</a></label>{%endif%}                					
           {% if not result.paginator.count == 1%}
           <div class="row">
             <div class="col-md-12 text-center">
-              
               <nav>
                 <ul class="pagination pagination-lg">                
                       {% if result.has_previous %}

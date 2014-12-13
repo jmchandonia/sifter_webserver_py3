@@ -1,0 +1,9 @@
+SIFTER Predictions for Job ID 5784386: 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Predictions for homologs of the query sequence: seq2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Uniprot ID: TID_DROME
+Species: Drosophila melanogaster
+BLAST Hit Information: (Bit-Score: 1076
+, E-val:0.00e+00, Identitiy:100, Query Coverage:100Predictions:	GO ID	Term name	Confidence Score

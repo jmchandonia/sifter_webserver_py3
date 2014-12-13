@@ -33,10 +33,13 @@
     <![endif]-->
       <script src="/static/js/custom.js"></script>    
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	</script>	
   </head>
 
+  
   <body role="document">
     {% include 'navbar.html' %}
+      <div id="slider-1"></div>
     
     <div class="container theme-showcase " role="main">
 
@@ -120,18 +123,15 @@
 
       $(document).ready(function(){
 
-	 $(function() {
 		$( "#wSlider2" ).slider({
-		   value:0.7,
+		   value:$("#ExpWeight_hidden").val()*100,
 		   min:0,
-		   max:1.00
-		   slide: function( event, ui ) {
-			  fix_weight(ui.value);
+		   max:100,
+		   slide: function( event, ui ) {		   
+			  fix_weight(parseFloat(ui.value/100).toFixed(2));
 		}	
 		});
-	 });
-
-	 $("#ssss").text($("#active_tab_hidden").val());	      
+		$("#ssss").text($("#active_tab_hidden").val());	      
 		my_tab=$("#active_tab_hidden").val()
         $('#mytab a[href="#' + my_tab + '"]').tab('show');
 		if ($("#active_tab_hidden").val()=="by_any"){
@@ -185,7 +185,7 @@
 	
 	fix_weight($("#ExpWeight_hidden").val())
     
-	$('#weight').slider({
+/*	$('#weight').slider({
 		formatter: function(value) {
 		return 'Current value: ' + value;
 		}
@@ -196,7 +196,7 @@
 	});
 	$("#weight").on("slide", function(slideEvt) {
 	  	fix_weight(slideEvt.value)			
-	});
+	});*/
 	
 	$('#toggleOptions').click(function() {
 			$('.hideable-options').toggle( function() {
@@ -349,7 +349,7 @@
       
       
       var set_default_weight= function() {
-	      $("#weight").slider(0.7);
+	      $("#wSlider2").slider({value:70});
 	      $("#ExpWeight").text(0.7);
               $("#NExpWeight").text(0.3);
 	      $("#ExpWeight_hidden").val($("#ExpWeight").text().substr());	      	      	

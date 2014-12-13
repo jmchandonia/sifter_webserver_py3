@@ -628,8 +628,9 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
                 if hit['hit_id'].keys()[0]=='P_GI':
                     gi=hit['hit_id']['P_GI']
                     if gi in mapped_gis:
-                        blast_hits[record].append([mapped_gis[gi],hit['bits'],hit['eval'],hit['ident'],hit['Q_cov']])
-                        q_genes.append(mapped_gis[gi])
+                        if mapped_gis[gi] not in q_genes:
+                            blast_hits[record].append([mapped_gis[gi],hit['bits'],hit['eval'],hit['ident'],hit['Q_cov']])
+                            q_genes.append(mapped_gis[gi])
 
         sifter_choices=my_form_data['sifter_choices']
         ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
@@ -715,6 +716,20 @@ def make_results_ready(job_id,activ_tab,my_data):
                 nopred_file_o.write('List of genes with no predictions: \n'+'\n'.join(rest))
                 nopred_file_o.close()
                 results['nopreds']=[nopred_file,len(rest)]
+                
+                
+        output_download_file=os.path.join(OUTPUT_DIR,"%s_download.txt"%job_id)
+        output_download_file_o=open(output_download_file,'w')
+        output_download_file_o.write('SIFTER Predictions for Job ID %s: \n\n'%job_id)        
+        for r in result:
+            output_download_file_o.write('Uniprot ID: %s\n'%r[0])        
+            output_download_file_o.write('Species: %s\n'%r[2])
+            output_download_file_o.write('Predictions:\tGO ID\tTerm name\tConfidence Score\n')
+            for pred in r[4]:
+                output_download_file_o.write('\t\t%s\t%s\t%s\n'%(pred[0],pred[1],pred[2]))        
+            output_download_file_o.write('\n')                                    
+        output_download_file_o.close()                
+        results['downloadfile']=output_download_file
     else:
         res,taxids,unip_accs,blast_hits,connected=my_data        
         terms=list(set([v for w in res.values() for v in w]))
@@ -745,8 +760,28 @@ def make_results_ready(job_id,activ_tab,my_data):
                         preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
                     else:
                         break
-                result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],'%d'%hit[1],hit[2],'%0.0f'%hit[3],'%0.0f'%hit[4],preds])
+                result_q.append([gene,unip_accs[gene],tax_name,taxids[gene],'%d'%hit[1],'%.2e'%hit[2],'%0.0f'%hit[3],'%0.0f'%hit[4],preds])
             result.append([query,result_q])
+        output_download_file=os.path.join(OUTPUT_DIR,"%s_download.txt"%job_id)
+        output_download_file_o=open(output_download_file,'w')
+        output_download_file_o.write('SIFTER Predictions for Job ID %s: \n\n'%job_id)        
+        for q in result:
+            output_download_file_o.write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n')        
+            output_download_file_o.write('Predictions for homologs of the query sequence: %s\n'%q[0])        
+            output_download_file_o.write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n')        
+            for r in q[1]:
+                output_download_file_o.write('Uniprot ID: %s\n'%r[0])        
+                output_download_file_o.write('Species: %s\n'%r[2])
+                output_download_file_o.write('BLAST Hit Information: (Bit-Score: %s, E-val:%s, Identitiy:%s, Query Coverage:%s\n'%(r[4],r[5],r[6],r[7]))
+                output_download_file_o.write('Predictions:\tGO ID\tTerm name\tConfidence Score\n')
+                for pred in r[8]:
+                    output_download_file_o.write('\t\t%s\t%s\t%s\n'%(pred[0],pred[1],pred[2]))        
+                output_download_file_o.write('\n')                                    
+            output_download_file_o.write('\n')                                    
+
+        output_download_file_o.close()                
+        results['downloadfile']=output_download_file
+            
     results['result']=result
     return results
 

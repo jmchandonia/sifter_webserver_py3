@@ -1,0 +1,130 @@
+SIFTER Predictions for Job ID 2616866: 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Predictions for homologs of the query sequence: seq1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Uniprot ID: E3MMF1_CAERE
+Species: Caenorhabditis remanei
+BLAST Hit Information: (Bit-Score: 1258, E-val:0.00e+00, Identitiy:95, Query Coverage:98Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.82
+		GO:0015132	prostaglandin transmembrane transporter activity	0.22
+		GO:0015125	bile acid transmembrane transporter activity	0.19
+		GO:0015238	drug transmembrane transporter activity	0.18
+		GO:0015198	oligopeptide transporter activity	0.18
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.18
+
+Uniprot ID: G0MHZ3_CAEBE
+Species: Caenorhabditis brenneri
+BLAST Hit Information: (Bit-Score: 1237, E-val:0.00e+00, Identitiy:93, Query Coverage:98Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.82
+		GO:0015132	prostaglandin transmembrane transporter activity	0.22
+		GO:0015125	bile acid transmembrane transporter activity	0.19
+		GO:0015238	drug transmembrane transporter activity	0.18
+		GO:0015198	oligopeptide transporter activity	0.18
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.18
+
+Uniprot ID: Q93550_CAEEL
+Species: Caenorhabditis elegans
+BLAST Hit Information: (Bit-Score: 1230, E-val:0.00e+00, Identitiy:92, Query Coverage:98Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.82
+		GO:0015132	prostaglandin transmembrane transporter activity	0.22
+		GO:0015238	drug transmembrane transporter activity	0.18
+		GO:0015125	bile acid transmembrane transporter activity	0.18
+		GO:0015198	oligopeptide transporter activity	0.18
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.18
+
+Uniprot ID: E1FKB9_LOALO
+Species: Loa loa
+BLAST Hit Information: (Bit-Score: 561, E-val:0.00e+00, Identitiy:45, Query Coverage:95Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.82
+		GO:0015132	prostaglandin transmembrane transporter activity	0.21
+		GO:0015238	drug transmembrane transporter activity	0.18
+		GO:0015125	bile acid transmembrane transporter activity	0.18
+		GO:0015198	oligopeptide transporter activity	0.18
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.18
+
+Uniprot ID: A8PR64_BRUMA
+Species: Brugia malayi
+BLAST Hit Information: (Bit-Score: 502, E-val:2.35e-166, Identitiy:43, Query Coverage:99Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.82
+		GO:0015132	prostaglandin transmembrane transporter activity	0.22
+		GO:0015125	bile acid transmembrane transporter activity	0.19
+		GO:0015238	drug transmembrane transporter activity	0.18
+		GO:0015198	oligopeptide transporter activity	0.18
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.18
+
+Uniprot ID: E5SJE0_TRISP
+Species: Trichinella spiralis
+BLAST Hit Information: (Bit-Score: 394, E-val:6.13e-125, Identitiy:40, Query Coverage:84Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.81
+		GO:0015132	prostaglandin transmembrane transporter activity	0.22
+		GO:0015125	bile acid transmembrane transporter activity	0.19
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.19
+		GO:0015238	drug transmembrane transporter activity	0.18
+		GO:0015198	oligopeptide transporter activity	0.18
+
+Uniprot ID: E5SJD8_TRISP
+Species: Trichinella spiralis
+BLAST Hit Information: (Bit-Score: 366, E-val:6.49e-114, Identitiy:47, Query Coverage:62Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.81
+		GO:0015132	prostaglandin transmembrane transporter activity	0.19
+		GO:0015125	bile acid transmembrane transporter activity	0.16
+		GO:0015238	drug transmembrane transporter activity	0.15
+		GO:0015198	oligopeptide transporter activity	0.15
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.15
+
+Uniprot ID: C3Y4T6_BRAFL
+Species: Branchiostoma floridae
+BLAST Hit Information: (Bit-Score: 274, E-val:3.27e-79, Identitiy:29, Query Coverage:89Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.81
+		GO:0015132	prostaglandin transmembrane transporter activity	0.19
+
+Uniprot ID: A4IIQ0_XENTR
+Species: Xenopus (Silurana) tropicalis
+BLAST Hit Information: (Bit-Score: 267, E-val:4.54e-76, Identitiy:28, Query Coverage:96Predictions:	GO ID	Term name	Confidence Score
+		GO:0015132	prostaglandin transmembrane transporter activity	0.91
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.48
+
+Uniprot ID: E1C5S3_CHICK
+Species: Gallus gallus
+BLAST Hit Information: (Bit-Score: 260, E-val:2.00e-73, Identitiy:28, Query Coverage:93Predictions:	GO ID	Term name	Confidence Score
+		GO:0015132	prostaglandin transmembrane transporter activity	0.91
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.45
+
+Uniprot ID: A4IG10_DANRE
+Species: Danio rerio
+BLAST Hit Information: (Bit-Score: 259, E-val:3.73e-73, Identitiy:29, Query Coverage:93Predictions:	GO ID	Term name	Confidence Score
+		GO:0015132	prostaglandin transmembrane transporter activity	0.84
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.75
+
+Uniprot ID: F1Q4Y9_DANRE
+Species: Danio rerio
+BLAST Hit Information: (Bit-Score: 259, E-val:7.22e-73, Identitiy:29, Query Coverage:93Predictions:	GO ID	Term name	Confidence Score
+		GO:0015132	prostaglandin transmembrane transporter activity	0.82
+		GO:0015347	sodium-independent organic anion transmembrane transporter activity	0.75
+
+Uniprot ID: G1SCG0_RABIT
+Species: Oryctolagus cuniculus
+BLAST Hit Information: (Bit-Score: 253, E-val:6.73e-71, Identitiy:29, Query Coverage:98Predictions:	GO ID	Term name	Confidence Score
+		GO:0015132	prostaglandin transmembrane transporter activity	0.91
+		GO:0015125	bile acid transmembrane transporter activity	0.15
+
+Uniprot ID: Q5FX75_CANFA
+Species: Canis lupus familiaris
+BLAST Hit Information: (Bit-Score: 251, E-val:2.22e-70, Identitiy:29, Query Coverage:94Predictions:	GO ID	Term name	Confidence Score
+		GO:0015132	prostaglandin transmembrane transporter activity	0.91
+		GO:0015125	bile acid transmembrane transporter activity	0.15
+
+Uniprot ID: H9J2D0_BOMMO
+Species: Bombyx mori
+BLAST Hit Information: (Bit-Score: 256, E-val:5.11e-70, Identitiy:27, Query Coverage:94Predictions:	GO ID	Term name	Confidence Score
+		GO:0015349	thyroid hormone transmembrane transporter activity	0.79
+		GO:0015125	bile acid transmembrane transporter activity	0.76
+
+Uniprot ID: G5BQA6_HETGA
+Species: Heterocephalus glaber
+BLAST Hit Information: (Bit-Score: 245, E-val:2.37e-68, Identitiy:29, Query Coverage:93Predictions:	GO ID	Term name	Confidence Score
+		GO:0015132	prostaglandin transmembrane transporter activity	0.91
+		GO:0015125	bile acid transmembrane transporter activity	0.16
+
+

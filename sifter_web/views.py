@@ -88,6 +88,12 @@ class InputForm(forms.Form):
                 self.check(cleaned_data,['input_function_sp','function_sp_uploader'],'Species IDs are not entered.')            
         elif active_tab=='by_sequence':
             self.check(cleaned_data,['input_sequence','sequence_uploader'],'Query sequences are not entered.')
+            seq_data=cleaned_data.get('input_sequence')
+            n_seq=seq_data.count('>')
+            if n_seq==0 and len(seq_data)>0:
+                self._errors['input_sequence'] = ErrorList(["Your inpur is in wrong format. Please use FASTA format input."])
+            elif n_seq>10:
+                self._errors['input_sequence'] = ErrorList(["You cannot entered more than 10 sequences."])            
 
 
         #if self.cleaned_data['input_queries']!='1':
@@ -156,6 +162,9 @@ def show_about(request):
 
 def show_download(request):
     return render(request, 'download.html')
+
+def show_contact(request):
+    return render(request, 'contact.html')
 
 def get_complexity(request):
     def render_error(response):
@@ -322,7 +331,7 @@ def get_input(request,context={}):
                     data={'species':my_species,'functions':my_functions}                
                 elif active_tab=='by_sequence':
                     my_sequences=form.cleaned_data['input_sequence']
-                    n_sequences=len(my_sequences)
+                    n_sequences=my_sequences.count('>')
                     data={'sequences':my_sequences}                
                 pickle.dump(data,open(infile,'w'))
                 os.system("chmod 775 %s"%infile)
@@ -448,6 +457,14 @@ def show_search_options(request):
                 my_functions_string='&my_f='+qdict['my_f'][0]
             else:
                 my_functions_string=''
+        
+        sqs0=list(set(Taxid.objects.filter(tax_id=my_species).values_list('tax_id',flat=True)))
+        if sqs0:
+            tid=my_species
+            if fq_flag==0:
+                  return HttpResponseRedirect('/predictions/?s-taxid=%s'%tid, {'results':''})
+            else:
+                  return HttpResponseRedirect('/predictions/?sf-taxid=%s%s'%(tid,my_functions_string), {'results':''})
         sqs = SearchQuerySet()
         sqs3 = sqs.filter(content_auto_taxname=my_species)
         sqs4 = sqs.filter(content_auto_taxid=my_species)
@@ -479,7 +496,10 @@ def show_search_options(request):
             return render_to_response('search_options.html', context_search, context_instance=context_class(request))
         elif len(sqs_taxid)==1:
             tid=sqs_taxid[0].object.tax_id
-            return HttpResponseRedirect('/predictions/?s-taxid=%s'%tid, {'results':''})
+            if fq_flag==0:
+                  return HttpResponseRedirect('/predictions/?s-taxid=%s'%tid, {'results':''})
+            else:
+                  return HttpResponseRedirect('/predictions/?sf-taxid=%s%s'%(tid,my_functions_string), {'results':''})
         else:
             form = InputForm()
             if fq_flag==0:
@@ -503,7 +523,7 @@ def show_results(request,job_id):
     my_msg=[]
     if not len(my_object)==1:
         my_msg.append(['danger','Error in the job_id. Number of hits=%s'%(len(my_object))])       
-        return render(request, 'results.html', {'my_object':'','result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':''})
+        return render(request, 'results.html', {'my_object':'','result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':'','downloadfile':''})
     my_object=my_object[0]
     species=Taxid.objects.filter(tax_id=my_object.species)
     if species:
@@ -511,15 +531,17 @@ def show_results(request,job_id):
         
     if my_object.output_file=='':
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
-        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':''})        
+        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':'','downloadfile':''})        
     else:
         my_msg.append(['info','Your SIFTER query results are ready.'])
         results=pickle.load(open(my_object.output_file))
         nopreds=''
+        downloadfile=''
         if 'nopreds' in results:
             nopreds=['/downloads/%s_nopreds.txt'%job_id,results['nopreds'][1]]
             
-            
+        if  'downloadfile' in results:
+            downloadfile='/downloads/%s_download.txt'%job_id
         
         if not my_object.query_method =='by_sequence':
             paginator = Paginator(results['result'], pred_results_per_page)
@@ -530,7 +552,7 @@ def show_results(request,job_id):
                 page = paginator.page(1)
             except EmptyPage:
                 page = paginator.page(paginator.num_pages)
-            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds})
+            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds,'downloadfile':downloadfile})
         else:            
             paginator = Paginator(results['result'], pred_results_per_page_sq)
             try:
@@ -540,7 +562,7 @@ def show_results(request,job_id):
                 page = paginator.page(1)
             except EmptyPage:
                 page = paginator.page(paginator.num_pages)
-            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds})
+            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds,'downloadfile':downloadfile})
           
             
         
