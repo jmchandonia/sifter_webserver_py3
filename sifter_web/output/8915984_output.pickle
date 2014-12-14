@@ -1,0 +1,205 @@
+(dp0
+S'nopreds'
+p1
+(lp2
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/8915984_nopreds.txt'
+p3
+aI24
+asS'result'
+p4
+(lp5
+(lp6
+V1B48_HUMAN
+p7
+aVP30486
+p8
+aVHomo sapiens
+p9
+aI9606
+a(lp10
+(lp11
+VGO:0042605
+p12
+aVpeptide antigen binding
+p13
+aS'0.9'
+p14
+aa(lp15
+VGO:0032395
+p16
+aVMHC class II receptor activity
+p17
+aS'0.76'
+p18
+aa(lp19
+VGO:0046982
+p20
+aVprotein heterodimerization activity
+p21
+aS'0.75'
+p22
+aa(lp23
+VGO:0030881
+p24
+aVbeta-2-microglobulin binding
+p25
+aS'0.75'
+p26
+aaaa(lp27
+VMOS_XENLA
+p28
+aVP12965
+p29
+aVXenopus laevis
+p30
+aI8355
+a(lp31
+(lp32
+VGO:0004709
+p33
+aVMAP kinase kinase kinase activity
+p34
+aS'0.64'
+p35
+aa(lp36
+VGO:0000287
+p37
+aVmagnesium ion binding
+p38
+aS'0.3'
+p39
+aa(lp40
+VGO:0030274
+p41
+aVLIM domain binding
+p42
+aS'0.25'
+p43
+aaaa(lp44
+VRISC_MOUSE
+p45
+aVQ920A5
+p46
+aVMus musculus
+p47
+aI10090
+a(lp48
+(lp49
+VGO:0004185
+p50
+aVserine-type carboxypeptidase activity
+p51
+aS'0.93'
+p52
+aa(lp53
+VGO:0008047
+p54
+aVenzyme activator activity
+p55
+aS'0.02'
+p56
+aa(lp57
+g20
+ag21
+aS'0.02'
+p58
+aa(lp59
+VGO:0016754
+p60
+aVsinapoylglucose-malate O-sinapoyltransferase activity
+p61
+aS'0.02'
+p62
+aaaa(lp63
+VPADI2_RAT
+p64
+aVP20717
+p65
+aVRattus norvegicus
+p66
+aI10116
+a(lp67
+(lp68
+VGO:0004668
+p69
+aVprotein-arginine deiminase activity
+p70
+aS'0.9'
+p71
+aaaa(lp72
+VPGFS_RAT
+p73
+aVD3ZVR7
+p74
+ag66
+aI10116
+a(lp75
+(lp76
+VGO:0016616
+p77
+aVoxidoreductase activity, acting on the CH-OH group of donors, NAD or NADP as acceptor
+p78
+aS'0.77'
+p79
+aa(lp80
+VGO:0016209
+p81
+aVantioxidant activity
+p82
+aS'0.56'
+p83
+aaaa(lp84
+VZDHC3_HUMAN
+p85
+aVQ9NYG2
+p86
+ag9
+aI9606
+a(lp87
+(lp88
+VGO:0019706
+p89
+aVprotein-cysteine S-palmitoyltransferase activity
+p90
+aS'0.93'
+p91
+aa(lp92
+VGO:0004871
+p93
+aVsignal transducer activity
+p94
+aS'0.01'
+p95
+aa(lp96
+VGO:0000035
+p97
+aVacyl binding
+p98
+aS'0.01'
+p99
+aa(lp100
+VGO:0005515
+p101
+aVprotein binding
+p102
+aS'0.01'
+p103
+aa(lp104
+VGO:0015095
+p105
+aVmagnesium ion transmembrane transporter activity
+p106
+aS'0.01'
+p107
+aa(lp108
+VGO:0003677
+p109
+aVDNA binding
+p110
+aS'0.01'
+p111
+aaaasS'downloadfile'
+p112
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/8915984_download.txt'
+p113
+s.

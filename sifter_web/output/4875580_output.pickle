@@ -1,0 +1,39 @@
+(dp0
+S'result'
+p1
+(lp2
+(lp3
+VH2A3_HUMAN
+p4
+aVQ7L7L0
+p5
+aVHomo sapiens
+p6
+aI9606
+a(lp7
+(lp8
+VGO:0003684
+p9
+aVdamaged DNA binding
+p10
+aS'0.16'
+p11
+aa(lp12
+VGO:0000978
+p13
+aVRNA polymerase II core promoter proximal region sequence-specific DNA binding
+p14
+aS'0.16'
+p15
+aa(lp16
+VGO:0019237
+p17
+aVcentromeric DNA binding
+p18
+aS'0.16'
+p19
+aaaasS'downloadfile'
+p20
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/4875580_download.txt'
+p21
+s.

@@ -1,0 +1,2 @@
+List of genes with no predictions: 
+NEK10_HUMAN

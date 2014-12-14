@@ -1,0 +1,9 @@
+SIFTER Predictions for Job ID 4875580: 
+
+Uniprot ID: H2A3_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0003684	damaged DNA binding	0.16
+		GO:0000978	RNA polymerase II core promoter proximal region sequence-specific DNA binding	0.16
+		GO:0019237	centromeric DNA binding	0.16
+

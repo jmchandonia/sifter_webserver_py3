@@ -1,0 +1,12 @@
+SIFTER Predictions for Job ID 4724983: 
+
+Uniprot ID: ZDHC3_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019706	protein-cysteine S-palmitoyltransferase activity	0.93
+		GO:0004871	signal transducer activity	0.01
+		GO:0000035	acyl binding	0.01
+		GO:0005515	protein binding	0.01
+		GO:0015095	magnesium ion transmembrane transporter activity	0.01
+		GO:0003677	DNA binding	0.01
+

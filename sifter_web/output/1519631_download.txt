@@ -1,0 +1,223 @@
+SIFTER Predictions for Job ID 1519631: 
+
+Uniprot ID: ZDH14_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019706	protein-cysteine S-palmitoyltransferase activity	0.89
+		GO:0004871	signal transducer activity	0.38
+		GO:0000035	acyl binding	0.38
+		GO:0005515	protein binding	0.38
+		GO:0015095	magnesium ion transmembrane transporter activity	0.38
+		GO:0003677	DNA binding	0.38
+
+Uniprot ID: ATS12_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004222	metalloendopeptidase activity	0.83
+		GO:0002020	protease binding	0.81
+		GO:0008270	zinc ion binding	0.8
+		GO:0005178	integrin binding	0.8
+		GO:0009673	low affinity phosphate transmembrane transporter activity	0.78
+		GO:0005509	calcium ion binding	0.78
+		GO:0008201	heparin binding	0.78
+		GO:0005201	extracellular matrix structural constituent	0.77
+
+Uniprot ID: GNT2C_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0008109	N-acetyllactosaminide beta-1,6-N-acetylglucosaminyltransferase activity	0.92
+		GO:0047225	acetylgalactosaminyl-O-glycosyl-glycoprotein beta-1,6-N-acetylglucosaminyltransferase activity	0.05
+		GO:0003829	beta-1,3-galactosyl-O-glycosyl-glycoprotein beta-1,6-N-acetylglucosaminyltransferase activity	0.05
+
+Uniprot ID: ABCAC_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0005524	ATP binding	0.63
+		GO:0017127	cholesterol transporter activity	0.56
+		GO:0019905	syntaxin binding	0.55
+		GO:0034186	apolipoprotein A-I binding	0.53
+		GO:0034188	apolipoprotein A-I receptor activity	0.53
+		GO:0031267	small GTPase binding	0.52
+		GO:0042803	protein homodimerization activity	0.47
+
+Uniprot ID: RISC_MOUSE
+Species: Mus musculus
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004185	serine-type carboxypeptidase activity	0.93
+		GO:0008047	enzyme activator activity	0.02
+		GO:0046982	protein heterodimerization activity	0.02
+		GO:0016754	sinapoylglucose-malate O-sinapoyltransferase activity	0.02
+
+Uniprot ID: PGAM4_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0003873	6-phosphofructo-2-kinase activity	0.46
+		GO:0046538	2,3-bisphosphoglycerate-dependent phosphoglycerate mutase activity	0.38
+
+Uniprot ID: GNT2A_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0008109	N-acetyllactosaminide beta-1,6-N-acetylglucosaminyltransferase activity	0.9
+		GO:0047225	acetylgalactosaminyl-O-glycosyl-glycoprotein beta-1,6-N-acetylglucosaminyltransferase activity	0.12
+		GO:0003829	beta-1,3-galactosyl-O-glycosyl-glycoprotein beta-1,6-N-acetylglucosaminyltransferase activity	0.12
+		GO:0030158	protein xylosyltransferase activity	0.11
+
+Uniprot ID: CA2D4_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0005245	voltage-gated calcium channel activity	0.9
+		GO:0005246	calcium channel regulator activity	0.34
+		GO:0016757	transferase activity, transferring glycosyl groups	0.3
+
+Uniprot ID: VWA2_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0042803	protein homodimerization activity	0.58
+		GO:0043395	heparan sulfate proteoglycan binding	0.51
+		GO:0019903	protein phosphatase binding	0.44
+
+Uniprot ID: H2A3_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0003684	damaged DNA binding	0.16
+		GO:0000978	RNA polymerase II core promoter proximal region sequence-specific DNA binding	0.16
+		GO:0019237	centromeric DNA binding	0.16
+
+Uniprot ID: PHLB3_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0048365	Rac GTPase binding	0.75
+		GO:0036033	mediator complex binding	0.6
+
+Uniprot ID: ZDHC2_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019706	protein-cysteine S-palmitoyltransferase activity	0.91
+		GO:0004871	signal transducer activity	0.13
+		GO:0000035	acyl binding	0.13
+		GO:0005515	protein binding	0.13
+		GO:0015095	magnesium ion transmembrane transporter activity	0.13
+		GO:0003677	DNA binding	0.13
+
+Uniprot ID: DIRA1_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0005525	GTP binding	0.66
+		GO:0003924	GTPase activity	0.46
+
+Uniprot ID: DIRA2_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0005525	GTP binding	0.83
+		GO:0003924	GTPase activity	0.46
+		GO:0031681	G-protein beta-subunit binding	0.44
+		GO:0016887	ATPase activity	0.43
+		GO:0031624	ubiquitin conjugating enzyme binding	0.43
+		GO:0005524	ATP binding	0.43
+		GO:0017137	Rab GTPase binding	0.43
+
+Uniprot ID: MOS_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004709	MAP kinase kinase kinase activity	0.62
+		GO:0000287	magnesium ion binding	0.3
+		GO:0030274	LIM domain binding	0.24
+
+Uniprot ID: 1B48_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0042605	peptide antigen binding	0.9
+		GO:0032395	MHC class II receptor activity	0.76
+		GO:0046982	protein heterodimerization activity	0.75
+		GO:0030881	beta-2-microglobulin binding	0.75
+
+Uniprot ID: MOS_XENLA
+Species: Xenopus laevis
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004709	MAP kinase kinase kinase activity	0.64
+		GO:0000287	magnesium ion binding	0.3
+		GO:0030274	LIM domain binding	0.25
+
+Uniprot ID: ZDH15_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019706	protein-cysteine S-palmitoyltransferase activity	0.9
+		GO:0004871	signal transducer activity	0.23
+		GO:0000035	acyl binding	0.23
+		GO:0005515	protein binding	0.23
+		GO:0015095	magnesium ion transmembrane transporter activity	0.23
+		GO:0003677	DNA binding	0.23
+
+Uniprot ID: ZDHC1_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019706	protein-cysteine S-palmitoyltransferase activity	0.93
+		GO:0003677	DNA binding	0.03
+
+Uniprot ID: ACY3_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004046	aminoacylase activity	0.78
+
+Uniprot ID: CYTS_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004869	cysteine-type endopeptidase inhibitor activity	0.64
+		GO:0002020	protease binding	0.44
+
+Uniprot ID: FUCO2_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0033938	1,6-alpha-L-fucosidase activity	0.92
+		GO:0033932	1,3-alpha-L-fucosidase activity	0.66
+
+Uniprot ID: PGFS_RAT
+Species: Rattus norvegicus
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0016616	oxidoreductase activity, acting on the CH-OH group of donors, NAD or NADP as acceptor	0.77
+		GO:0016209	antioxidant activity	0.56
+
+Uniprot ID: DMP4_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004672	protein kinase activity	0.74
+		GO:0005509	calcium ion binding	0.74
+
+Uniprot ID: MYO1B_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0051015	actin filament binding	0.69
+		GO:0030898	actin-dependent ATPase activity	0.53
+		GO:0005524	ATP binding	0.53
+		GO:0060002	plus-end directed microfilament motor activity	0.52
+
+Uniprot ID: ZDHC3_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019706	protein-cysteine S-palmitoyltransferase activity	0.93
+		GO:0004871	signal transducer activity	0.01
+		GO:0000035	acyl binding	0.01
+		GO:0005515	protein binding	0.01
+		GO:0015095	magnesium ion transmembrane transporter activity	0.01
+		GO:0003677	DNA binding	0.01
+
+Uniprot ID: PADI2_RAT
+Species: Rattus norvegicus
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004668	protein-arginine deiminase activity	0.9
+
+Uniprot ID: PKRI1_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0019901	protein kinase binding	0.62
+		GO:0004860	protein kinase inhibitor activity	0.61
+		GO:0003725	double-stranded RNA binding	0.61
+
+Uniprot ID: RISC_HUMAN
+Species: Homo sapiens
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004185	serine-type carboxypeptidase activity	0.93
+		GO:0008047	enzyme activator activity	0.02
+		GO:0046982	protein heterodimerization activity	0.02
+		GO:0016754	sinapoylglucose-malate O-sinapoyltransferase activity	0.02
+
