@@ -44,7 +44,7 @@
 				 alt="quick_disambiguation.png" style="width:1000px;">
 			<h4>You can click on one of the four examples to see examples of queries.
 			   Here we show a search for the protein with Uniprot accession number
-			   A8WRK7_CAEBR.</h4>
+			   PA24B_MOUSE.</h4>
 			<img src="/media/help/quick_search/quick_ex1.png"
 				 alt="quick_ex1.png" style="width:1000px;">
 			<h4>When you press submit, you should see the following screen, which
@@ -60,10 +60,11 @@
 			   function links to a corresponding search in the AmiGO database.</h4>
 			<img src="/media/help/quick_search/quick_ex1_results.png"
 				 alt="quick_ex1_results.png" style="width:1000px;">
-			<h4>In this example, the protein A8WRK7_CAEBR in the species
-			   <em>C. briggsae</em> has a confidence score of 0.82 for the
-			   molecular function "thyroid hormone transmembrane transporter activity"
-			   (GO: 0015349).</h4>
+			<h4>In this example, the protein PA24B_MOUSE in the species
+			   <em>M. musculus</em> has a confidence score of 0.89 for the
+			   molecular function "calcium-dependent phospholipase A2 activity"
+			   (GO: 0047498).</h4>
+			<h4>You can also download the results as the text format using the provided download link.</h4>
 			<h4>Our quick search is a general search that handles proteins, species,
 			   or functions. For searches more specific to the type of your query,
 			   check out the "Advanced Search" section.</h4>
@@ -95,8 +96,8 @@
 
 <div class="query-info helppage">
 	<a name="advancedSearch"><h2>Advanced Search</h2></a>
-	<h4>There are four types of advanced search: predict by protein, predict
-	   by species, predict by function, and predict by sequence.</h4>
+	<h4>There are four types of advanced search: predict by protein,  predict for all proteins of a species,
+		find proteins that have given functions, and predict for homologs of given Sequences.</h4>
 </div>
 <div class="query-info">
 	<div class="row">
@@ -108,10 +109,10 @@
 			<img src="/media/help/advanced_search/advanced_options.png"
 				 alt="advanced_options.png" style="width:500px;">
 			<h4>Just click on "Show advanced options" to choose a scheme.</h4>
-			<h4>In addition, if you provide your email address, we will send the
+<!--			<h4>In addition, if you provide your email address, we will send the
 			   SIFTER predictions directly to you via email once they are available.</h4>
 			<img src="/media/help/advanced_search/email.png"
-				 alt="email.png" style="width:1000px;">
+				 alt="email.png" style="width:1000px;"> -->
 			<div><a href="#top">Back to top</a></div>
 		</div>
 	</div>
@@ -119,7 +120,7 @@
 
 
 <div class="query-info helppage">
-	<h3><a name="predictByProtein">Predict by Protein</a></h3>
+	<h3><a name="predictByProtein">Predict by Protein ID</a></h3>
 	<h4>"Predict by Protein ID" retrieves the SIFTER predictions for your protein
 	   or proteins of interest.</h4>
 </div>
@@ -130,11 +131,10 @@
 				 alt="protein.png" style="width:1000px;">
 			<h4>You can enter a single protein Uniprot ID or accession number,
 			   or you can provide a list of proteins separated by commas.
-			   In the example below, we search for a list of 100 Uniprot accession
+			   In the example below, we search for a list of 29 Uniprot accession
 			   numbers.</h4>
 			<img src="/media/help/advanced_search/protein_ex2.png"
 				 alt="protein_ex2.png" style="width:1000px;">
-			<h4>You can also upload a text file of the same format.</h4>
 			<div><a href="#top">Back to top</a></div>
 		</div>
 	</div>
@@ -143,8 +143,8 @@
 
 
 <div class="query-info helppage">
-	<h3><a name="predictBySpecies">Predict by Species</a></h3>
-	<h4>"Predict by Species" retrieves the SIFTER predictions on all proteins
+	<h3><a name="predictBySpecies">Predict for all proteins of a Species</a></h3>
+	<h4>"Predict for all proteins of a Species" retrieves the SIFTER predictions on all proteins
 	   in your species of interest.</h4>
 </div>
 <div class="query-info">
@@ -170,8 +170,8 @@
 
 
 <div class="query-info helppage">
-	<h3><a name="predictByFunction">Predict by function</a></h3>
-	<h4>"Predict by Function" retrieves the SIFTER predictions on all proteins
+	<h3><a name="predictByFunction">Find proteins that have given Functions</a></h3>
+	<h4>"Find proteins that have given Functions" retrieves the SIFTER predictions on all proteins
 	   in your species of interest with at least one of the specified molecular
 	   functions of interest or their descendants as the top predicted functions.</h4>
 </div>
@@ -181,11 +181,11 @@
 			<img src="/media/help/advanced_search/function.png"
 				 alt="function.png" style="width:1000px;">
 			<h4>As in "Predict by Protein ID", you can specify a single GO term ID,
-			   a list of comma-separated GO term IDs, or a text file in the same format.
+			   or a list of comma-separated GO term IDs.
 			   In the species section, you can enter the name or the tax ID of your
 			   species of interest. For example, you can search for proteins in
 			   <em>S. cerevisiae</em> that have one or more of the functions
-			   GO:0019911, GO:0015349, or GO:0000978 or any of their descendants.</h4>
+			   GO:0019911, GO:0004657, or GO:0050660 or any of their descendants.</h4>
 			<img src="/media/help/advanced_search/function_ex2.png"
 				 alt="function_ex2.png" style="width:1000px;">
             <h4>Here are the SIFTER predictions for that search.</h4>
@@ -200,9 +200,9 @@
 
 
 <div class="query-info helppage">
-	<h3><a name="predictBySequence">Predict by sequence</a></h3>
+	<h3><a name="predictBySequence">Predict for homologs of given Sequences</a></h3>
 	<h4>If your query does not match any of our current results, check out
-	   "Predict by Sequence". We will BLAST search your query protein sequence(s)
+	   "Predict for homologs of given Sequences". We will BLAST search your query protein sequence(s)
 	   across all proteins for which SIFTER has predictions to find the
 	   closest homologs to your query sequence(s).</h4>
 </div>
@@ -216,12 +216,12 @@
 			   with two protein sequences in FASTA format.</h4>
 			<img src="/media/help/advanced_search/sequence_ex2.png"
 				 alt="sequence_ex2.png" style="width:1000px;">
-			<h4>In the results page, we indicate the number of sequence in our database
-			   that are homologous to your query sequence(s).</h4>
+			<h4>In the results page, we indicate the number of proteins in our database
+			   that are homologous to your query sequence(s) along with the SIFTER predictions for 
+			   them.</h4>
 			<img src="/media/help/advanced_search/sequence_ex1_results.png"
 				 alt="sequence_ex1_results.png" style="width:1000px;">
-			<h4>In addition to the Uniprot accession number, species name, molecular functions,
-			   and confidence scores for each homolog, we also provide BLAST specific results:
+			<h4>For each homologous protein, we also report the BLAST specific results:
 			   the bit score, E-value, percent identity, and query coverage.</h4>
 			<div><a href="#top">Back to top</a></div>
 		</div>
@@ -232,7 +232,7 @@
 <div class="query-info helppage">
 	<h2><a name="runSifterLocally">Run SIFTER locally</a></h2>
 	<h4>If you have downloaded SIFTER and want to know how long it will run
-	   on your protein family of interest, check out the complexity tab.</h4>
+	   on your protein family of interest, check out the <a href="http://sifter.berkeley.edu/complexity/">second link</a> in the <a href="http://sifter.berkeley.edu/download/">download tab</a>.</h4>
 </div>
 <div class="query-info">
 	<div class="row">
