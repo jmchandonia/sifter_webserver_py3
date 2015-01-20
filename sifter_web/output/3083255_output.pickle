@@ -1,0 +1,53 @@
+(dp0
+S'result'
+p1
+(lp2
+(lp3
+VPA24B_MOUSE
+p4
+aVP0C871
+p5
+aVMus musculus
+p6
+aI10090
+a(lp7
+(lp8
+VGO:0047498
+p9
+aVcalcium-dependent phospholipase A2 activity
+p10
+aS'0.89'
+p11
+aa(lp12
+VGO:0047499
+p13
+aVcalcium-independent phospholipase A2 activity
+p14
+aS'0.6'
+p15
+aa(lp16
+VGO:0004622
+p17
+aVlysophospholipase activity
+p18
+aS'0.52'
+p19
+aa(lp20
+VGO:0005509
+p21
+aVcalcium ion binding
+p22
+aS'0.52'
+p23
+aa(lp24
+VGO:0005544
+p25
+aVcalcium-dependent phospholipid binding
+p26
+aS'0.52'
+p27
+aaaasS'downloadfile'
+p28
+S'/data_more/SIFER_webserver/src/sifter_webserver/sifter_web/output/3083255_download.txt'
+p29
+s.

@@ -1,0 +1,91 @@
+SIFTER Predictions for Job ID 1148086: 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Predictions for homologs of the query sequence: seq1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Uniprot ID: Q06G06_MOUSE
+Species: Mus musculus
+BLAST Hit Information: (Bit-Score: 1497, E-val:0.00e+00, Identitiy:100, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.89
+		GO:0047499	calcium-independent phospholipase A2 activity	0.6
+		GO:0004622	lysophospholipase activity	0.52
+		GO:0005509	calcium ion binding	0.52
+		GO:0005544	calcium-dependent phospholipid binding	0.52
+
+Uniprot ID: PA24B_MOUSE
+Species: Mus musculus
+BLAST Hit Information: (Bit-Score: 1496, E-val:0.00e+00, Identitiy:100, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.89
+		GO:0047499	calcium-independent phospholipase A2 activity	0.6
+		GO:0004622	lysophospholipase activity	0.52
+		GO:0005509	calcium ion binding	0.52
+		GO:0005544	calcium-dependent phospholipid binding	0.52
+
+Uniprot ID: D4A1I6_RAT
+Species: Rattus norvegicus
+BLAST Hit Information: (Bit-Score: 1385, E-val:0.00e+00, Identitiy:94, Query Coverage:98
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.9
+		GO:0047499	calcium-independent phospholipase A2 activity	0.42
+		GO:0017050	D-erythro-sphingosine kinase activity	0.32
+
+Uniprot ID: H0VT58_CAVPO
+Species: Cavia porcellus
+BLAST Hit Information: (Bit-Score: 1208, E-val:0.00e+00, Identitiy:82, Query Coverage:98
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.91
+		GO:0000987	core promoter proximal region sequence-specific DNA binding	0.42
+		GO:0047499	calcium-independent phospholipase A2 activity	0.35
+
+Uniprot ID: F1SSW8_PIG
+Species: Sus scrofa
+BLAST Hit Information: (Bit-Score: 1198, E-val:0.00e+00, Identitiy:81, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.89
+		GO:0000987	core promoter proximal region sequence-specific DNA binding	0.41
+		GO:0047499	calcium-independent phospholipase A2 activity	0.36
+
+Uniprot ID: G7MWY0_MACMU
+Species: Macaca mulatta
+BLAST Hit Information: (Bit-Score: 1185, E-val:0.00e+00, Identitiy:82, Query Coverage:98
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.9
+		GO:0047499	calcium-independent phospholipase A2 activity	0.43
+		GO:0000987	core promoter proximal region sequence-specific DNA binding	0.41
+
+Uniprot ID: PA24B_HUMAN
+Species: Homo sapiens
+BLAST Hit Information: (Bit-Score: 1184, E-val:0.00e+00, Identitiy:82, Query Coverage:98
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.93
+		GO:0047499	calcium-independent phospholipase A2 activity	0.39
+
+Uniprot ID: F1PC31_CANFA
+Species: Canis lupus familiaris
+BLAST Hit Information: (Bit-Score: 1182, E-val:0.00e+00, Identitiy:81, Query Coverage:98
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.89
+		GO:0000987	core promoter proximal region sequence-specific DNA binding	0.41
+		GO:0047499	calcium-independent phospholipase A2 activity	0.34
+
+Uniprot ID: G7PAZ3_MACFA
+Species: Macaca fascicularis
+BLAST Hit Information: (Bit-Score: 1182, E-val:0.00e+00, Identitiy:82, Query Coverage:98
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.91
+		GO:0000987	core promoter proximal region sequence-specific DNA binding	0.42
+		GO:0047499	calcium-independent phospholipase A2 activity	0.38
+		GO:0033746	histone demethylase activity (H3-R2 specific)	0.33
+		GO:0008270	zinc ion binding	0.32
+		GO:0033749	histone demethylase activity (H4-R3 specific)	0.32
+
+Uniprot ID: E1BC49_BOVIN
+Species: Bos taurus
+BLAST Hit Information: (Bit-Score: 1160, E-val:0.00e+00, Identitiy:81, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0047498	calcium-dependent phospholipase A2 activity	0.93
+		GO:0047499	calcium-independent phospholipase A2 activity	0.36
+
+

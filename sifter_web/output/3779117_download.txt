@@ -1,0 +1,9 @@
+SIFTER Predictions for Job ID 3779117: 
+
+Uniprot ID: PCKA_ECOLI
+Species: Escherichia coli K-12
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004612	phosphoenolpyruvate carboxykinase (ATP) activity	0.77
+		GO:0005509	calcium ion binding	0.77
+		GO:0000287	magnesium ion binding	0.77
+

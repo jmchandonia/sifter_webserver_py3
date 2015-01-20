@@ -1,0 +1,402 @@
+SIFTER Predictions for Job ID 1738307: 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Predictions for homologs of the query sequence: 1BLI:A|PDBID|CHAIN|SEQUENCE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Uniprot ID: AMY_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 1001, E-val:0.00e+00, Identitiy:100, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.15
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.14
+		GO:0005509	calcium ion binding	0.14
+		GO:0005515	protein binding	0.14
+		GO:0031404	chloride ion binding	0.14
+
+Uniprot ID: Q208A7_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 993, E-val:0.00e+00, Identitiy:99, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0005515	protein binding	0.07
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: C0LZX2_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 991, E-val:0.00e+00, Identitiy:99, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: E5W690_9BACI
+Species: Bacillus sp. BT1B_CT2
+BLAST Hit Information: (Bit-Score: 987, E-val:0.00e+00, Identitiy:98, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: A8WDK0_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 986, E-val:0.00e+00, Identitiy:99, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: Q1EM93_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 986, E-val:0.00e+00, Identitiy:99, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: Q19NT8_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 972, E-val:0.00e+00, Identitiy:97, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: C6KML4_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 958, E-val:0.00e+00, Identitiy:95, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.08
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: C7EP44_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 956, E-val:0.00e+00, Identitiy:95, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.08
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.08
+		GO:0005509	calcium ion binding	0.08
+		GO:0005515	protein binding	0.08
+		GO:0031404	chloride ion binding	0.08
+
+Uniprot ID: A8WE99_9BACT
+Species: uncultured bacterium
+BLAST Hit Information: (Bit-Score: 955, E-val:0.00e+00, Identitiy:97, Query Coverage:98
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: H1AD16_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 954, E-val:0.00e+00, Identitiy:95, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.08
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: A1YR25_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 949, E-val:0.00e+00, Identitiy:95, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.08
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.08
+		GO:0005509	calcium ion binding	0.08
+		GO:0005515	protein binding	0.08
+		GO:0031404	chloride ion binding	0.08
+
+Uniprot ID: G9JKM7_BACLI
+Species: Bacillus licheniformis
+BLAST Hit Information: (Bit-Score: 938, E-val:0.00e+00, Identitiy:94, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.09
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.09
+		GO:0005509	calcium ion binding	0.09
+		GO:0005515	protein binding	0.09
+		GO:0031404	chloride ion binding	0.09
+
+Uniprot ID: D0V5E8_9BACT
+Species: uncultured bacterium
+BLAST Hit Information: (Bit-Score: 844, E-val:0.00e+00, Identitiy:83, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.08
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.08
+		GO:0005509	calcium ion binding	0.08
+		GO:0005515	protein binding	0.08
+		GO:0031404	chloride ion binding	0.08
+
+Uniprot ID: D3Y3H2_BACAM
+Species: Bacillus amyloliquefaciens
+BLAST Hit Information: (Bit-Score: 827, E-val:0.00e+00, Identitiy:81, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.17
+		GO:0005515	protein binding	0.16
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.16
+		GO:0005509	calcium ion binding	0.16
+		GO:0031404	chloride ion binding	0.16
+
+Uniprot ID: A9YDD9_9BACI
+Species: Bacillus sp. YX
+BLAST Hit Information: (Bit-Score: 820, E-val:0.00e+00, Identitiy:80, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0005515	protein binding	0.08
+		GO:0031216	neopullulanase activity	0.08
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.08
+		GO:0005509	calcium ion binding	0.08
+		GO:0031404	chloride ion binding	0.08
+
+Uniprot ID: AMY_BACAM
+Species: Bacillus amyloliquefaciens
+BLAST Hit Information: (Bit-Score: 818, E-val:0.00e+00, Identitiy:80, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0005515	protein binding	0.12
+		GO:0031216	neopullulanase activity	0.12
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.12
+		GO:0005509	calcium ion binding	0.12
+		GO:0031404	chloride ion binding	0.12
+
+Uniprot ID: A7DWA9_BACIU
+Species: Bacillus subtilis
+BLAST Hit Information: (Bit-Score: 816, E-val:0.00e+00, Identitiy:80, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0005515	protein binding	0.08
+		GO:0031216	neopullulanase activity	0.08
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.08
+		GO:0005509	calcium ion binding	0.08
+		GO:0031404	chloride ion binding	0.08
+
+Uniprot ID: D5KR60_BACAM
+Species: Bacillus amyloliquefaciens
+BLAST Hit Information: (Bit-Score: 799, E-val:0.00e+00, Identitiy:78, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.08
+		GO:0005515	protein binding	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: Q0KKZ7_9BACI
+Species: Bacillus sp. JAMB-204
+BLAST Hit Information: (Bit-Score: 792, E-val:0.00e+00, Identitiy:77, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0005515	protein binding	0.07
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: Q5MB94_9BACI
+Species: Bacillus sp. KR-8104
+BLAST Hit Information: (Bit-Score: 769, E-val:0.00e+00, Identitiy:83, Query Coverage:91
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.87
+		GO:0031216	neopullulanase activity	0.09
+		GO:0005515	protein binding	0.08
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.08
+		GO:0005509	calcium ion binding	0.08
+		GO:0031404	chloride ion binding	0.08
+
+Uniprot ID: Q9RQT8_9BACT
+Species: Cytophaga sp.
+BLAST Hit Information: (Bit-Score: 759, E-val:0.00e+00, Identitiy:73, Query Coverage:100
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.06
+		GO:0005509	calcium ion binding	0.06
+		GO:0005515	protein binding	0.06
+		GO:0031404	chloride ion binding	0.06
+
+Uniprot ID: C2N3V3_BACCE
+Species: Bacillus cereus ATCC 10876
+BLAST Hit Information: (Bit-Score: 753, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.16
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.16
+		GO:0005509	calcium ion binding	0.16
+		GO:0005515	protein binding	0.16
+		GO:0031404	chloride ion binding	0.16
+
+Uniprot ID: C2P1I2_BACCE
+Species: Bacillus cereus 172560W
+BLAST Hit Information: (Bit-Score: 753, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.12
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.12
+		GO:0005509	calcium ion binding	0.12
+		GO:0005515	protein binding	0.12
+		GO:0031404	chloride ion binding	0.12
+
+Uniprot ID: C2WQG9_BACCE
+Species: Bacillus cereus Rock4-2
+BLAST Hit Information: (Bit-Score: 751, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: C2RQY5_BACCE
+Species: Bacillus cereus BDRD-ST24
+BLAST Hit Information: (Bit-Score: 751, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.12
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.12
+		GO:0005509	calcium ion binding	0.12
+		GO:0005515	protein binding	0.12
+		GO:0031404	chloride ion binding	0.12
+
+Uniprot ID: C2RB16_BACCE
+Species: Bacillus cereus m1550
+BLAST Hit Information: (Bit-Score: 751, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0005515	protein binding	0.07
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: C2T9P5_BACCE
+Species: Bacillus cereus BDRD-Cer4
+BLAST Hit Information: (Bit-Score: 751, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.12
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.12
+		GO:0005509	calcium ion binding	0.12
+		GO:0005515	protein binding	0.12
+		GO:0031404	chloride ion binding	0.12
+
+Uniprot ID: C2YD99_BACCE
+Species: Bacillus cereus AH676
+BLAST Hit Information: (Bit-Score: 751, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0005515	protein binding	0.07
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: C3H3Z9_BACTU
+Species: Bacillus thuringiensis serovar huazhongensis BGSC 4BD1
+BLAST Hit Information: (Bit-Score: 749, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0005515	protein binding	0.07
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: C3ENG5_BACTK
+Species: Bacillus thuringiensis serovar kurstaki str. T03a001
+BLAST Hit Information: (Bit-Score: 750, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: Q9AQ54_BACME
+Species: Bacillus megaterium
+BLAST Hit Information: (Bit-Score: 749, E-val:0.00e+00, Identitiy:74, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0005515	protein binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: C4NYZ6_BACCE
+Species: Bacillus cereus
+BLAST Hit Information: (Bit-Score: 747, E-val:0.00e+00, Identitiy:73, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0005515	protein binding	0.21
+		GO:0031216	neopullulanase activity	0.21
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.21
+		GO:0005509	calcium ion binding	0.21
+		GO:0031404	chloride ion binding	0.21
+
+Uniprot ID: B0LVG1_BACCE
+Species: Bacillus cereus
+BLAST Hit Information: (Bit-Score: 747, E-val:0.00e+00, Identitiy:73, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.92
+		GO:0005515	protein binding	0.07
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+Uniprot ID: G9Q490_9BACI
+Species: Bacillus sp. 7_6_55CFAA_CT2
+BLAST Hit Information: (Bit-Score: 746, E-val:0.00e+00, Identitiy:73, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.9
+		GO:0005515	protein binding	0.34
+		GO:0031216	neopullulanase activity	0.34
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.34
+		GO:0005509	calcium ion binding	0.34
+		GO:0031404	chloride ion binding	0.34
+
+Uniprot ID: C3E683_BACTU
+Species: Bacillus thuringiensis serovar pakistani str. T13001
+BLAST Hit Information: (Bit-Score: 746, E-val:0.00e+00, Identitiy:73, Query Coverage:99
+Predictions:	GO ID	Term name	Confidence Score
+		GO:0004556	alpha-amylase activity	0.91
+		GO:0005515	protein binding	0.07
+		GO:0031216	neopullulanase activity	0.07
+		GO:0047470	(1,4)-alpha-D-glucan 1-alpha-D-glucosylmutase activity	0.07
+		GO:0005509	calcium ion binding	0.07
+		GO:0031404	chloride ion binding	0.07
+
+
