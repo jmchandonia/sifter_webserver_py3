@@ -252,7 +252,7 @@
             <h4>We use a predictive model trained on existing SIFTER data to estimate
                the processing time of SIFTER. Just enter the PFam ID of that family
                or provide the number of candidate molecular functions and family size
-               of that family and press submit. </h4>
+               of that family and press submit.</h4>
 			<h4>Here is an example that searches for the protein family with PFam ID
 			   PF00735, which has 11 candidate molecular functions and family size 2609.</h4>
 			<img src="/media/help/complexity_search/complexity_pfam.png"
