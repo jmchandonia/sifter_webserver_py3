@@ -16,7 +16,7 @@ function setExample(i){
         else if (i==8) 
             document.getElementById('input_species').value = '882';            //code
         else if (i==9) 
-            document.getElementById('input_function').value = 'GO:0019911';            //code
+            document.getElementById('input_function').value = 'GO:0004657';            //code
         else if (i==10) 
             document.getElementById('input_function').value = 'GO:0019911,GO:0004657,GO:0050660';            //code
         else if (i==11) 
