@@ -24,13 +24,18 @@ INPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"input")
 
     
 def find_go_ancs(ts):
-    ancs0=Term.objects.filter(term_id__in=ts).values('ancestors','term_id')
+    ts=list(ts)
+    ancs0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        ancs0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('ancestors','term_id'))    
     ancs={}
     for w in ancs0:
         ancs[w['term_id']]=cPickle.loads(zlib.decompress(w['ancestors']).encode('ascii','ignore'))
     return ancs
 
 def find_go_decs(ts):
+    ts=list(ts)
     decs0=[]
     batchs=100
     for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
@@ -41,7 +46,11 @@ def find_go_decs(ts):
     return decs
 
 def find_go_decs_ancs(ts):
-    res0=Term.objects.filter(term_id__in=ts).values('ancestors','descendants','term_id')
+    ts=list(ts)
+    res0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        res0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('ancestors','descendants','term_id'))    
     ancs={}
     decs={}
     for w in res0:
@@ -50,7 +59,11 @@ def find_go_decs_ancs(ts):
     return decs,ancs
 
 def find_go_childs(ts):
-    res0=Term2Term.objects.filter(parent_id__in=ts).values_list(flat=True)
+    ts=list(ts)
+    res0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        res0.extend(Term2Term.objects.filter(parent_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values_list(flat=True))    
     childs={}
     for w in res0:
         if w[0] not in childs:
@@ -61,7 +74,11 @@ def find_go_childs(ts):
     return childs
 
 def find_go_parents(ts):
-    res0=Term2Term.objects.filter(child_id__in=ts).values_list(flat=True)
+    ts=list(ts)
+    res0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        res0.extend(Term2Term.objects.filter(child_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values_list(flat=True))    
     parents={}
     for w in res0:
         if w[1] not in parents:
@@ -72,7 +89,11 @@ def find_go_parents(ts):
     return parents
     
 def find_eps(ts):
-    res0=Term.objects.filter(term_id__in=ts).values('term_id','eps')
+    ts=list(ts)
+    res0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        res0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('term_id','eps'))    
     eps={}
     for w in res0:
         eps[w['term_id']]=w['eps']
