@@ -31,7 +31,10 @@ def find_go_ancs(ts):
     return ancs
 
 def find_go_decs(ts):
-    decs0=Term.objects.filter(term_id__in=ts).values('descendants','term_id')
+    decs0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        decs0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('descendants','term_id'))    
     decs={}
     for w in decs0:
         decs[w['term_id']]=cPickle.loads(zlib.decompress(w['descendants']).encode('ascii','ignore'))
@@ -76,7 +79,10 @@ def find_eps(ts):
     return eps
     
 def find_weights(fams):
-    res0=Weight.objects.filter(pfam__in=fams).values()
+    res0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(fams))/float(batchs)))):
+        res0.extend(Weight.objects.filter(pfam__in=fams[batchs*i:min(len(fams),batchs*(i+1))]).values())
     weights={}
     for w in res0:
         fam=w['pfam']
