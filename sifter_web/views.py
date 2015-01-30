@@ -347,7 +347,7 @@ def get_input(request,context={}):
                 delete_old_results()
                 my_form_data={'sifter_choices':form.cleaned_data['sifter_choices'],'ExpWeight_hidden':form.cleaned_data['ExpWeight_hidden']
                               ,'active_tab_hidden':form.cleaned_data['active_tab_hidden']}
-                msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
+                '''msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
                 msg+='Job submitted on: %s\n'%datetime.date.today()
                 msg+='query_method: %s\n'%active_tab
                 msg+='SIFTER choice: %s\n'%sifter_choices_val
@@ -356,7 +356,9 @@ def get_input(request,context={}):
                 msg+='Species: %s\n'%(my_species)
                 msg+='Number of functions: %s\n'%len(my_functions)
                 msg+='Number of sequences: %s\n'%(n_sequences)
-                send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)
+                send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
+                send_mail('Subject here', 'Here is the message.', 'from@example.com',['sahraeian.m@gmail.com'], fail_silently=False)
+                
                 run_sifter_job.delay(my_form_data,job_id)
                 return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
         else:
@@ -616,7 +618,7 @@ def show_predictions(request):
         my_form_data={'sifter_choices':'EXP-Model','ExpWeight_hidden':'0.7'
         ,'active_tab_hidden':'by_species'}
 
-        msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
+        '''msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
         msg+='Job submitted on: %s\n'%datetime.date.today()
         msg+='query_method: %s\n'%'by_species'
         msg+='SIFTER choice: %s\n'%'EXP-Model'
@@ -625,7 +627,8 @@ def show_predictions(request):
         msg+='Species: %s\n'%(my_species)
         msg+='Number of functions: %s\n'%0
         msg+='Number of sequences: %s\n'%0
-        send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)
+        send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
+        send_mail('Subject here', 'Here is the message.', 'from@example.com',['sahraeian.m@gmail.com'], fail_silently=False)
         run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
     elif 'protein' in qdict:
@@ -647,7 +650,7 @@ def show_predictions(request):
         my_form_data={'sifter_choices':'EXP-Model','ExpWeight_hidden':'0.7'
         ,'active_tab_hidden':'by_protein'}
 
-        msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
+        '''msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
         msg+='Job submitted on: %s\n'%datetime.date.today()
         msg+='query_method: %s\n'%'by_protein'
         msg+='SIFTER choice: %s\n'%'EXP-Model'
@@ -656,7 +659,8 @@ def show_predictions(request):
         msg+='Species: %s\n'%0
         msg+='Number of functions: %s\n'%0
         msg+='Number of sequences: %s\n'%0
-        send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)        
+        send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
+        send_mail('Subject here', 'Here is the message.', 'from@example.com',['sahraeian.m@gmail.com'], fail_silently=False)
         run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})        
     elif 's-taxid' in qdict:
