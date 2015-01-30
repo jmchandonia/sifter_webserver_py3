@@ -357,7 +357,6 @@ def get_input(request,context={}):
                 msg+='Number of functions: %s\n'%len(my_functions)
                 msg+='Number of sequences: %s\n'%(n_sequences)
                 send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
-                send_mail('Subject here', 'Here is the message.', 'from@example.com',['sahraeian.m@gmail.com'], fail_silently=False)
                 
                 run_sifter_job.delay(my_form_data,job_id)
                 return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
@@ -628,7 +627,6 @@ def show_predictions(request):
         msg+='Number of functions: %s\n'%0
         msg+='Number of sequences: %s\n'%0
         send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
-        send_mail('Subject here', 'Here is the message.', 'from@example.com',['sahraeian.m@gmail.com'], fail_silently=False)
         run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
     elif 'protein' in qdict:
@@ -660,7 +658,6 @@ def show_predictions(request):
         msg+='Number of functions: %s\n'%0
         msg+='Number of sequences: %s\n'%0
         send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
-        send_mail('Subject here', 'Here is the message.', 'from@example.com',['sahraeian.m@gmail.com'], fail_silently=False)
         run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})        
     elif 's-taxid' in qdict:
