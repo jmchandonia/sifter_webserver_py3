@@ -231,7 +231,7 @@ def get_complexity(request):
         return render(request, 'complexity.html', {'form': form,})
 
 def delete_old_results():
-    olddate = datetime.date.today()+datetime.timedelta(days=-1)
+    olddate = datetime.date.today()+datetime.timedelta(days=0)
     old_job_ids=SIFTER_Output.objects.filter(result_date__lte=olddate).values_list('job_id',flat=True)
     for job_id in old_job_ids:
         infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
