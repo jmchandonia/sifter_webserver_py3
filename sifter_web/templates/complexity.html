@@ -20,6 +20,7 @@
         <h3>Enter your family information</h3>
         <div>You may enter your PFAM ID to propagate number of candidate functions and family size:</div>
         <form method="post" role="form" id="estim_form" enctype="multipart/form-data">
+            <div class="alert alert-danger {%if not response %} hidden {% endif %}">{{ response }}</div>          
             <fieldset>
               {% csrf_token %}
               <div class="row">
@@ -52,7 +53,6 @@
        
         <div class="row">
           <div class="col-md-7">
-            <p>{{ response }}</p>
             {% if tableBody %}
             <table class="table table-condensed text-center">
 				<thead>			

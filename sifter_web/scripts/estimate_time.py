@@ -266,4 +266,4 @@ def get_processing_time(pfam):
     if pfam.startswith('PF') and len(data) > 0:
         return estimate_time(data[0].numterms, data[0].famsize)
     else:
-        return ([], [[]], [], '', 0)
+        return ([], [[]], [], '', 0,0)

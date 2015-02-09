@@ -346,13 +346,14 @@
 			$('#id_famSize').val('');
 			$('#id_numTerms').prop('disabled', true);
 			$('#id_famSize').prop('disabled', true);
-			
+	   	        $('#estim_form .alert-danger').hide()
 	       }
 	      else {
 			$('#id_pfam').prop('disabled', true);
 			$('#id_pfam').val('');
 			$('#id_numTerms').prop('disabled', false);
 			$('#id_famSize').prop('disabled', false);
+	   	        $('#estim_form .alert-danger').hide()
 	       }
 	  });
       
