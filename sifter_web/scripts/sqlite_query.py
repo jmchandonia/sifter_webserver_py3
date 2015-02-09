@@ -16,6 +16,8 @@ from Bio.Blast import NCBIWWW,NCBIXML
 import operator
 from taxid_db.models import Taxid
 import time
+import grp
+import pwd
 
 django.setup()
 
