@@ -1,6 +1,0 @@
-SIFTER Predictions for Job ID 3666491: 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Predictions for homologs of the query sequence: g5850
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-

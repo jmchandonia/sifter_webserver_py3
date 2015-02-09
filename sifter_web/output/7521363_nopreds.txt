@@ -1,2 +1,0 @@
-List of genes with no predictions: 
-sass

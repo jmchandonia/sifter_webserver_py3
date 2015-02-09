@@ -1,4 +1,0 @@
-SIFTER Predictions for Job ID 5835735: 
-Uniprot ID: A8WRK7_CAEBR
-Species: Caenorhabditis briggsae
-Predictions:	GO ID	Term name	Confidence Score
