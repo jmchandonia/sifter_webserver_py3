@@ -22,6 +22,13 @@ django.setup()
 OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
 INPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"input")
 
+stat_info = os.stat(os.path.dirname(__file__))
+uuid = stat_info.st_uid
+ggid = stat_info.st_gid
+
+file_user_id = pwd.getpwuid(uuid)[0]
+file_group_id = grp.getgrgid(ggid)[0]
+
     
 def find_go_ancs(ts):
     ts=list(ts)
@@ -531,7 +538,8 @@ def find_sifter_preds_byprotein(q_genes,my_form_data,job_id):
     infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
     pickle.dump(data,open(infile,'w'))
     os.system("chmod 775 %s"%infile)
-    os.system("chgrp sifter-group %s"%infile)
+    os.system('chown %s %s'%(file_user_id,infile))
+    os.system('chgrp %s %s'%(file_group_id,infile))
     sifter_choices=my_form_data['sifter_choices']
     ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
     if ((sifter_choices=='EXP-Model') or ((sifter_choices=='ALL-Model')and(ExpWeight_hidden==0.7))):
@@ -627,6 +635,9 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
         save_file.write(qblast_output.read())
         save_file.close()
         qblast_output.close()
+        os.system("chmod 775 %s"%my_blast_file)
+        os.system('chown %s %s'%(file_user_id,my_blast_file))
+        os.system('chgrp %s %s'%(file_group_id,my_blast_file))
         gis=[]
         hits={}
         for record in NCBIXML.parse(open(my_blast_file)):
@@ -742,6 +753,9 @@ def make_results_ready(job_id,activ_tab,my_data):
                 nopred_file_o=open(nopred_file,'w')
                 nopred_file_o.write('List of genes with no predictions: \n'+'\n'.join(rest))
                 nopred_file_o.close()
+                os.system('chmod 775 %s'%nopred_file)
+                os.system('chown %s %s'%(file_user_id,nopred_file))
+                os.system('chgrp %s %s'%(file_group_id,nopred_file))
                 results['nopreds']=[nopred_file,len(rest)]
                 
                 
@@ -755,7 +769,10 @@ def make_results_ready(job_id,activ_tab,my_data):
             for pred in r[4]:
                 output_download_file_o.write('\t\t%s\t%s\t%s\n'%(pred[0],pred[1],pred[2]))        
             output_download_file_o.write('\n')                                    
-        output_download_file_o.close()                
+        output_download_file_o.close()
+        os.system("chmod 775 %s"%output_download_file)
+        os.system('chown %s %s'%(file_user_id,output_download_file))
+        os.system('chgrp %s %s'%(file_group_id,output_download_file))        
         results['downloadfile']=output_download_file
     else:
         res,taxids,unip_accs,blast_hits,connected=my_data        
@@ -806,7 +823,10 @@ def make_results_ready(job_id,activ_tab,my_data):
                 output_download_file_o.write('\n')                                    
             output_download_file_o.write('\n')                                    
 
-        output_download_file_o.close()                
+        output_download_file_o.close()
+        os.system("chmod 775 %s"%output_download_file)
+        os.system('chown %s %s'%(file_user_id,output_download_file))
+        os.system('chgrp %s %s'%(file_group_id,output_download_file))
         results['downloadfile']=output_download_file
             
     results['result']=result
@@ -824,6 +844,9 @@ def find_results(my_form_data,job_id):
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle.dump(results,open(outfile,'w'))
+        os.system("chmod 775 %s"%outfile)
+        os.system('chown %s %s'%(file_user_id,outfile))
+        os.system('chgrp %s %s'%(file_group_id,outfile))
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -836,6 +859,9 @@ def find_results(my_form_data,job_id):
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle.dump(results,open(outfile,'w'))
+        os.system("chmod 775 %s"%outfile)
+        os.system('chown %s %s'%(file_user_id,outfile))
+        os.system('chgrp %s %s'%(file_group_id,outfile))        
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -849,6 +875,9 @@ def find_results(my_form_data,job_id):
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle.dump(results,open(outfile,'w'))
+        os.system("chmod 775 %s"%outfile)
+        os.system('chown %s %s'%(file_user_id,outfile))
+        os.system('chgrp %s %s'%(file_group_id,outfile))        
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -861,6 +890,9 @@ def find_results(my_form_data,job_id):
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs,blast_hits,connected])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle.dump(results,open(outfile,'w'))
+        os.system("chmod 775 %s"%outfile)
+        os.system('chown %s %s'%(file_user_id,outfile))
+        os.system('chgrp %s %s'%(file_group_id,outfile))       
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
