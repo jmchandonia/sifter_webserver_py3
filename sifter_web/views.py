@@ -240,6 +240,15 @@ def delete_old_results():
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         if os.path.exists(outfile):
             os.remove(outfile)
+        outfile=os.path.join(OUTPUT_DIR,"%s_download.txt"%job_id)
+        if os.path.exists(outfile):
+            os.remove(outfile)
+        outfile=os.path.join(OUTPUT_DIR,"%s_nopreds.txt"%job_id)
+        if os.path.exists(outfile):
+            os.remove(outfile)
+        outfile=os.path.join(OUTPUT_DIR,"%s_output.blast"%job_id)
+        if os.path.exists(outfile):
+            os.remove(outfile)
     
     
 
