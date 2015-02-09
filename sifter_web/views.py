@@ -200,7 +200,7 @@ def get_complexity(request):
                     return render_error('Please enter a PFAM ID')
                 (tableHeader, tableBody, histograms, chartContainers, numTerms,famSize) = get_processing_time(pfam)
                 if not tableHeader:
-                    return render_error('Error: PFAM id %s is not in the database' % pfam)
+                    return render_error('Error: PFAM ID %s is not in the database' % pfam)
                 else:
                     form.set_default('numTerms',numTerms)
                     form.set_default('famSize',famSize)
