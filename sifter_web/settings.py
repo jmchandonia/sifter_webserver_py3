@@ -168,17 +168,11 @@ if DEBUG:
     STATICFILES_DIRS = (os.path.join(BASE_DIR,"sifter_web","static","static"),)
     
     
+SERVER_EMAIL= 'sifter@compbio.berkeley.edu'
     
 #SEND_BROKEN_LINK_EMAILS=True    
 ADMINS = (
     ('SIFTER', 'sifter@compbio.berkeley.edu'),
     ('Mohammad Sahraeian', 'sahraeian.m@gmail.com'),
-)
-
-
-IGNORABLE_404_URLS = (
-    re.compile(r'^/ZeroClipboard\.swf$'),
-    re.compile(r'^/favicon\.ico$'),
-    re.compile(r'^/robots\.txt$'),
 )
 
