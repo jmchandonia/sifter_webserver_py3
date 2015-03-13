@@ -169,7 +169,7 @@ if DEBUG:
     
     
     
-SEND_BROKEN_LINK_EMAILS=True    
+#SEND_BROKEN_LINK_EMAILS=True    
 ADMINS = (
     ('SIFTER', 'sifter@compbio.berkeley.edu'),
     ('Mohammad Sahraeian', 'sahraeian.m@gmail.com'),
