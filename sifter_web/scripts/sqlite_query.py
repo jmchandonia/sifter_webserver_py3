@@ -620,6 +620,7 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
     blast_hits={}
     connected=0
     cnt=0
+    return 0,0,0,0,0 #"BLAST Server was busy for last hour; please try again later"
     while connected==0:
         try:
             qblast_output = NCBIWWW.qblast("blastp", "nr", my_sequences,alignments=0,expect=1e-2,hitlist_size=100,ncbi_gi=True)            
