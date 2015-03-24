@@ -547,7 +547,7 @@ def show_results(request,job_id):
     my_msg=[]
     if not len(my_object)==1:
         my_msg.append(['danger','Error in the job_id. Number of hits=%s'%(len(my_object))])       
-        return render(request, 'results.html', {'my_object':'','result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':'','downloadfile':''})
+        return render(request, 'results.html', {'my_object':'','result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':'','downloadfile':'','blast_error':''})
     my_object=my_object[0]
     species=Taxid.objects.filter(tax_id=my_object.species)
     if species:
@@ -555,12 +555,12 @@ def show_results(request,job_id):
         
     if my_object.output_file=='':
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
-        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':'','downloadfile':''})        
+        return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':'','downloadfile':'','blast_error':''})        
     else:
         results=pickle.load(open(my_object.output_file))
         if 'bad_blast' in results:
             my_msg.append(['danger','BLAST server is busy now. Please submit your query again later.'])
-            return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':'','downloadfile':''})
+            return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':'','downloadfile':'','blast_error':'1'})
         
         my_msg.append(['info','Your SIFTER query results are ready.'])
         nopreds=''
@@ -580,7 +580,7 @@ def show_results(request,job_id):
                 page = paginator.page(1)
             except EmptyPage:
                 page = paginator.page(paginator.num_pages)
-            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds,'downloadfile':downloadfile})
+            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds,'downloadfile':downloadfile,'blast_error':''})
         else:            
             paginator = Paginator(results['result'], pred_results_per_page_sq)
             try:
@@ -590,7 +590,7 @@ def show_results(request,job_id):
                 page = paginator.page(1)
             except EmptyPage:
                 page = paginator.page(paginator.num_pages)
-            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds,'downloadfile':downloadfile})
+            return render(request, 'results.html', {'my_object':my_object,'result':page,'pending':False,'my_msg':my_msg,'species':species,'nopreds':nopreds,'downloadfile':downloadfile,'blast_error':''})
           
             
         
