@@ -21,8 +21,8 @@
   </div>
   {% endif %}
 
-  
-  {% if my_object.output_file == '' and blast_error==0 %}
+  {%if blast_error=='' %}
+  {% if my_object.output_file == ''%}
   <div class="row">
     <meta http-equiv='refresh' content='15'>      
     <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
@@ -40,6 +40,7 @@
       </div>
     </div>
   </div>
+  {%endif%}
   {%endif%}
 
 
@@ -80,6 +81,7 @@
     </div>
   </div>
  
+  {%if blast_error=='' %}
   {% if not my_object.output_file == ''%}
     {% if my_object.query_method == 'by_sequence' %}
       
@@ -222,6 +224,7 @@
       </div>
     </div>
   </div>
+  {% endif %}
   {% endif %}
 </div>
 {% endblock %}
