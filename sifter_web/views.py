@@ -557,8 +557,12 @@ def show_results(request,job_id):
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
         return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':'','downloadfile':''})        
     else:
-        my_msg.append(['info','Your SIFTER query results are ready.'])
         results=pickle.load(open(my_object.output_file))
+        if 'bad_blast' in results:
+            my_msg.append(['danger','BLAST server is busy now. Please submit your query again later.'])
+            return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':'','downloadfile':''})
+        
+        my_msg.append(['info','Your SIFTER query results are ready.'])
         nopreds=''
         downloadfile=''
         if 'nopreds' in results:

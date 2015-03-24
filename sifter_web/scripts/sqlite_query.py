@@ -626,9 +626,11 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
             connected=1
         except:
             cnt+=1
-            if cnt<60:
+            if cnt<20:
                 print("BLAST Server is busy, will sleep and try again in 1 minutes")
                 time.sleep(60)
+            else:
+                break
     if connected==0:
         return 0,0,0,0,0 #"BLAST Server was busy for last hour; please try again later"
     else:
@@ -889,17 +891,31 @@ def find_results(my_form_data,job_id):
     elif active_tab == 'by_sequence':
         my_sequences=data['sequences']
         res,taxids,unip_accs,blast_hits,connected=find_sifter_preds_bysequence(my_sequences,my_form_data,job_id)
-        results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs,blast_hits,connected])        
-        outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        pickle.dump(results,open(outfile,'w'))
-        os.system("chmod 775 %s"%outfile)
-        os.system('chown %s %s'%(file_user_id,outfile))
-        os.system('chgrp %s %s'%(file_group_id,outfile))       
-        my_object=SIFTER_Output.objects.filter(job_id=job_id)
-        my_object=my_object[0]        
-        my_object.result_date=datetime.date.today()        
-        my_object.output_file=outfile
-        my_object.save()
+        if not connected==0:
+            results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs,blast_hits,connected])        
+            outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
+            pickle.dump(results,open(outfile,'w'))
+            os.system("chmod 775 %s"%outfile)
+            os.system('chown %s %s'%(file_user_id,outfile))
+            os.system('chgrp %s %s'%(file_group_id,outfile))       
+            my_object=SIFTER_Output.objects.filter(job_id=job_id)
+            my_object=my_object[0]        
+            my_object.result_date=datetime.date.today()        
+            my_object.output_file=outfile
+            my_object.save()
+        else:
+            outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
+            results={}
+            results['bad_blast']=True
+            pickle.dump(results,open(outfile,'w'))
+            os.system("chmod 775 %s"%outfile)
+            os.system('chown %s %s'%(file_user_id,outfile))
+            os.system('chgrp %s %s'%(file_group_id,outfile))       
+            my_object=SIFTER_Output.objects.filter(job_id=job_id)
+            my_object=my_object[0]        
+            my_object.result_date=datetime.date.today()        
+            my_object.output_file=outfile
+            my_object.save()
         return True
 
 
