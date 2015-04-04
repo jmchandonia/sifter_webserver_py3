@@ -744,3 +744,11 @@ def autocomplete(request):
         'results': suggestions
     })
     return HttpResponse(the_data, content_type='application/json')
+
+
+def show_domain_predictions(request):
+    qdict=dict(request.GET.iterlists())
+    if 'protein' in qdict:
+        my_protein=qdict['protein'][0]
+        res='aaa'
+        return render(request, 'domian_preds.html', {'protein':my_protein,'domian_result':res})
