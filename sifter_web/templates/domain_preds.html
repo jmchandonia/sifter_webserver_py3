@@ -12,39 +12,6 @@
   {% protein %}
   {% domian_result %}
 
-   {% if my_msg %}
-  <div class="row">
-    <div class="col-md-offset-2 col-md-8 col-md-offset-2 col-md-8">
-      {% for msg in my_msg %}
-        <div class="alert alert-{{msg.0}}"><h4>{{ msg.1 }}<h4></div>
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
-
-  {%if blast_error == '' %}
-  {% if my_object.output_file == ''%}
-  <div class="row">
-    <meta http-equiv='refresh' content='15'>      
-    <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
-      <div class="panel panel-default panel-wb">
-        <div class="panel-heading">
-          <h3 class="panel-title">SIFTER Querying in Progress for Job ID: {{my_object.job_id}}</h3>
-        </div>
-        <div class="panel-body">
-        <p>You may check here or the following address to see your SIFTER results once it is ready:</p>
-        <p><a href="http://sifter.berkeley.edu/results-id={{my_object.job_id}}">http://sifter.berkeley.edu/results-id={{my_object.job_id}}</a></p>
-        <p>This page is reloaded every 15 seconds.</p>
-<!--        <p>If you have provided your email address, the result will be send to you once it is ready. </p> -->
-        <p>The SIFTER predictions for your query can be accessed through the above link for the next 15 days.</p>                      
-        </div>
-      </div>
-    </div>
-  </div>
-  {%endif%}
-  {%endif%}
-
-
   <div class="row">
     <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
       <div class="panel panel-default panel-wb">
