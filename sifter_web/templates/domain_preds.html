@@ -8,191 +8,60 @@
 
 <div class="container custom-container">
    <!-- Example row of columns -->
-
-  {% protein %}
-  {% domian_result %}
-
-  <div class="row">
-    <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
-      <div class="panel panel-default panel-wb">
-        <div class="panel-heading">
-          <h3 class="panel-title">Submission Info: </h3>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-6">
-              <ul>
-                <li><label>Job ID:</label> {{my_object.job_id}}</li>
-                <li><label>Query Mode:</label> {{my_object.query_method}}</li>
-                {% if my_object.query_method == 'by_protein'%}<li><label>Number of Query Proteins:</label> {{my_object.n_proteins}}</li>{%endif%}
-                {% if my_object.query_method == 'by_species'%}<li><label>Species:</label> {{species}}</li>{%endif%}
-                {% if my_object.query_method == 'by_function'%}<li><label>Number of Query Functions:</label> {{my_object.n_functions}}</li>
-                <li><label>Species:</label> {{species}}</li>{%endif%}
-                {% if my_object.query_method == 'by_sequence'%}<li><label>Number of Query Sequences:</label> {{my_object.n_sequences}}</li>{%endif%}
-                {% if not my_object.output_file == '' and not my_object.query_method == 'by_sequence'%}              
-                <li><label>Number of Proteins with Predictions:</label> {{result.paginator.count}}</li>                
-                {% if nopreds %}<li><label>Number of Proteins without Predictions:</label>{{nopreds.1}} (available <a href="{{nopreds.0}}">here</a>){%endif%}                
-                {%endif%}
-              </ul>                      
-            </div>
-            <div class="col-md-6 col-sm-6 col-xs-6">
-              <ul>
-                <li><label>SIFTER Scheme:</label> {% if my_object.sifter_EXP_choices %} EXP-Model {% else %} ALL-Model {%endif%}</li>
-                {% if not my_object.sifter_EXP_choices%}<li><label>Experiment Weight:</label> {{my_object.exp_weight}}</li>{%endif%}
-                {% if my_object.email%}<li><label>Your Email Address:</label> {{my_object.email}}</li>{%endif%}
-                <li><label>Submission Date:</label> {{my_object.submission_date}}</li>            
-              </ul>                      
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+{{domain_res}}
+  <div class="query-info" style="border-bottom-width: 0px">
+	<h2><a href="http://www.uniprot.org/uniprot/{{uniprot_acc}}">{{protein}}</a></h2>
+	<h4>SIFTER Predictions for the individual domains</h4>
   </div>
- 
-  {%if blast_error == '' %}
-  {% if not my_object.output_file == ''%}
-    {% if my_object.query_method == 'by_sequence' %}
-      
-  <div class="row">
-    <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
-          <div class="alert alert-info"><h4>Here we report the SIFTER predictions for the homologs (found by top BLAST hits) of your query sequences. </h4></div>
+  {% if domian_result %}     	  
+	<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+	<img src="/media/colorbar.svg" style="width:600px">
 	</div>
-  </div>
-    {%endif%}
-
-  <div class="row">
-	{% if result %}		  
-		<div class="col-md-12 col-sm-12 col-xs-12 text-center">
-		<img src="/media/colorbar.svg" style="width:600px">
+	  	  
+	  {%for domain_res in domian_result %}
+		<div class="query-info">
+			<div class="row">
+			 <div class="col-lg-2 col-md-3 col-sm-4  col-xs-12 ">
+			  <h3>Position: {{domain_res.0}}</h3>
+			 </div>
+			 <div class="col-lg-10 col-md-9 col-sm-8  col-xs-12 ">
+			  <h3><a href="http://pfam.xfam.org/{{domain_res.1.2}}">Family: {{domain_res.1.1}} ({{domain_res.1.0}})</a></h3> 
+			 </div>
+			</div>
 		</div>
-	{% endif %}
-    <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-12 col-xs-12">
-      <div class="panel panel-default panel-wb">
-        <div class="panel-heading">
-          <h3 class="panel-title">SIFTER Predictions for Job ID: {{my_object.job_id}}</h3>
-        </div>
-        <div class="panel-body">
-	    {% if result %}		
-          {% if downloadfile %}<label><a href="{{downloadfile}}">Download link</a></label>{%endif%}                					
-          {% if not result.paginator.count == 1%}
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <nav>
-                <ul class="pagination pagination-lg">                
-                      {% if result.has_previous %}
-                              <li><a href="?page={{ result.previous_page_number }}">                                                
-                              <span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>                                          
-                      {%endif%}
-                      <li><a href="#"><b>{{ result.start_index }}</b> to <b>{{ result.end_index }}</b> of <b>{{ result.paginator.count }}</b><span class="sr-only">(current)</span></a></li>
-                      {% if result.has_next %}
-                              <li><a href="?page={{ result.next_page_number }}">                                                
-                              <span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>                                          
-                      {% endif %}
-                </ul>
-              </nav>              
-           </div>
-          </div>
-          {% endif %}
-          {% if not my_object.query_method == 'by_sequence' %}
-            <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-                <th><a href="/help/#confidenceScore">Confidence Score</a></th>
-              </tr>
-            </thead>         
-            <tbody > 
-              {% for gene_data in result %}
-                  <tr class="row_seperator">
-                      <td ><a href="http://www.uniprot.org/uniprot/{{gene_data.1}}">{{gene_data.0}}</a></td>
-                      <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{gene_data.3}}"><i>{{gene_data.2}}</i></a></td>                
-                      <td></td>
-                  </tr>
-                  {% for row in gene_data.4 %}              
-                      <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">
-                          <td colspan="2"><a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.0}}</a>
-                          &nbsp&nbsp&nbsp <a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.1}}</a></td>                
-                          <td >{{row.2}}</td>
-                      </tr>                
-                  {%endfor%}
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>                                        
-                  </tr>
-              {%endfor%}                  
-            </tbody>
-            </table>
-          {%else%}
-          {%for query in result %}
-            <div class="query-info">
-              <h3>Query Sequence: {{query.0}}</h3>
-            </div>
-            
-            <label>Number of Hits:</label> {{query.1|length}}
-            
-            <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th><a href="/help/#confidenceScore">Confidence Score</a></th>
-              </tr>
-            </thead>         
-            <tbody >
-              {% for hits in query.1 %}
-                <tr class="row_seperator">
-                  <td class="col-md-2">{{forloop.counter}} &nbsp&nbsp&nbsp&nbsp <a href="http://www.uniprot.org/uniprot/{{hits.1}}">{{hits.0}}</a></td>
-                  <td class="col-md-3"><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{hits.3}}"><i>{{hits.2}}</i></a></td>                
-                  <td class="col-md-6">
-                    <div class="row">
-                     <div class="col-lg-3 col-md-6 col-sm-6  col-xs-12 ">
-                      <label>Bit-score</label>: {{hits.4}}
-                     </div>
-                     <div class="col-lg-3 col-md-6 col-sm-6  col-xs-12 ">
-                      <label>E-val:</label> {{hits.5}}
-                     </div>
-                     <div class="col-lg-3 col-md-6 col-sm-6  col-xs-12 ">
-                      <label>Identity:</label> {{hits.6}}%
-                     </div>
-                     <div class="col-lg-3 col-md-6 col-sm-6  col-xs-12 ">
-                      <label>Query Coverage:</label> {{hits.7}}%
-                     </div>
-                    </div>
-                   
-                  </td>
-                  <td class="col-md-1"></td>
-                </tr>
-                <tr>
-                  <td colspan="4">
-                    <table class="table">
-                    <tbody >
-                    {% for row in hits.8 %}
-                      <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">
-                          <td><a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.0}}</a>
-                          &nbsp&nbsp&nbsp <a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.1}}</a></td>                
-                          <td >{{row.2}}</td>
-                      </tr>               
-                    {%endfor%}                  
-                    </tbody> 
-                    </table>
-                  </td>
-                </tr>                
-             {%endfor%}
-            </tbody>
-            </table>            
-          {%endfor%}
-          {% endif %}
-		{%else%}
-			<h3> No results were found for your query.</h3>
-		{%endif%}
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endif %}
-  {% endif %}
+				
+		<table class="table">
+		<thead>
+		  <tr>
+			<th></th>
+			<th></th>
+			<th><a href="/help/#confidenceScore">Confidence Score</a></th>
+		  </tr>
+		</thead>         
+		<tbody >
+		  {% for hits in domain_res.1.3 %}
+			  <tr class="row_seperator">
+				  <td colspan="2">Prediction using {{hits.1}} Evidence {% if hits.0 %}(using sub-tree){%endif%}</td>
+				  <td></td>
+			  </tr>
+			  {% for row in hits.2 %}              
+				  <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">
+					  <td colspan="2"><a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.0}}</a>
+					  &nbsp&nbsp&nbsp <a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.1}}</a></td>                
+					  <td >{{row.2}}</td>
+				  </tr>                
+			  {%endfor%}
+			  <tr>
+				<td></td>
+				<td></td>
+				<td></td>                                        
+			  </tr>
+		  {%endfor%}                  
+		</tbody>
+		</table>            
+	  {%endfor%}	  
+  {%else%}
+	  <h3> No results were found for your query.</h3>
+  {%endif%}
 </div>
 {% endblock %}

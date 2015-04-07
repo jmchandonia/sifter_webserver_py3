@@ -32,6 +32,11 @@ import re
 from django.core.files import File 
 from django.core.mail import send_mail
 
+from sifter_results_db.models import SifterResults
+import cPickle,zlib
+from term_db.models import Term
+import operator
+
 RESULTS_PER_PAGE = getattr(settings, 'HAYSTACK_SEARCH_RESULTS_PER_PAGE', 50)
 pred_results_per_page=1000
 pred_results_per_page_sq=1
@@ -746,9 +751,102 @@ def autocomplete(request):
     return HttpResponse(the_data, content_type='application/json')
 
 
+
+
+def trim_results(res):
+    res_trimmed={}
+    for gene,v in res.iteritems():
+        r={}
+        for t,s in v.iteritems():
+            ss=round(s,2)
+            if ss>0:
+                r[t]=ss
+        if r:
+            res_trimmed[gene]=r
+    return res_trimmed
+    
+    
+    
+    
+    
+def find_go_name_acc(ts):
+    res0=[]
+    batchs=100
+    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
+        res0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('term_id','name','acc'))
+    idx_to_go_name={}
+    for w in res0:
+        idx_to_go_name[w['term_id']]=[w['acc'],w['name']]
+    return idx_to_go_name
+
+def find_top_preds_domain(preds0):
+    terms=preds0.keys()
+    idx_to_go_name=find_go_name_acc(terms)
+    print idx_to_go_name,terms,Term.objects.filter(term_id=terms[0])
+    preds=[]
+    res_sorted=sorted(preds0.iteritems(),key=operator.itemgetter(1),reverse=True)
+    if len(res_sorted)<=2:
+        end_i=len(res_sorted)
+    else:
+        end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
+        if end_i:
+           end_i=end_i[-1]
+        else:
+           end_i=1
+
+    for i, pred  in enumerate(res_sorted):
+        term,score=pred
+        if i<=end_i:                    
+            preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
+        else:
+            break
+    return preds
+    
+def find_domian_results(q_gene):
+    q_results0=SifterResults.objects.filter(uniprot_id=q_gene)
+    q_results=[]   
+    for q_res in q_results0:
+        q_results.append(q_res)
+
+    uniprot_acc=q_results[0].uniprot_acc
+    my_res={}
+    for res in q_results:
+        fam=res.pfam        
+        pos='%s-%s'%(res.start_pos,res.end_pos)
+        if pos not in my_res:
+            my_res[pos]=['','','',[]]
+        conf_code=res.conf_code
+        if 'R' in conf_code:
+            evidence='Experimental'
+        else:
+            evidence='All'        
+        preds0=cPickle.loads(zlib.decompress(res.preds).encode('ascii','ignore'))
+        preds0={k:v for k,v in preds0.iteritems() if (not v is None) and (v>1e-3)}
+        preds1=trim_results({q_gene:preds0})
+        preds=find_top_preds_domain(preds1[q_gene])
+        if '_' in fam:
+            clustered=True
+        else:
+            clustered=False        
+        fam=fam.split('_')[0]
+        fam_name=fam
+        
+        link=''
+        if fam[0:2]=='PF':
+            link="/family/%s"%fam
+        elif fam[0:2]=='PB':
+            link="/pfamb/%s"%fam
+        
+        my_res[pos][0]=fam
+        my_res[pos][1]=fam_name
+        my_res[pos][2]=link
+        my_res[pos][3].append([clustered,evidence,preds])
+    my_res=sorted(my_res.iteritems(),key=operator.itemgetter(0))
+    return uniprot_acc,my_res
+    
 def show_domain_predictions(request):
     qdict=dict(request.GET.iterlists())
     if 'protein' in qdict:
         my_protein=qdict['protein'][0]
-        res='aaa'
-        return render(request, 'domian_preds.html', {'protein':my_protein,'domian_result':res})
+        uniprot_acc,res=find_domian_results(my_protein)
+        return render(request, 'domain_preds.html', {'protein':my_protein,'domian_result':res,'uniprot_acc':uniprot_acc})
