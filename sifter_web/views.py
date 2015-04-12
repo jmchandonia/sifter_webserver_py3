@@ -5,7 +5,8 @@ from django import forms
 from django.http import HttpResponseRedirect,HttpResponse,Http404
 from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
-from sifter_web.tasks import run_sifter_job
+from sifter_web.tasks import run_sifter_job,run_sifter_job_domain
+#from scripts.alk import find_results_domain
 from results.models import SIFTER_Output
 from sifter_results_ready_db.models import SifterResults as SifterResultsReady
 from idmap_db.models import Idmap
@@ -32,10 +33,11 @@ import re
 from django.core.files import File 
 from django.core.mail import send_mail
 
-from sifter_results_db.models import SifterResults
+'''from sifter_results_db.models import SifterResults
 import cPickle,zlib
 from term_db.models import Term
-import operator
+from pfamdb.models import Pfam
+import operator'''
 
 RESULTS_PER_PAGE = getattr(settings, 'HAYSTACK_SEARCH_RESULTS_PER_PAGE', 50)
 pred_results_per_page=1000
@@ -99,8 +101,20 @@ class InputForm(forms.Form):
             if n_seq==0 and len(seq_data)>0:
                 self._errors['input_sequence'] = ErrorList(["Your inpur is in wrong format. Please use FASTA format input."])
             elif n_seq>10:
-                self._errors['input_sequence'] = ErrorList(["You cannot entered more than 10 sequences."])            
-
+                self._errors['input_sequence'] = ErrorList(["You cannot entered more than 10 sequences."]) 
+            elif len(seq_data)>1000000:
+                self._errors['input_sequence'] = ErrorList(["You input sequences are too big."]) 
+            else:
+                lines=seq_data.split('\n')
+                lines=[w.strip() for w in lines if w.strip()]
+                print lines
+                lines=[w for w in lines if not w[0]=='>']            
+                letters=set([v.lower() for w in lines for v in w])
+                print letters
+                if len(letters)==4:
+                    if len(letters|set(['a','c','g','t']))==4 or len(letters|set(['a','c','g','u']))==4:
+                        self._errors['input_sequence'] = ErrorList(["You have entered NUCLEOTIDE sequences. Please enter your PROTEIN sequences."])
+            
 
         #if self.cleaned_data['input_queries']!='1':
         #    msg = 'The type and organisssszation do not match.'
@@ -117,7 +131,6 @@ class InputForm(forms.Form):
 class MySearchForm(SearchForm):
     #q = forms.CharField(required=False, widget=forms.TextInput(attrs={'type': 'text'}))
     q=forms.CharField(widget=forms.TextInput(attrs={'rows':1, 'placeholder':'Enter your queries','class':'form-control', 'autocomplete':'off'}),label='Input Any Queries', max_length=100000,required=True)
-
     def no_query_found(self):
         return self.searchqueryset.all()
 
@@ -254,6 +267,9 @@ def delete_old_results():
         outfile=os.path.join(OUTPUT_DIR,"%s_output.blast"%job_id)
         if os.path.exists(outfile):
             os.remove(outfile)
+        outfile=os.path.join(OUTPUT_DIR,"%s_output.blast.msg"%job_id)
+        if os.path.exists(outfile):
+            os.remove(outfile)
     
     
 
@@ -372,7 +388,8 @@ def get_input(request,context={}):
                 msg+='Number of sequences: %s\n'%(n_sequences)
                 send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
                 
-                run_sifter_job.delay(my_form_data,job_id)
+                #run_sifter_job.delay(my_form_data,job_id)
+                run_sifter_job(my_form_data,job_id)
                 return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
         else:
             active_tab=form.cleaned_data['active_tab_hidden']
@@ -560,6 +577,11 @@ def show_results(request,job_id):
         
     if my_object.output_file=='':
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
+        my_blast_msg_file_path=OUTPUT_DIR+"%s_output.blast.msg"%job_id
+        if os.path.exists(my_blast_msg_file_path):
+            read_file = open(my_blast_msg_file, "r")
+            line=save_file.readline()
+            my_msg.append(['warning',line])
         return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':'','downloadfile':'','blast_error':''})        
     else:
         results=pickle.load(open(my_object.output_file))
@@ -645,7 +667,8 @@ def show_predictions(request):
         msg+='Number of functions: %s\n'%0
         msg+='Number of sequences: %s\n'%0
         send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
-        run_sifter_job.delay(my_form_data,job_id)
+        #run_sifter_job.delay(my_form_data,job_id)
+        run_sifter_job(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
     elif 'protein' in qdict:
         job_id=random.randint(1000000,9999999)    
@@ -676,7 +699,8 @@ def show_predictions(request):
         msg+='Number of functions: %s\n'%0
         msg+='Number of sequences: %s\n'%0
         send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
-        run_sifter_job.delay(my_form_data,job_id)
+        #run_sifter_job.delay(my_form_data,job_id)
+        run_sifter_job(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})        
     elif 's-taxid' in qdict:
         my_species=qdict['s-taxid'][0]
@@ -752,101 +776,36 @@ def autocomplete(request):
 
 
 
-
-def trim_results(res):
-    res_trimmed={}
-    for gene,v in res.iteritems():
-        r={}
-        for t,s in v.iteritems():
-            ss=round(s,2)
-            if ss>0:
-                r[t]=ss
-        if r:
-            res_trimmed[gene]=r
-    return res_trimmed
-    
-    
-    
-    
-    
-def find_go_name_acc(ts):
-    res0=[]
-    batchs=100
-    for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
-        res0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('term_id','name','acc'))
-    idx_to_go_name={}
-    for w in res0:
-        idx_to_go_name[w['term_id']]=[w['acc'],w['name']]
-    return idx_to_go_name
-
-def find_top_preds_domain(preds0):
-    terms=preds0.keys()
-    idx_to_go_name=find_go_name_acc(terms)
-    print idx_to_go_name,terms,Term.objects.filter(term_id=terms[0])
-    preds=[]
-    res_sorted=sorted(preds0.iteritems(),key=operator.itemgetter(1),reverse=True)
-    if len(res_sorted)<=2:
-        end_i=len(res_sorted)
+def show_domain_predictions(request,job_id,my_protein):
+    my_msg=[]
+    my_object=SIFTER_Output.objects.filter(job_id=job_id)
+    if not len(my_object)==1:
+        my_msg.append(['danger','Error in the job_id. Number of hits=%s'%(len(my_object))])       
+        return render(request, 'domain_preds.html', {'protein':'','domian_result':'','uniprot_acc':'','main_res':'','my_msg':my_msg})
+    my_object=my_object[0]
+    main_res0=pickle.load(open(my_object.output_file))['result']
+    main_res=[]
+    if not my_object.query_method=='by_sequence':
+        for w in main_res0:
+            print w[0]
+            if w[0]==my_protein:
+                main_res=w
+                break
+        if not main_res:
+            my_msg.append(['danger','No results for this protein in your query.'])       
+            return render(request, 'domain_preds.html', {'protein':'','domian_result':'','uniprot_acc':'','main_res':'','my_msg':my_msg})
     else:
-        end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
-        if end_i:
-           end_i=end_i[-1]
-        else:
-           end_i=1
-
-    for i, pred  in enumerate(res_sorted):
-        term,score=pred
-        if i<=end_i:                    
-            preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
-        else:
-            break
-    return preds
+        for ww in main_res0:
+            for w in ww[1]:
+                print w[0]
+                if w[0]==my_protein:
+                    main_res=[w[0],w[1],w[2],w[3],w[8]]
+                    break
+            if main_res:
+                break
+        if not main_res:
+            my_msg.append(['danger','No results for this protein in your query.'])       
+            return render(request, 'domain_preds.html', {'protein':'','domian_result':'','uniprot_acc':'','main_res':'','my_msg':my_msg})
     
-def find_domian_results(q_gene):
-    q_results0=SifterResults.objects.filter(uniprot_id=q_gene)
-    q_results=[]   
-    for q_res in q_results0:
-        q_results.append(q_res)
-
-    uniprot_acc=q_results[0].uniprot_acc
-    my_res={}
-    for res in q_results:
-        fam=res.pfam        
-        pos='%s-%s'%(res.start_pos,res.end_pos)
-        if pos not in my_res:
-            my_res[pos]=['','','',[]]
-        conf_code=res.conf_code
-        if 'R' in conf_code:
-            evidence='Experimental'
-        else:
-            evidence='All'        
-        preds0=cPickle.loads(zlib.decompress(res.preds).encode('ascii','ignore'))
-        preds0={k:v for k,v in preds0.iteritems() if (not v is None) and (v>1e-3)}
-        preds1=trim_results({q_gene:preds0})
-        preds=find_top_preds_domain(preds1[q_gene])
-        if '_' in fam:
-            clustered=True
-        else:
-            clustered=False        
-        fam=fam.split('_')[0]
-        fam_name=fam
-        
-        link=''
-        if fam[0:2]=='PF':
-            link="/family/%s"%fam
-        elif fam[0:2]=='PB':
-            link="/pfamb/%s"%fam
-        
-        my_res[pos][0]=fam
-        my_res[pos][1]=fam_name
-        my_res[pos][2]=link
-        my_res[pos][3].append([clustered,evidence,preds])
-    my_res=sorted(my_res.iteritems(),key=operator.itemgetter(0))
-    return uniprot_acc,my_res
-    
-def show_domain_predictions(request):
-    qdict=dict(request.GET.iterlists())
-    if 'protein' in qdict:
-        my_protein=qdict['protein'][0]
-        uniprot_acc,res=find_domian_results(my_protein)
-        return render(request, 'domain_preds.html', {'protein':my_protein,'domian_result':res,'uniprot_acc':uniprot_acc})
+    res,uniprot_acc=run_sifter_job_domain(my_protein,my_object.sifter_EXP_choices,my_object.exp_weight)
+    return render(request, 'domain_preds.html', {'protein':my_protein,'domain_result':res,'uniprot_acc':uniprot_acc,'main_res':main_res,'my_msg':my_msg})

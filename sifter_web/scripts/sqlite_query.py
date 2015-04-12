@@ -4,6 +4,7 @@ from term_db.models import Term,Term2Term
 from weight_db.models import Weight
 from results.models import SIFTER_Output
 from idmap_db.models import Idmap
+from pfamdb.models import Pfam
 from django.db import connection
 import cPickle,zlib
 import pickle
@@ -360,7 +361,7 @@ def find_processed_results(q_results):
     return my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms
 
 
-def find_Model1_results(SIFTER_results2,real_terms,we=0.7,wr=0.95,wc=0.55):
+def find_Model1_results(SIFTER_results2,real_terms,we=0.7,wr=0.95,wc=0.55,return_domiand_preds=False):
     SIFTER_results_merged_MODEL1={}
     for gene in SIFTER_results2.keys():
         SIFTER_results_merged_MODEL1[gene]={}
@@ -430,17 +431,21 @@ def find_Model1_results(SIFTER_results2,real_terms,we=0.7,wr=0.95,wc=0.55):
 
             SIFTER_results_merged_MODEL1[gene][gid]=merge_results(results)
 
+    if not return_domiand_preds:
+        MODEL1_my_results={}
+        for gene,res in SIFTER_results_merged_MODEL1.iteritems():
+            MODEL1_my_results[gene]=find_res_multidomain(res)
+        MODEL1_my_results_filtered=filter_results(MODEL1_my_results,real_terms)
 
-    MODEL1_my_results={}
-    for gene,res in SIFTER_results_merged_MODEL1.iteritems():
-        MODEL1_my_results[gene]=find_res_multidomain(res)
-    MODEL1_my_results_filtered=filter_results(MODEL1_my_results,real_terms)
+        return MODEL1_my_results_filtered
+    else:
+        SIFTER_results_merged_MODEL1_filtered={}
+        for gene,res in SIFTER_results_merged_MODEL1.iteritems():
+            SIFTER_results_merged_MODEL1_filtered[gene]=filter_results(SIFTER_results_merged_MODEL1[gene],real_terms)
 
-    return MODEL1_my_results_filtered
+        return SIFTER_results_merged_MODEL1_filtered
 
-
-
-def find_Model2_results(SIFTER_results2,real_terms,wc=0.55):
+def find_Model2_results(SIFTER_results2,real_terms,wc=0.55,return_domiand_preds=False):
     SIFTER_results_merged_MODEL2={}
     for gene in SIFTER_results2.keys():
         gid_results={}
@@ -479,13 +484,22 @@ def find_Model2_results(SIFTER_results2,real_terms,wc=0.55):
                     gid_results[gid]=merge_results(results)
         if len(gid_results.keys())>0:
             SIFTER_results_merged_MODEL2[gene]=gid_results
-            
-    MODEL2_my_results={}
-    for gene,res in SIFTER_results_merged_MODEL2.iteritems():
-        MODEL2_my_results[gene]=find_res_multidomain(res)
-    MODEL2_my_results_filtered=filter_results(MODEL2_my_results,real_terms)
+ 
+    if not return_domiand_preds:
+        MODEL2_my_results={}
+        for gene,res in SIFTER_results_merged_MODEL2.iteritems():
+            MODEL2_my_results[gene]=find_res_multidomain(res)
+        MODEL2_my_results_filtered=filter_results(MODEL2_my_results,real_terms)
+
+        return MODEL2_my_results_filtered
+    else:
+        SIFTER_results_merged_MODEL2_filtered={}
+        for gene,res in SIFTER_results_merged_MODEL2.iteritems():
+            SIFTER_results_merged_MODEL2_filtered[gene]=filter_results(SIFTER_results_merged_MODEL2[gene],real_terms)
+
+        return SIFTER_results_merged_MODEL2_filtered
+           
     
-    return MODEL2_my_results_filtered
 
 def find_top_preds(preds,thr):
     top_preds={}
@@ -624,15 +638,25 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
         try:
             qblast_output = NCBIWWW.qblast("blastp", "nr", my_sequences,alignments=0,expect=1e-2,hitlist_size=100,ncbi_gi=True)            
             connected=1
+            my_blast_msg_file=os.path.join(OUTPUT_DIR,"%s_output.blast.msg"%job_id)
+            save_file = open(my_blast_msg_file, "w")
+            save_file.write("We have successful submitted your query to NCBI-BLAST server. Results will be ready soon.")
+            save_file.close()            
         except:
-            cnt+=1
-            if cnt<20:
-                print("BLAST Server is busy, will sleep and try again in 1 minutes")
+            if cnt<600:
+                if np.mod(cnt,60)==0:
+                    print("NCBI-BLAST Server has been busy for the last %s mins. We keep trying to connect."%(cnt))
+                my_blast_msg_file=os.path.join(OUTPUT_DIR,"%s_output.blast.msg"%job_id)
+                save_file = open(my_blast_msg_file, "w")
+                save_file.write("NCBI-BLAST Server has been busy for the last %s mins. We keep trying to connect."%(cnt))
+                save_file.close()            
                 time.sleep(60)
             else:
                 break
+            cnt+=1
+
     if connected==0:
-        return 0,0,0,0,0 #"BLAST Server was busy for last hour; please try again later"
+        return 0,0,0,0,0 #"BLAST Server was busy for last 10 hours; please try again later"
     else:
         my_blast_file=os.path.join(OUTPUT_DIR,"%s_output.blast"%job_id)
         save_file = open(my_blast_file, "w")
@@ -731,10 +755,10 @@ def make_results_ready(job_id,activ_tab,my_data):
             preds=[]            
             res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
             tax_name=taxid_2_name[taxids[gene]]
-            if len(res_sorted)<=2:
+            if len(res_sorted)<=3:
                 end_i=len(res)
             else:
-                end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
+                end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[2][1]*.75)]
                 if end_i:
                    end_i=end_i[-1]
                 else:
@@ -747,6 +771,8 @@ def make_results_ready(job_id,activ_tab,my_data):
                 else:
                     break
             result.append([gene,unip_accs[gene],tax_name,taxids[gene],preds])
+        print result
+        result=sorted(result,key=lambda x:float(x[4][0][2]),reverse=True)
         if activ_tab == 'by_protein':
             infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
             data=pickle.load(open(infile))
@@ -793,10 +819,10 @@ def make_results_ready(job_id,activ_tab,my_data):
                     continue
                 res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
                 tax_name=taxid_2_name[taxids[gene]]
-                if len(res_sorted)<=2:
+                if len(res_sorted)<=3:
                     end_i=len(res)
                 else:
-                    end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[1][1]*.75)]
+                    end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[2][1]*.75)]
                     if end_i:
                        end_i=end_i[-1]
                     else:
@@ -919,3 +945,54 @@ def find_results(my_form_data,job_id):
         return True
 
 
+
+def find_results_domain(q_gene,sifter_EXP_choices,ExpWeight_hidden):
+    q_results,taxids,unip_accs=find_db_results('by_protein',q_genes=[q_gene])
+    my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
+    gid_to_fam={k:v.values()[0][2].split('_')[0] for k,v in SIFTER_results2[q_gene].iteritems()}
+    real_terms={k:real_terms[q_gene] for k in gid_to_fam.keys()}
+    fam_to_name={}
+    fams=Pfam.objects.filter(pfam_acc__in=set(gid_to_fam.values())).values('pfam_acc','pfam_id')
+    for w in fams:
+        fam_to_name[w['pfam_acc']]=w['pfam_id']
+    found_fams=fam_to_name.keys()
+    for w in set(gid_to_fam.values())-set(found_fams):
+        fam_to_name[w]=''
+
+    if sifter_EXP_choices:
+        res_filtered=find_Model2_results(SIFTER_results2,real_terms,return_domiand_preds=True)
+    else:
+        res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden,return_domiand_preds=True)
+    trimmed_res=trim_results(res_filtered[q_gene])
+    leaves=find_leave_preds(trimmed_res)
+    res={gid:{k:v for k,v in pred.iteritems() if k in leaves[gid]} for gid,pred in trimmed_res.iteritems()}
+    terms=list(set([v for w in res.values() for v in w]))
+    idx_to_go_name=find_go_name_acc(terms)
+    result=[]
+    for j,gid in enumerate(res):
+        preds=[]
+        res_sorted=sorted(res[gid].iteritems(),key=operator.itemgetter(1),reverse=True)
+        if len(res_sorted)<=3:
+            end_i=len(res)
+        else:
+            end_i=[i for  i, pred  in enumerate(res_sorted) if pred[1]>(res_sorted[2][1]*.75)]
+            if end_i:
+               end_i=end_i[-1]
+            else:
+               end_i=1
+
+        for i, pred  in enumerate(res_sorted):
+            term,score=pred
+            if i<=end_i:                    
+                preds.append([idx_to_go_name[term][0],idx_to_go_name[term][1],str(score)])
+            else:
+                break
+        fam=gid_to_fam[gid]
+        if fam[0:2]=='PF':
+            link="family/%s"%fam
+        elif fam[0:2]=='PB':
+            link="pfamb/%s"%fam
+                
+        result.append([gid,fam,fam_to_name[fam],link,preds])            
+        result=sorted(result, key=lambda x: int(x[0].split('-')[0]))
+    return result,unip_accs[q_gene]

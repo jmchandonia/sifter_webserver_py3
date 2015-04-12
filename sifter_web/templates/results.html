@@ -137,9 +137,10 @@
             <tbody > 
               {% for gene_data in result %}
                   <tr class="row_seperator">
-                      <td ><a href="http://www.uniprot.org/uniprot/{{gene_data.1}}">{{gene_data.0}}</a></td>
+                      <td ><a href="http://www.uniprot.org/uniprot/{{gene_data.1}}">{{gene_data.0}}</a> 
+					   <a style="color:#003262;" href="/results-id={{my_object.job_id}}/protein={{gene_data.0}}">(Click to see predictions for individual domains and Download annotated trees)</a></td>
                       <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{gene_data.3}}"><i>{{gene_data.2}}</i></a></td>                
-                      <td></td>
+					  <td></td>
                   </tr>
                   {% for row in gene_data.4 %}              
                       <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">
@@ -149,8 +150,8 @@
                       </tr>                
                   {%endfor%}
                   <tr>
-                    <td></td>
-                    <td></td>
+    				<td></td>
+    				<td></td>
                     <td></td>                                        
                   </tr>
               {%endfor%}                  
@@ -176,9 +177,9 @@
             <tbody >
               {% for hits in query.1 %}
                 <tr class="row_seperator">
-                  <td class="col-md-2">{{forloop.counter}} &nbsp&nbsp&nbsp&nbsp <a href="http://www.uniprot.org/uniprot/{{hits.1}}">{{hits.0}}</a></td>
-                  <td class="col-md-3"><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{hits.3}}"><i>{{hits.2}}</i></a></td>                
-                  <td class="col-md-6">
+                  <td class="col-lg-2 col-md-2">{{forloop.counter}} &nbsp&nbsp&nbsp&nbsp <a href="http://www.uniprot.org/uniprot/{{hits.1}}">{{hits.0}}</a></td>
+                  <td class="col-lg-2 col-md-3"><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{hits.3}}"><i>{{hits.2}}</i></a></td>                
+                  <td class="col-lg-7 col-md-6">
                     <div class="row">
                      <div class="col-lg-3 col-md-6 col-sm-6  col-xs-12 ">
                       <label>Bit-score</label>: {{hits.4}}
@@ -193,10 +194,12 @@
                       <label>Query Coverage:</label> {{hits.7}}%
                      </div>
                     </div>
-                   
                   </td>
-                  <td class="col-md-1"></td>
+                  <td class="col-lg-1 col-md-1"></td>
                 </tr>
+                <tr class="row_seperator">
+					   <td colspan="4"><a style="color:#003262;" href="/results-id={{my_object.job_id}}/protein={{hits.0}}">(Click to see predictions for individual domains and Download annotated trees)</a></td>
+				</tr>
                 <tr>
                   <td colspan="4">
                     <table class="table">

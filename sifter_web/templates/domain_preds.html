@@ -8,43 +8,100 @@
 
 <div class="container custom-container">
    <!-- Example row of columns -->
-{{domain_res}}
-  <div class="query-info" style="border-bottom-width: 0px">
-	<h2><a href="http://www.uniprot.org/uniprot/{{uniprot_acc}}">{{protein}}</a></h2>
-	<h4>SIFTER Predictions for the individual domains</h4>
+
+   {% if my_msg %}
+  <div class="row">
+    <div class="col-md-offset-2 col-md-8 col-md-offset-2 col-md-8">
+      {% for msg in my_msg %}
+        <div class="alert alert-{{msg.0}}"><h4>{{ msg.1 }}<h4></div>
+      {% endfor %}
+    </div>
   </div>
-  {% if domian_result %}     	  
-	<div class="col-md-12 col-sm-12 col-xs-12 text-center">
-	<img src="/media/colorbar.svg" style="width:600px">
-	</div>
-	  	  
-	  {%for domain_res in domian_result %}
-		<div class="query-info">
-			<div class="row">
-			 <div class="col-lg-2 col-md-3 col-sm-4  col-xs-12 ">
-			  <h3>Position: {{domain_res.0}}</h3>
-			 </div>
-			 <div class="col-lg-10 col-md-9 col-sm-8  col-xs-12 ">
-			  <h3><a href="http://pfam.xfam.org/{{domain_res.1.2}}">Family: {{domain_res.1.1}} ({{domain_res.1.0}})</a></h3> 
-			 </div>
-			</div>
+  {% endif %}
+
+   {% if main_res %}     	  
+	  <h1><a href="http://www.uniprot.org/uniprot/{{uniprot_acc}}">{{protein}}</a>
+	  &nbsp&nbsp&nbsp
+	  <a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{gene_data.3}}"><i>{{main_res.2}}</i></a></h1>                  
+		<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+		<img src="/media/colorbar.svg" style="width:600px">
 		</div>
-				
+	  <div class="query-info" style="border-bottom-width: 0px">
+		<h2>SIFTER predictions for the protein</h2>
+	  </div>
+			<table class="table">
+			<thead>
+			  <tr>
+				<th></th>
+				<th></th>
+				<th><a href="/help/#confidenceScore">Confidence Score</a></th>
+			  </tr>
+			</thead>         
+			<tbody >
+				  <tr class="row_seperator">
+					  <td colspan="2">Protein Prediction</td>
+					  <td></td>
+				  </tr>
+				  {% for row in main_res.4 %}              
+					  <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">
+						  <td colspan="2"><a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.0}}</a>
+						  &nbsp&nbsp&nbsp <a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.1}}</a></td>                
+						  <td >{{row.2}}</td>
+					  </tr>                
+				  {%endfor%}
+				  <tr>
+					<td></td>
+					<td></td>
+					<td></td>                                        
+				  </tr>
+			</tbody>
+			</table>            
+  {% endif %}     	  
+
+  {% if domain_result %}     	  
+	  <div class="query-info" style="border-bottom-width: 0px">
+		<h2>SIFTER predictions for the individual domains</h2>
+	  </div>
+		  <div class="row">
+			<div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
+				<label>{{domain_result|length}} Domain{% if domain_result|length > 1 %}s{% endif %} with predictions</label>
+				<table class="table">
+				<thead>
+				  <tr>
+					<th>Position</th>
+					<th>Pfam Family</th>
+					<th>Annotated Tree</th>
+				  </tr>
+				</thead>         
+				<tbody >
+				  {% for domain_res in domain_result %}              
+					  <tr>
+						  <td><a href="#{{domain_res.0}}">{{domain_res.0}}</a></td>                
+						  <td><a href="http://pfam.xfam.org/{{domain_res.3}}">{{domain_res.1}}</a></td> 
+						  <td><a href="/media/annotated_trees/{{domain_res.1}}.xml.gz">Download Link</a></td>
+					  </tr>                
+				  {%endfor%}
+				</tbody>
+				</table>            
+			</div>
+		  </div>
+	  
+	  
+	  {%for domain_res in domain_result %}
 		<table class="table">
 		<thead>
 		  <tr>
-			<th></th>
-			<th></th>
+			<th><h4><a name="{{domain_res.0}}">Position: {{domain_res.0}}</a></h4></th>
+			<th><h4><a href="http://pfam.xfam.org/{{domain_res.3}}">Pfam Family: {{domain_res.2}} ({{domain_res.1}})</a></h4></th>
 			<th><a href="/help/#confidenceScore">Confidence Score</a></th>
 		  </tr>
 		</thead>         
 		<tbody >
-		  {% for hits in domain_res.1.3 %}
 			  <tr class="row_seperator">
-				  <td colspan="2">Prediction using {{hits.1}} Evidence {% if hits.0 %}(using sub-tree){%endif%}</td>
+				  <td colspan="2">Domain Prediction</td>
 				  <td></td>
 			  </tr>
-			  {% for row in hits.2 %}              
+			  {% for row in domain_res.4 %}              
 				  <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">
 					  <td colspan="2"><a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.0}}</a>
 					  &nbsp&nbsp&nbsp <a style="color:rgba{{row.2|get_color_rgb2}};" href="http://amigo.geneontology.org/amigo/term/{{row.0}}">{{row.1}}</a></td>                
@@ -56,7 +113,6 @@
 				<td></td>
 				<td></td>                                        
 			  </tr>
-		  {%endfor%}                  
 		</tbody>
 		</table>            
 	  {%endfor%}	  

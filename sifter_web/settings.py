@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'estimatedb',
     'sifter_results_ready_db',
     'idmap_db',
+    'pfamdb',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,7 +95,7 @@ DATABASES = {
     },
     'sifter_results_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_wREST.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_040315.sqlite3"),
     },
     'term_db': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -110,11 +111,15 @@ DATABASES = {
     },
     'sifter_results_ready_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_ready_leaves_wREST.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_ready_leaves_040315.sqlite3"),
     },
     'idmap_db': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(MyDB_DIR,"idmap_db.sqlite3"),
+    },
+    'pfamdb': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(MyDB_DIR,"pfam_db.sqlite3"),
     },
 }
 DATABASE_ROUTERS = [
@@ -124,7 +129,8 @@ DATABASE_ROUTERS = [
     'taxid_db.routers.taxid_db_router',
     'estimatedb.routers.EstimateDbRouter',
     'sifter_results_ready_db.routers.sifter_results_ready_db_router',
-    'idmap_db.routers.idmap_db_router'
+    'idmap_db.routers.idmap_db_router',
+    'pfamdb.routers.pfamdb_router'
     ]
 	
 HAYSTACK_CONNECTIONS = {
@@ -175,4 +181,3 @@ ADMINS = (
     ('SIFTER', 'sifter@compbio.berkeley.edu'),
     ('Mohammad Sahraeian', 'sahraeian.m@gmail.com'),
 )
-
