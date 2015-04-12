@@ -388,8 +388,7 @@ def get_input(request,context={}):
                 msg+='Number of sequences: %s\n'%(n_sequences)
                 send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
                 
-                #run_sifter_job.delay(my_form_data,job_id)
-                run_sifter_job(my_form_data,job_id)
+                run_sifter_job.delay(my_form_data,job_id)
                 return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
         else:
             active_tab=form.cleaned_data['active_tab_hidden']
@@ -667,8 +666,7 @@ def show_predictions(request):
         msg+='Number of functions: %s\n'%0
         msg+='Number of sequences: %s\n'%0
         send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
-        #run_sifter_job.delay(my_form_data,job_id)
-        run_sifter_job(my_form_data,job_id)
+        run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
     elif 'protein' in qdict:
         job_id=random.randint(1000000,9999999)    
@@ -699,8 +697,7 @@ def show_predictions(request):
         msg+='Number of functions: %s\n'%0
         msg+='Number of sequences: %s\n'%0
         send_mail('SIFTER-WEB run for Job ID:%s\n'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
-        #run_sifter_job.delay(my_form_data,job_id)
-        run_sifter_job(my_form_data,job_id)
+        run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})        
     elif 's-taxid' in qdict:
         my_species=qdict['s-taxid'][0]
@@ -807,5 +804,5 @@ def show_domain_predictions(request,job_id,my_protein):
             my_msg.append(['danger','No results for this protein in your query.'])       
             return render(request, 'domain_preds.html', {'protein':'','domian_result':'','uniprot_acc':'','main_res':'','my_msg':my_msg})
     
-    res,uniprot_acc=run_sifter_job_domain(my_protein,my_object.sifter_EXP_choices,my_object.exp_weight)
+    res,uniprot_acc=run_sifter_job_domain.delay(my_protein,my_object.sifter_EXP_choices,my_object.exp_weight)
     return render(request, 'domain_preds.html', {'protein':my_protein,'domain_result':res,'uniprot_acc':uniprot_acc,'main_res':main_res,'my_msg':my_msg})
