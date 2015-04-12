@@ -804,5 +804,5 @@ def show_domain_predictions(request,job_id,my_protein):
             my_msg.append(['danger','No results for this protein in your query.'])       
             return render(request, 'domain_preds.html', {'protein':'','domian_result':'','uniprot_acc':'','main_res':'','my_msg':my_msg})
     
-    res,uniprot_acc=run_sifter_job_domain.delay(my_protein,my_object.sifter_EXP_choices,my_object.exp_weight)
+    res,uniprot_acc=run_sifter_job_domain(my_protein,my_object.sifter_EXP_choices,my_object.exp_weight)
     return render(request, 'domain_preds.html', {'protein':my_protein,'domain_result':res,'uniprot_acc':uniprot_acc,'main_res':main_res,'my_msg':my_msg})
