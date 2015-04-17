@@ -107,10 +107,8 @@ class InputForm(forms.Form):
             else:
                 lines=seq_data.split('\n')
                 lines=[w.strip() for w in lines if w.strip()]
-                print lines
                 lines=[w for w in lines if not w[0]=='>']            
                 letters=set([v.lower() for w in lines for v in w])
-                print letters
                 if len(letters)==4:
                     if len(letters|set(['a','c','g','t']))==4 or len(letters|set(['a','c','g','u']))==4:
                         self._errors['input_sequence'] = ErrorList(["You have entered NUCLEOTIDE sequences. Please enter your PROTEIN sequences."])
