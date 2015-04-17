@@ -577,7 +577,7 @@ def show_results(request,job_id):
     if my_object.output_file=='':
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
         if my_object.query_method == 'by_sequence':
-            my_msg.append(['warning','We are trying to connet to NCBI-BLAST server.'])
+            my_msg.append(['warning','We are trying to connet to the NCBI-BLAST server.'])
         my_blast_msg_file_path=OUTPUT_DIR+"%s_output.blast.msg"%job_id
         if os.path.exists(my_blast_msg_file_path):
             read_file = open(my_blast_msg_file, "r")

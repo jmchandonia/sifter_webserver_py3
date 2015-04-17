@@ -191,7 +191,9 @@
             <tbody >
               {% for hits in query.1 %}
                 <tr class="row_seperator">
-                  <td class="col-lg-2 col-md-2">{{forloop.counter}} &nbsp&nbsp&nbsp&nbsp <a href="http://www.uniprot.org/uniprot/{{hits.1}}">{{hits.0}}</a></td>
+                  <td class="col-lg-2 col-md-2">{{forloop.counter}} &nbsp&nbsp&nbsp&nbsp <a href="http://www.uniprot.org/uniprot/{{hits.1}}">{{hits.0}}</a>
+                  <a style="color:#003262;" href="/results-id={{my_object.job_id}}/protein={{hits.0}}"> (See domain details)</a>
+                  </td>
                   <td class="col-lg-2 col-md-3"><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{hits.3}}"><i>{{hits.2}}</i></a></td>                
                   <td class="col-lg-7 col-md-6">
                     <div class="row">
@@ -211,9 +213,6 @@
                   </td>
                   <td class="col-lg-1 col-md-1"></td>
                 </tr>
-                <tr class="row_seperator">
-					   <td colspan="4"><a style="color:#003262;" href="/results-id={{my_object.job_id}}/protein={{hits.0}}">(See domain details)</a></td>
-				</tr>
                 <tr>
                   <td colspan="4">
                     <table class="table">
