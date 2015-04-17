@@ -27,20 +27,13 @@
 		<img src="/media/colorbar.svg" style="width:600px">
 		</div>
 	  <div class="query-info" style="border-bottom-width: 0px">
-		<h2>SIFTER predictions for the protein</h2>
+		<h2>SIFTER predictions for entire protein</h2>
 	  </div>
 			<table class="table">
-			<thead>
-			  <tr>
-				<th></th>
-				<th></th>
-				<th><a href="/help/#confidenceScore">Confidence Score</a></th>
-			  </tr>
-			</thead>         
 			<tbody >
 				  <tr class="row_seperator">
 					  <td colspan="2">Protein Prediction</td>
-					  <td></td>
+					  <td><a href="/help/#confidenceScore">Confidence Score</a></td>
 				  </tr>
 				  {% for row in main_res.4 %}              
 					  <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">
@@ -60,7 +53,7 @@
 
   {% if domain_result %}     	  
 	  <div class="query-info" style="border-bottom-width: 0px">
-		<h2>SIFTER predictions for the individual domains</h2>
+		<h2>SIFTER predictions for the individual constituent domains</h2>
 	  </div>
 		  <div class="row">
 			<div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
@@ -68,7 +61,7 @@
 				<table class="table">
 				<thead>
 				  <tr>
-					<th>Position</th>
+					<th>Residues</th>
 					<th>Pfam Family</th>
 					<th>Annotated Tree</th>
 				  </tr>
@@ -78,7 +71,7 @@
 					  <tr>
 						  <td><a href="#{{domain_res.0}}">{{domain_res.0}}</a></td>                
 						  <td><a href="http://pfam.xfam.org/{{domain_res.3}}">{{domain_res.1}}</a></td> 
-						  <td><a href="/media/annotated_trees/{{domain_res.1}}.xml.gz">Download Link</a></td>
+						  <td><a href="/media/annotated_trees/{{domain_res.1}}.xml.gz">Download tree file</a></td>
 					  </tr>                
 				  {%endfor%}
 				</tbody>
@@ -91,15 +84,15 @@
 		<table class="table">
 		<thead>
 		  <tr>
-			<th><h4><a name="{{domain_res.0}}">Position: {{domain_res.0}}</a></h4></th>
+			<th><h4><a name="{{domain_res.0}}">Residues: {{domain_res.0}}</a></h4></th>
 			<th><h4><a href="http://pfam.xfam.org/{{domain_res.3}}">Pfam Family: {{domain_res.2}} ({{domain_res.1}})</a></h4></th>
-			<th><a href="/help/#confidenceScore">Confidence Score</a></th>
+			<th></th>
 		  </tr>
 		</thead>         
 		<tbody >
 			  <tr class="row_seperator">
 				  <td colspan="2">Domain Prediction</td>
-				  <td></td>
+				   <td><a href="/help/#confidenceScore">Confidence Score</a></td>
 			  </tr>
 			  {% for row in domain_res.4 %}              
 				  <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">

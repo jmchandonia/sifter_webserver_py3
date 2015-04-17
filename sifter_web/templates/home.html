@@ -9,16 +9,6 @@
                <!-- Example row of columns -->
                <div class="row">
                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="query-info toppage">
-                    <ul >
-                        <li>Currently SIFTER has predictions for <label>16,853,547</label> proteins across <label>232,403</label> species.</li>
-                        <li>For queries not in our current results, try <a href="javascript:activaTab('by_sequence');" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
-                        <li>Citation:</li>
-                        <ul>
-							<li> Engelhardt BE, Jordan MI, Srouji JR, Brenner SE. 2011. Genome-scale phylogenetic function annotation of large and diverse protein families.<i>Genome Research 21</i>:1969-1980. doi:<a href=http://dx.doi.org/10.1101/gr.104687.109>10.1101/gr.104687.109</a></li>
-						</ul>
-                    </ul>
-                    </div>
                    {{form.error_sp_hidden}}
  
                    <div  class="hideable-options0" {%if form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>                    
@@ -95,18 +85,8 @@
                         <a id="reset" href="javascript:void(0)" title="Reset the form to default values">Reset</a>                       
                     </p>
                     </div>
-                
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
 		   </form>
+		   
                    </div>
                    <div  class="hideable-options02" {%if not form.active_tab_hidden.value == 'by_any' %} style="display: none" {% endif %}>                    
 					<form method="get" id="home_search_form" action=".">
@@ -229,6 +209,16 @@
 					</form>
                    </div>                    
                     
+                    <div class="query-info toppage">
+                    <ul >
+						<li>SIFTER was recently honored as the best-performing sequence-based protein function prediction method in the <a href="http://dx.doi.org/10.1038/nmeth.2340">Critical Assessment of Function Annotation</a>.</li>
+                        <li>Currently SIFTER has predictions for <label>16,853,547</label> proteins across <label>232,403</label> species.</li>
+                        <li>Results are obtained using the family data from <a href="http://pfam.xfam.org/">Pfam</a> v27.0, the gene ontology data from <a href="http://geneontology.org/">GO</a> (update 09/2013), and the annotation data from <a href="http://www.ebi.ac.uk/GOA">UniProt-GOA</a> (update 09/2013).</li>
+                        <li>For queries not in our current results, try <a href="javascript:activaTab('by_sequence');" id="goto_by_sequence">"Predict by seqence"</a> to find SIFTER predictions for the closest homologs.</li>   
+                        <li>Citation: Engelhardt BE, Jordan MI, Srouji JR, Brenner SE. 2011. Genome-scale phylogenetic function annotation of large and diverse protein families.<i>Genome Research 21</i>:1969-1980. doi:<a href=http://dx.doi.org/10.1101/gr.104687.109>10.1101/gr.104687.109</a></li>
+                    </ul>
+                    </div>
+
                  </div>
             </div>
         </div>    

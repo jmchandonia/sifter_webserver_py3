@@ -24,7 +24,7 @@
   {%if blast_error == '' %}
   {% if my_object.output_file == ''%}
   <div class="row">
-    <meta http-equiv='refresh' content='15'>      
+    <meta http-equiv='refresh' content={% if my_object.query_method == 'by_protein' %}'1'{% else %}'10'{% endif %} >      
     <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
       <div class="panel panel-default panel-wb">
         <div class="panel-heading">
@@ -33,7 +33,7 @@
         <div class="panel-body">
         <p>You may check here or the following address to see your SIFTER results once it is ready:</p>
         <p><a href="http://sifter.berkeley.edu/results-id={{my_object.job_id}}">http://sifter.berkeley.edu/results-id={{my_object.job_id}}</a></p>
-        <p>This page is reloaded every 15 seconds.</p>
+        <p>This page is reloaded every 10 seconds.</p>
 <!--        <p>If you have provided your email address, the result will be send to you once it is ready. </p> -->
         <p>The SIFTER predictions for your query can be accessed through the above link for the next 15 days.</p>                      
         </div>
@@ -101,12 +101,20 @@
     <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-12 col-xs-12">
       <div class="panel panel-default panel-wb">
         <div class="panel-heading">
-          <h3 class="panel-title">SIFTER Predictions for Job ID: {{my_object.job_id}}</h3>
+          <div class="row">
+            <div class="col-md-6 text-left">
+			  <h3 class="panel-title">SIFTER Predictions for Job ID: {{my_object.job_id}}</h3>
+			</div>
+		    {% if downloadfile %}
+			<div class="col-md-6 text-right">
+				<label><a href="{{downloadfile}}">Download results</a></label>
+			</div>
+		    {%endif%}           
+          </div>
         </div>
         <div class="panel-body">
-	    {% if result %}		
-          {% if downloadfile %}<label><a href="{{downloadfile}}">Download link</a></label>{%endif%}                					
-          {% if not result.paginator.count == 1%}
+	    {% if result %}	    	
+          {% if not result.paginator.num_pages == 1%}
           <div class="row">
             <div class="col-md-12 text-center">
               <nav>
@@ -127,20 +135,26 @@
           {% endif %}
           {% if not my_object.query_method == 'by_sequence' %}
             <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-                <th><a href="/help/#confidenceScore">Confidence Score</a></th>
-              </tr>
-            </thead>         
+            {% if not my_object.n_proteins == 1%}
+				<thead>
+				  <tr>
+					<th></th>
+					<th></th>
+					<th><a href="/help/#confidenceScore">Confidence Score</a></th>
+				  </tr>
+				</thead>         
+			{% endif %}	
             <tbody > 
               {% for gene_data in result %}
                   <tr class="row_seperator">
                       <td ><a href="http://www.uniprot.org/uniprot/{{gene_data.1}}">{{gene_data.0}}</a> 
-					   <a style="color:#003262;" href="/results-id={{my_object.job_id}}/protein={{gene_data.0}}">(Click to see predictions for individual domains and Download annotated trees)</a></td>
+					   <a style="color:#003262;" href="/results-id={{my_object.job_id}}/protein={{gene_data.0}}">(See domain details)</a></td>
                       <td ><a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?lvl=0&id={{gene_data.3}}"><i>{{gene_data.2}}</i></a></td>                
-					  <td></td>
+					  <td>
+						{% if my_object.n_proteins == 1%}
+							<a href="/help/#confidenceScore">Confidence Score</a>						
+						{% endif %}				  
+					  </td>
                   </tr>
                   {% for row in gene_data.4 %}              
                       <tr style="background-color:rgba{{row.2|get_color_rgba}}; color:rgba{{row.2|get_color_rgb2}};">
@@ -198,7 +212,7 @@
                   <td class="col-lg-1 col-md-1"></td>
                 </tr>
                 <tr class="row_seperator">
-					   <td colspan="4"><a style="color:#003262;" href="/results-id={{my_object.job_id}}/protein={{hits.0}}">(Click to see predictions for individual domains and Download annotated trees)</a></td>
+					   <td colspan="4"><a style="color:#003262;" href="/results-id={{my_object.job_id}}/protein={{hits.0}}">(See domain details)</a></td>
 				</tr>
                 <tr>
                   <td colspan="4">
