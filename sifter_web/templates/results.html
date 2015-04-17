@@ -24,7 +24,7 @@
   {%if blast_error == '' %}
   {% if my_object.output_file == ''%}
   <div class="row">
-    <meta http-equiv='refresh' content={% if my_object.query_method == 'by_protein' %}'1'{% else %}'10'{% endif %} >      
+    <meta http-equiv='refresh' content={% if my_object.query_method == 'by_protein' and my_object.n_proteins < 100 %}'1'{% else %}'10'{% endif %} >      
     <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
       <div class="panel panel-default panel-wb">
         <div class="panel-heading">
