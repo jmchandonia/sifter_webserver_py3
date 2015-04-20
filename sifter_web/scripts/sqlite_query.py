@@ -19,6 +19,7 @@ from taxid_db.models import Taxid
 import time
 import grp
 import pwd
+from django.core.mail import send_mail
 
 django.setup()
 
@@ -865,6 +866,20 @@ def make_results_ready(job_id,activ_tab,my_data):
         
                         
 def find_results(my_form_data,job_id):
+    
+    my_object=SIFTER_Output.objects.filter(job_id=job_id)[0]
+    msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
+    msg+='Job submitted on: %s\n'%my_object.submission_date
+    msg+='query_method: %s\n'%my_object.query_method
+    msg+='SIFTER choice: %s\n'%my_object.sifter_EXP_choices
+    msg+='EXP Weight: %s\n'%my_object.exp_weight
+    msg+='Number of proteins: %s\n'%my_object.n_proteins
+    msg+='Species: %s\n'%my_object.species
+    msg+='Number of functions: %s\n'%my_object.n_functions
+    msg+='Number of sequences: %s\n'%my_object.n_sequences
+    send_mail('SIFTER-WEB run for Job ID:%s'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)
+
+    
     active_tab=my_form_data['active_tab_hidden']
     input_file=SIFTER_Output.objects.filter(job_id=job_id).values_list('input_file',flat=True)[0]
     data=pickle.load(open(input_file,'r'))
