@@ -866,20 +866,6 @@ def make_results_ready(job_id,activ_tab,my_data):
         
                         
 def find_results(my_form_data,job_id):
-    
-    my_object=SIFTER_Output.objects.filter(job_id=job_id)[0]
-    msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
-    msg+='Job submitted on: %s\n'%my_object.submission_date
-    msg+='query_method: %s\n'%my_object.query_method
-    msg+='SIFTER choice: %s\n'%my_object.sifter_EXP_choices
-    msg+='EXP Weight: %s\n'%my_object.exp_weight
-    msg+='Number of proteins: %s\n'%my_object.n_proteins
-    msg+='Species: %s\n'%my_object.species
-    msg+='Number of functions: %s\n'%my_object.n_functions
-    msg+='Number of sequences: %s\n'%my_object.n_sequences
-    send_mail('SIFTER-WEB run for Job ID:%s'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)
-
-    
     active_tab=my_form_data['active_tab_hidden']
     input_file=SIFTER_Output.objects.filter(job_id=job_id).values_list('input_file',flat=True)[0]
     data=pickle.load(open(input_file,'r'))
@@ -897,7 +883,6 @@ def find_results(my_form_data,job_id):
         my_object.result_date=datetime.date.today()        
         my_object.output_file=outfile
         my_object.save()
-        return True
     elif active_tab == 'by_species':
         my_species=data['species']
         res,taxids,unip_accs=find_sifter_preds_byspecies(my_species,my_form_data)
@@ -912,7 +897,6 @@ def find_results(my_form_data,job_id):
         my_object.result_date=datetime.date.today()        
         my_object.output_file=outfile
         my_object.save()
-        return True
     elif active_tab == 'by_function':
         my_species=data['species']
         my_functions=Term.objects.filter(acc__in=data['functions']).values_list('term_id',flat=True)
@@ -928,7 +912,6 @@ def find_results(my_form_data,job_id):
         my_object.result_date=datetime.date.today()        
         my_object.output_file=outfile
         my_object.save()
-        return True
     elif active_tab == 'by_sequence':
         my_sequences=data['sequences']
         res,taxids,unip_accs,blast_hits,connected=find_sifter_preds_bysequence(my_sequences,my_form_data,job_id)
@@ -956,8 +939,21 @@ def find_results(my_form_data,job_id):
             my_object=my_object[0]        
             my_object.result_date=datetime.date.today()        
             my_object.output_file=outfile
-            my_object.save()
-        return True
+            my_object.save()    
+    my_object=SIFTER_Output.objects.filter(job_id=job_id)[0]
+    msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
+    msg+='Job submitted on: %s\n'%my_object.submission_date
+    msg+='query_method: %s\n'%my_object.query_method
+    msg+='SIFTER choice: %s\n'%my_object.sifter_EXP_choices
+    msg+='EXP Weight: %s\n'%my_object.exp_weight
+    msg+='Number of proteins: %s\n'%my_object.n_proteins
+    msg+='Species: %s\n'%my_object.species
+    msg+='Number of functions: %s\n'%my_object.n_functions
+    msg+='Number of sequences: %s\n'%my_object.n_sequences
+    send_mail('SIFTER-WEB run for Job ID:%s'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)
+    return True
+
+
 
 
 
