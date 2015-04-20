@@ -943,6 +943,7 @@ def find_results(my_form_data,job_id):
     my_object=SIFTER_Output.objects.filter(job_id=job_id)[0]
     msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
     msg+='Job submitted on: %s\n'%my_object.submission_date
+    msg+='Results ready on: %s\n'%my_object.result_date
     msg+='query_method: %s\n'%my_object.query_method
     msg+='SIFTER choice: %s\n'%my_object.sifter_EXP_choices
     msg+='EXP Weight: %s\n'%my_object.exp_weight
