@@ -772,7 +772,6 @@ def make_results_ready(job_id,activ_tab,my_data):
                 else:
                     break
             result.append([gene,unip_accs[gene],tax_name,taxids[gene],preds])
-        print result
         result=sorted(result,key=lambda x:float(x[4][0][2]),reverse=True)
         if activ_tab == 'by_protein':
             infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)

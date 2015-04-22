@@ -17,6 +17,7 @@ class SIFTER_Output(models.Model):
     input_file=models.FilePathField()
     output_file=models.FilePathField()
     deleted=models.BooleanField(default=False)
+    ip=models.CharField(max_length=45)
 
     def __unicode__(self):
         return '%s'%self.job_id

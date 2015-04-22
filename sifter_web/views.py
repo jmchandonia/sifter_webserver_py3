@@ -113,13 +113,13 @@ class InputForm(forms.Form):
                     if len(letters|set(['a','c','g','t']))==4 or len(letters|set(['a','c','g','u']))==4:
                         self._errors['input_sequence'] = ErrorList(["You have entered NUCLEOTIDE sequences. Please enter your PROTEIN sequences."])
             
-
         #if self.cleaned_data['input_queries']!='1':
         #    msg = 'The type and organisssszation do not match.'
         #    self._errors['input_queries'] = ErrorList([msg])
         #    del self.cleaned_data['input_queries']
                 
         return self.cleaned_data
+
 
     def set_default(self,field,value):
         data = self.data.copy()
@@ -269,6 +269,13 @@ def delete_old_results():
         if os.path.exists(outfile):
             os.remove(outfile)
     
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
     
 
 def get_input(request,context={}):
@@ -286,6 +293,9 @@ def get_input(request,context={}):
     search_form = MySearchForm(searchqueryset=searchqueryset, load_all=load_all)
     pages = ''
     paginators=''
+    ip=get_client_ip(request)
+    print ip
+
     context = {
         'search_form': search_form,
         'pages': pages,
@@ -328,7 +338,7 @@ def get_input(request,context={}):
                 my_functions=[]
                 my_proteins=[]
                 n_sequences=0
-                if active_tab=='by_protein':
+                if active_tab=='by_protein':                
                     splited=re.split(' |,|;|\n',form.cleaned_data['input_queries'].strip())
                     my_proteins=list(set([w.strip().upper() for w in splited if w]))
                     data={'proteins':my_proteins}
@@ -364,29 +374,29 @@ def get_input(request,context={}):
                     my_sequences=form.cleaned_data['input_sequence']
                     n_sequences=my_sequences.count('>')
                     data={'sequences':my_sequences}                
+                    same_ip_today_seq=SIFTER_Output.objects.filter(result_date=datetime.date.today(),ip=ip,query_method='by_sequence').values_list('job_id',flat=True)
+                    print "same_ip_today",same_ip_today_seq,job_id
+                    if len(same_ip_today_seq)>100:
+                        context['form']=form
+                        context['response']=form.cleaned_data['ExpWeight_hidden']        
+                        context['error_same_ip_sq']="You can only submit upto 20 'Search by Sequences' requests (each with upto 10 sequences) from a same IP in a same day. "
+                        return render_to_response('home.html', context, context_instance=context_class(request))        
+                    
+                    
                 pickle.dump(data,open(infile,'w'))
                 os.system("chmod 775 %s"%infile)
                 os.system("chgrp sifter-group %s"%infile)
                 P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                                 query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
                                 n_proteins=len(my_proteins),species=my_species,n_functions=len(my_functions),n_sequences=n_sequences,submission_date=datetime.date.today(),
-                                result_date=datetime.date.today(),input_file=infile,output_file='',deleted=False)
+                                result_date=datetime.date.today(),input_file=infile,output_file='',deleted=False,ip=ip)
                 P.save()
+                    
                 delete_old_results()
                 my_form_data={'sifter_choices':form.cleaned_data['sifter_choices'],'ExpWeight_hidden':form.cleaned_data['ExpWeight_hidden']
                               ,'active_tab_hidden':form.cleaned_data['active_tab_hidden']}
-                '''msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
-                msg+='Job submitted on: %s\n'%datetime.date.today()
-                msg+='query_method: %s\n'%active_tab
-                msg+='SIFTER choice: %s\n'%sifter_choices_val
-                msg+='EXP Weight: %s\n'%form.cleaned_data['ExpWeight_hidden']
-                msg+='Number of proteins: %s\n'%len(my_proteins)
-                msg+='Species: %s\n'%(my_species)
-                msg+='Number of functions: %s\n'%len(my_functions)
-                msg+='Number of sequences: %s\n'%(n_sequences)
-                send_mail('SIFTER-WEB run for Job ID:%s'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
                 
-                run_sifter_job.delay(my_form_data,job_id)
+                run_sifter_job(my_form_data,job_id)
                 return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
         else:
             active_tab=form.cleaned_data['active_tab_hidden']
@@ -576,16 +586,16 @@ def show_results(request,job_id):
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
         if my_object.query_method == 'by_sequence':
             my_msg.append(['warning','We are trying to connet to the NCBI-BLAST server.'])
-        my_blast_msg_file_path=OUTPUT_DIR+"%s_output.blast.msg"%job_id
+        my_blast_msg_file_path=OUTPUT_DIR+"/%s_output.blast.msg"%job_id
         if os.path.exists(my_blast_msg_file_path):
-            read_file = open(my_blast_msg_file, "r")
-            line=save_file.readline()
+            read_file = open(my_blast_msg_file_path, "r")
+            line=read_file.readline()
             my_msg.append(['warning',line])
         return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':'','downloadfile':'','blast_error':''})        
     else:
         results=pickle.load(open(my_object.output_file))
         if 'bad_blast' in results:
-            my_msg.append(['danger','BLAST server is busy now. Please submit your query again later.'])
+            my_msg.append(['danger','BLAST server has been busy for the last 10 hours. We cannot process your query now. Please submit your query again later.'])
             return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':'','downloadfile':'','blast_error':'1'})
         
         my_msg.append(['info','Your SIFTER query results are ready.'])
@@ -622,6 +632,8 @@ def show_results(request,job_id):
         
 
 def show_predictions(request):
+    ip=get_client_ip(request)
+    print ip
     qdict=dict(request.GET.iterlists())
     if 'term' in qdict:
         my_function=qdict['term'][0]
@@ -650,23 +662,13 @@ def show_predictions(request):
         P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
                         query_method='by_species', sifter_EXP_choices = True ,
                         n_proteins=0,species=my_species,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
-                        result_date=datetime.date.today(),input_file=infile,output_file='')
+                        result_date=datetime.date.today(),input_file=infile,output_file='',deleted=False,ip=ip)
         P.save()
         delete_old_results()
         my_form_data={'sifter_choices':'EXP-Model','ExpWeight_hidden':'0.7'
         ,'active_tab_hidden':'by_species'}
 
-        '''msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
-        msg+='Job submitted on: %s\n'%datetime.date.today()
-        msg+='query_method: %s\n'%'by_species'
-        msg+='SIFTER choice: %s\n'%'EXP-Model'
-        msg+='EXP Weight: %s\n'%0.7
-        msg+='Number of proteins: %s\n'%0
-        msg+='Species: %s\n'%(my_species)
-        msg+='Number of functions: %s\n'%0
-        msg+='Number of sequences: %s\n'%0
-        send_mail('SIFTER-WEB run for Job ID:%s'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
-        run_sifter_job.delay(my_form_data,job_id)
+        run_sifter_job(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
     elif 'protein' in qdict:
         job_id=random.randint(1000000,9999999)    
@@ -681,23 +683,13 @@ def show_predictions(request):
         P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
                         query_method='by_protein', sifter_EXP_choices = True ,
                         n_proteins=1,species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
-                        result_date=datetime.date.today(),input_file=infile,output_file='')
+                        result_date=datetime.date.today(),input_file=infile,output_file='',deleted=False,ip=ip)
         P.save()
         delete_old_results()
         my_form_data={'sifter_choices':'EXP-Model','ExpWeight_hidden':'0.7'
         ,'active_tab_hidden':'by_protein'}
 
-        '''msg='results in: http://sifter.berkeley.edu/results-id=%s\n'%job_id
-        msg+='Job submitted on: %s\n'%datetime.date.today()
-        msg+='query_method: %s\n'%'by_protein'
-        msg+='SIFTER choice: %s\n'%'EXP-Model'
-        msg+='EXP Weight: %s\n'%0.7
-        msg+='Number of proteins: %s\n'%1
-        msg+='Species: %s\n'%0
-        msg+='Number of functions: %s\n'%0
-        msg+='Number of sequences: %s\n'%0
-        send_mail('SIFTER-WEB run for Job ID:%s'%job_id, msg, 'sifter@compbio.berkeley.edu',['sahraeian.m@gmail.com'], fail_silently=False)'''
-        run_sifter_job.delay(my_form_data,job_id)
+        run_sifter_job(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})        
     elif 's-taxid' in qdict:
         my_species=qdict['s-taxid'][0]
@@ -784,7 +776,6 @@ def show_domain_predictions(request,job_id,my_protein):
     main_res=[]
     if not my_object.query_method=='by_sequence':
         for w in main_res0:
-            print w[0]
             if w[0]==my_protein:
                 main_res=w
                 break
@@ -794,7 +785,6 @@ def show_domain_predictions(request,job_id,my_protein):
     else:
         for ww in main_res0:
             for w in ww[1]:
-                print w[0]
                 if w[0]==my_protein:
                     main_res=[w[0],w[1],w[2],w[3],w[8]]
                     break
