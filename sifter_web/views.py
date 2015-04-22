@@ -376,7 +376,7 @@ def get_input(request,context={}):
                     data={'sequences':my_sequences}                
                     same_ip_today_seq=SIFTER_Output.objects.filter(result_date=datetime.date.today(),ip=ip,query_method='by_sequence').values_list('job_id',flat=True)
                     print "same_ip_today",same_ip_today_seq,job_id
-                    if len(same_ip_today_seq)>100:
+                    if len(same_ip_today_seq)>20:
                         context['form']=form
                         context['response']=form.cleaned_data['ExpWeight_hidden']        
                         context['error_same_ip_sq']="You can only submit upto 20 'Search by Sequences' requests (each with upto 10 sequences) from a same IP in a same day. "
