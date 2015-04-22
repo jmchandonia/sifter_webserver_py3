@@ -396,7 +396,7 @@ def get_input(request,context={}):
                 my_form_data={'sifter_choices':form.cleaned_data['sifter_choices'],'ExpWeight_hidden':form.cleaned_data['ExpWeight_hidden']
                               ,'active_tab_hidden':form.cleaned_data['active_tab_hidden']}
                 
-                run_sifter_job(my_form_data,job_id)
+                run_sifter_job.delay(my_form_data,job_id)
                 return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
         else:
             active_tab=form.cleaned_data['active_tab_hidden']
@@ -668,7 +668,7 @@ def show_predictions(request):
         my_form_data={'sifter_choices':'EXP-Model','ExpWeight_hidden':'0.7'
         ,'active_tab_hidden':'by_species'}
 
-        run_sifter_job(my_form_data,job_id)
+        run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})
     elif 'protein' in qdict:
         job_id=random.randint(1000000,9999999)    
@@ -689,7 +689,7 @@ def show_predictions(request):
         my_form_data={'sifter_choices':'EXP-Model','ExpWeight_hidden':'0.7'
         ,'active_tab_hidden':'by_protein'}
 
-        run_sifter_job(my_form_data,job_id)
+        run_sifter_job.delay(my_form_data,job_id)
         return HttpResponseRedirect('/results-id=%s'%job_id, {'results':''})        
     elif 's-taxid' in qdict:
         my_species=qdict['s-taxid'][0]
