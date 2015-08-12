@@ -95,7 +95,7 @@ DATABASES = {
     },
     'sifter_results_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_040315.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_050715.sqlite3"),
     },
     'term_db': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -111,7 +111,7 @@ DATABASES = {
     },
     'sifter_results_ready_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_ready_leaves_040315.sqlite3"),
+        'NAME': os.path.join(MyDB_DIR,"sifter_results_cmp_ready_leaves_050715.sqlite3"),
     },
     'idmap_db': {
         'ENGINE': 'django.db.backends.sqlite3',
