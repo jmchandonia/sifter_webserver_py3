@@ -12,13 +12,17 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+
+def get_secret_key(default='development-only-insecure-secret-key'):
+    return os.environ.get('DJANGO_SECRET_KEY', default)
+
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates').replace('\\', '/'),)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@27@tk$%zwfw6w%kau&#rgs$*nlrlwe*2ib1--+c+a=yp7rp5g'
+SECRET_KEY = get_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

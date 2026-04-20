@@ -1,0 +1,15 @@
+*.pyc
+__pycache__/
+.codex/
+
+db.sqlite3
+db.sqlite3_old_sifter
+
+sifter_web/input/
+sifter_web/output/
+
+sifter_web/static/media/db.sqlite3
+sifter_web/static/media/.families_data.tar.gz.*
+sifter_web/static/media/families_data.tar.gz
+sifter_web/static/media/sifter_db.gz
+sifter_web/static/media/sifter_webserver_precomputed_code_and_data_05072015.tar.gz

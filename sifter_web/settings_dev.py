@@ -16,6 +16,10 @@ djcelery.setup_loader()
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+
+def get_secret_key(default='development-only-insecure-secret-key'):
+    return os.environ.get('DJANGO_SECRET_KEY', default)
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -26,7 +30,7 @@ CELERY_IMPORTS = ("tasks",)
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=e@&t9o*8k%hxyuc6x8==!&ujxocc@1^(czt7p4urb+1m$#5xm'
+SECRET_KEY = get_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
