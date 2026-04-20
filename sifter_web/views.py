@@ -1,29 +1,34 @@
-from django.shortcuts import render,render_to_response,RequestContext
+from django.shortcuts import render
 #from django.template import  Context
 #from django.template.loader import get_template
 from django import forms
 from django.http import HttpResponseRedirect,HttpResponse,Http404
 from django.core.exceptions import ValidationError
-from django.forms.util import ErrorList
+from django.forms.utils import ErrorList
+from sifter_web.fileops import resolve_runtime_artifact, safe_set_file_metadata
 from sifter_web.tasks import run_sifter_job,run_sifter_job_domain
 #from scripts.alk import find_results_domain
 from results.models import SIFTER_Output
 from sifter_results_ready_db.models import SifterResults as SifterResultsReady
 from idmap_db.models import Idmap
 import datetime
+import logging
 import random
 import pickle
 import os
+import socket
 import time
-from chartit import DataPool, Chart
-from scripts.estimate_time import estimate_time, get_processing_time
+from types import SimpleNamespace
+from urllib.parse import urlparse
+from sifter_web.scripts.estimate_time import estimate_time, get_processing_time
 from estimatedb.models import Errorhistogrambars
 import numpy as np
 from django.db.models import Q as Q_lookup
 from haystack.query import SearchQuerySet
 from haystack.forms import SearchForm
 from haystack.query import EmptySearchQuerySet
-from django.core.paginator import Paginator, InvalidPage
+from haystack.exceptions import SearchBackendError
+from django.core.paginator import EmptyPage, InvalidPage, PageNotAnInteger, Paginator
 from django.conf import settings
 import json
 from term_db.models import Term
@@ -42,8 +47,173 @@ import operator'''
 RESULTS_PER_PAGE = getattr(settings, 'HAYSTACK_SEARCH_RESULTS_PER_PAGE', 50)
 pred_results_per_page=1000
 pred_results_per_page_sq=1
-INPUT_DIR=os.path.join(os.path.dirname(__file__),"input")
-OUTPUT_DIR=os.path.join(os.path.dirname(__file__),"output")
+INPUT_DIR=getattr(settings, 'SIFTER_INPUT_DIR', os.path.join(os.path.dirname(__file__),"input"))
+OUTPUT_DIR=getattr(settings, 'SIFTER_OUTPUT_DIR', os.path.join(os.path.dirname(__file__),"output"))
+FILE_OWNER = getattr(settings, 'SIFTER_FILE_OWNER', None)
+FILE_GROUP = getattr(settings, 'SIFTER_FILE_GROUP', None)
+logger = logging.getLogger(__name__)
+_SOLR_AVAILABLE = None
+
+
+def pickle_dump_file(path, data):
+    with open(path, 'wb') as handle:
+        pickle.dump(data, handle)
+
+
+def pickle_load_file(path):
+    resolved_path = resolve_runtime_artifact(path, OUTPUT_DIR)
+    with open(resolved_path, 'rb') as handle:
+        try:
+            return pickle.load(handle, encoding='latin1')
+        except TypeError:
+            return pickle.load(handle)
+
+
+def resolve_output_artifact(path):
+    return resolve_runtime_artifact(path, OUTPUT_DIR)
+
+
+def safe_spelling_suggestion(results, search_form, query):
+    try:
+        if results.query.backend.include_spelling:
+            return search_form.get_suggestion()
+        return results.spelling_suggestion(query)
+    except Exception:
+        return None
+
+
+def solr_available():
+    global _SOLR_AVAILABLE
+    if _SOLR_AVAILABLE is not None:
+        return _SOLR_AVAILABLE
+    if not getattr(settings, 'SIFTER_ENABLE_SOLR_SEARCH', True):
+        _SOLR_AVAILABLE = False
+        return _SOLR_AVAILABLE
+
+    try:
+        solr_url = settings.HAYSTACK_CONNECTIONS['default']['URL']
+        parsed = urlparse(solr_url)
+        host = parsed.hostname
+        port = parsed.port or (443 if parsed.scheme == 'https' else 80)
+        if not host:
+            _SOLR_AVAILABLE = False
+            return _SOLR_AVAILABLE
+        with socket.create_connection((host, port), timeout=getattr(settings, 'SIFTER_SOLR_TIMEOUT', 1)):
+            _SOLR_AVAILABLE = True
+    except OSError:
+        _SOLR_AVAILABLE = False
+    return _SOLR_AVAILABLE
+
+
+def wrap_term_result(term):
+    return SimpleNamespace(object=term, acc=term.acc)
+
+
+def wrap_taxid_result(taxid):
+    return SimpleNamespace(object=taxid, taxid=taxid.tax_id, tax_id=taxid.tax_id)
+
+
+def fallback_uniprot_results(query):
+    q = query.strip().upper()
+    direct_ids = set(SifterResultsReady.objects.filter(uniprot_id=q).values_list('uniprot_id', flat=True))
+    mapped_ids = set(Idmap.objects.filter(other_id=q, db='ID').values_list('unip_id', flat=True))
+    matches = sorted(direct_ids | mapped_ids)
+    return [{'name': value, 'url': '/predictions/?protein=%s' % value} for value in matches]
+
+
+def fallback_term_results(query, limit=None):
+    q = query.strip()
+    results = []
+    seen = set()
+    queryset = Term.objects.none()
+    if q:
+        queryset = Term.objects.filter(Q_lookup(acc__iexact=q) | Q_lookup(acc__istartswith=q) | Q_lookup(name__icontains=q)).order_by('acc')
+    for term in queryset:
+        if term.acc in seen:
+            continue
+        seen.add(term.acc)
+        results.append(wrap_term_result(term))
+        if limit and len(results) >= limit:
+            break
+    return results
+
+
+def fallback_taxid_results(query, limit=None):
+    q = query.strip()
+    results = []
+    seen = set()
+    if not q:
+        return results
+
+    queryset = Taxid.objects.filter(
+        Q_lookup(tax_name__icontains=q) |
+        Q_lookup(short_name__icontains=q) |
+        Q_lookup(tax_id__startswith=q)
+    ).order_by('tax_name')
+    if q.isdigit():
+        queryset = Taxid.objects.filter(
+            Q_lookup(tax_id=q) |
+            Q_lookup(tax_name__icontains=q) |
+            Q_lookup(short_name__icontains=q) |
+            Q_lookup(tax_id__startswith=q)
+        ).order_by('tax_name')
+
+    for taxid in queryset:
+        if taxid.tax_id in seen:
+            continue
+        seen.add(taxid.tax_id)
+        results.append(wrap_taxid_result(taxid))
+        if limit and len(results) >= limit:
+            break
+    return results
+
+
+def fallback_search_results(query):
+    return [
+        {'model': 'Proteins', 'results': fallback_uniprot_results(query)},
+        {'model': 'Species', 'results': fallback_taxid_results(query)},
+        {'model': 'Functions', 'results': fallback_term_results(query)},
+    ]
+
+
+def search_with_solr_or_fallback(query):
+    q = query.strip().upper()
+    if not q:
+        return fallback_search_results(q)
+
+    if solr_available():
+        try:
+            sqs = SearchQuerySet()
+            sqs1 = sqs.filter(content_auto_name=q)
+            sqs2 = sqs.filter(content_auto_acc=q)
+            sqs3 = sqs.filter(content_auto_taxname=q)
+            sqs4 = sqs.filter(content_auto_taxid=q)
+            sqs5 = sqs.filter(text=q)
+            sqs = sqs5 | sqs1 | sqs2 | sqs3 | sqs4
+            sqs_term = sqs.filter(django_ct='term_db.term')
+            sqs_taxid = sqs.filter(django_ct='taxid_db.taxid')
+            sqs_unip = fallback_uniprot_results(q)
+            return [
+                {'model': 'Proteins', 'results': sqs_unip},
+                {'model': 'Species', 'results': sqs_taxid},
+                {'model': 'Functions', 'results': sqs_term},
+            ]
+        except SearchBackendError:
+            logger.warning("Solr search failed for %s; falling back to ORM search", q, exc_info=True)
+
+    return fallback_search_results(q)
+
+
+def fallback_species_option_results(query, function_query=''):
+    results = []
+    suffix = '&my_f=%s' % function_query if function_query else ''
+    for taxid in fallback_taxid_results(query):
+        if function_query:
+            url = '/predictions/?sf-taxid=%s%s' % (taxid.taxid, suffix)
+        else:
+            url = '/predictions/?s-taxid=%s' % taxid.taxid
+        results.append({'name': '%s (taxid:%s)' % (taxid.object.tax_name, taxid.taxid), 'url': url})
+    return results
 
 
 class InputForm(forms.Form):
@@ -135,30 +305,12 @@ class MySearchForm(SearchForm):
     
 
     def search(self):
-        # First, store the SearchQuerySet received from other processing.
-        sqs = SearchQuerySet()
-
         if not self.is_valid():
             return self.no_query_found()
 
-        # Check to see if a q was chosen.
-        if self.cleaned_data['q']:        
-            q=self.cleaned_data['q'].strip().upper()
-            if q:
-                sqs1 = sqs.filter(content_auto_name=q)
-                sqs2 = sqs.filter(content_auto_acc=q)            
-                sqs3 = sqs.filter(content_auto_taxname=q)
-                sqs4 = sqs.filter(content_auto_taxid=q)
-                sqs5 = sqs.filter(text=q)
-                sqs=sqs5|sqs1|sqs2|sqs3|sqs4
-                sqs_term=sqs.filter(django_ct='term_db.term')            
-                sqs_taxid=sqs.filter(django_ct='taxid_db.taxid')
-                sqs7=list(set(SifterResultsReady.objects.filter(uniprot_id=q).values_list('uniprot_id',flat=True)))
-                #sqs8=list(set(SifterResultsReady.objects.filter(uniprot_acc=q).values_list('uniprot_id',flat=True)))
-                sqs8=Idmap.objects.filter(other_id=q, db='ID').values_list('unip_id',flat=True)
-                sqs_unip=list(set(sqs8)|set(sqs7))
-                sqs_unip=[{'name':w, 'url':'/predictions/?protein=%s' % w} for w in sqs_unip]
-        return [{'model':'Proteins','results':sqs_unip},{'model':'Species','results':sqs_taxid},{'model':'Functions','results':sqs_term}]
+        if self.cleaned_data['q']:
+            return search_with_solr_or_fallback(self.cleaned_data['q'])
+        return fallback_search_results('')
 
 class EstimateForm(forms.Form):
     estim_choices = forms.ChoiceField(widget=forms.RadioSelect, choices=(('params', 'Customized Input',),('pfam', 'Use a Pfam ID',)),initial='params')
@@ -232,13 +384,12 @@ def get_complexity(request):
             if not histograms:
                 return render(request, 'complexity.html', {'form': form,
                     'tableHeader': tableHeader, 'tableBody': tableBody, 'displayHist': False})                
-            return render_to_response('complexity.html',
+            return render(request, 'complexity.html',
                 {'form': form, 'tableHeader': tableHeader, 'tableBody': tableBody, 'histograms': histograms,
-                'displayHist': True, 'chartContainers': chartContainers, 'numTerms': numTerms},
-                RequestContext(request))
+                'displayHist': True, 'chartContainers': chartContainers, 'numTerms': numTerms})
         else:
             return render(request, 'complexity.html',
-                {'form': form, 'response': 'Error'}, RequestContext(request))
+                {'form': form, 'response': 'Error'})
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -281,11 +432,10 @@ def get_client_ip(request):
 def get_input(request,context={}):
     
     if context:
-        return render_to_response('home.html', context, context_instance=context_class(request))
+        return render(request, 'home.html', context)
         
     searchqueryset=None
     load_all=True
-    context_class=RequestContext
     extra_context=None
     results_per_page=None
     query = ''
@@ -294,8 +444,6 @@ def get_input(request,context={}):
     pages = ''
     paginators=''
     ip=get_client_ip(request)
-    print ip
-
     context = {
         'search_form': search_form,
         'pages': pages,
@@ -303,11 +451,6 @@ def get_input(request,context={}):
         'query': query,
         'suggestion': None,
     }
-    if results.query.backend.include_spelling:
-        context['suggestion'] = search_form.get_suggestion()
-    spelling = results.spelling_suggestion(query)
-    context['suggestion']= spelling
-
     if extra_context:
         context.update(extra_context)
             
@@ -327,7 +470,7 @@ def get_input(request,context={}):
             form.set_default('sifter_choices',sifter_choices_val)
             
             if active_tab=='by_any':                
-                return render_to_response('home.html', context, context_instance=context_class(request))        
+                return render(request, 'home.html', context)
             else:
                 job_id=random.randint(1000000,9999999)
                 while SIFTER_Output.objects.filter(job_id=job_id):
@@ -375,17 +518,16 @@ def get_input(request,context={}):
                     n_sequences=my_sequences.count('>')
                     data={'sequences':my_sequences}                
                     same_ip_today_seq=SIFTER_Output.objects.filter(result_date=datetime.date.today(),ip=ip,query_method='by_sequence').values_list('job_id',flat=True)
-                    print "same_ip_today",same_ip_today_seq,job_id
+                    logger.info("Sequence submission count for %s is %s before job %s", ip, len(same_ip_today_seq), job_id)
                     if len(same_ip_today_seq)>20:
                         context['form']=form
                         context['response']=form.cleaned_data['ExpWeight_hidden']        
                         context['error_same_ip_sq']="You can only submit upto 20 'Search by Sequences' requests (each with upto 10 sequences) from a same IP in a same day. "
-                        return render_to_response('home.html', context, context_instance=context_class(request))        
+                        return render(request, 'home.html', context)
                     
                     
-                pickle.dump(data,open(infile,'w'))
-                os.system("chmod 775 %s"%infile)
-                os.system("chgrp sifter-group %s"%infile)
+                pickle_dump_file(infile, data)
+                safe_set_file_metadata(infile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
                 P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                                 query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
                                 n_proteins=len(my_proteins),species=my_species,n_functions=len(my_functions),n_sequences=n_sequences,submission_date=datetime.date.today(),
@@ -431,7 +573,7 @@ def get_input(request,context={}):
             context['form']=form
             context['response']=form.cleaned_data['ExpWeight_hidden']        
 
-            return render_to_response('home.html', context, context_instance=context_class(request))        
+            return render(request, 'home.html', context)
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -468,7 +610,7 @@ def get_input(request,context={}):
             'pages': pages,
             'paginators': paginators,
             'query': query,
-            'suggestion': None,
+            'suggestion': safe_spelling_suggestion(results, search_form, query) if query else None,
         }
         '''for result in results:
             if result['results'].query.backend.include_spelling:
@@ -488,16 +630,14 @@ def get_input(request,context={}):
         if results:
             if len(results[0]['results'])==0 and len(results[1]['results'])==0 and len(results[2]['results'])==0:
                 context['no_results']=True
-        return render_to_response('home.html', context, context_instance=context_class(request))        
+        return render(request, 'home.html', context)
         
 
     #return render(request, 'home.html', context)
 
 def show_search_options(request):
     results_per_page=None
-    context_class=RequestContext        
-
-    qdict=dict(request.GET.iterlists())
+    qdict=dict(request.GET.lists())
     fq_flag=0
     if ('q' in qdict) or ('fq' in qdict):
         if 'q' in qdict:
@@ -518,12 +658,17 @@ def show_search_options(request):
                       return HttpResponseRedirect('/predictions/?s-taxid=%s'%tid, {'results':''})
                 else:
                       return HttpResponseRedirect('/predictions/?sf-taxid=%s%s'%(tid,my_functions_string), {'results':''})
-        sqs = SearchQuerySet()
-        sqs3 = sqs.filter(content_auto_taxname=my_species)
-        sqs4 = sqs.filter(content_auto_taxid=my_species)
-        sqs5 = sqs.filter(text=my_species)
-        sqs=sqs3|sqs4|sqs5
-        sqs_taxid=sqs.filter(django_ct='taxid_db.taxid')
+        sqs_taxid = fallback_taxid_results(my_species)
+        if solr_available():
+            try:
+                sqs = SearchQuerySet()
+                sqs3 = sqs.filter(content_auto_taxname=my_species)
+                sqs4 = sqs.filter(content_auto_taxid=my_species)
+                sqs5 = sqs.filter(text=my_species)
+                sqs = sqs3 | sqs4 | sqs5
+                sqs_taxid = sqs.filter(django_ct='taxid_db.taxid')
+            except SearchBackendError:
+                logger.warning("Solr species search failed for %s; using ORM fallback", my_species, exc_info=True)
         if len(sqs_taxid)>1:
             context_search={}
             if fq_flag==0:
@@ -546,7 +691,7 @@ def show_search_options(request):
             context_search['paginators']= paginators
             context_search['query']= my_species
             #return HttpResponseRedirect('/search_options/?sp=%s'%my_species,context_search)                                
-            return render_to_response('search_options.html', context_search, context_instance=context_class(request))
+            return render(request, 'search_options.html', context_search)
         elif len(sqs_taxid)==1:
             tid=sqs_taxid[0].object.tax_id
             if fq_flag==0:
@@ -560,7 +705,6 @@ def show_search_options(request):
             else:
                 form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_function'
             context={}
-            context_class=RequestContext        
             context['form']=form
             context['response']='Hi'
             form.fields['error_sp_hidden'].widget.attrs['value']='1'
@@ -593,7 +737,11 @@ def show_results(request,job_id):
             my_msg.append(['warning',line])
         return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':'','downloadfile':'','blast_error':''})        
     else:
-        results=pickle.load(open(my_object.output_file))
+        output_file = resolve_output_artifact(my_object.output_file)
+        if not os.path.exists(output_file):
+            my_msg.append(['danger', 'Historical result artifact is missing from the migrated output directory.'])
+            return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':species,'nopreds':'','downloadfile':'','blast_error':''})
+        results=pickle_load_file(output_file)
         if 'bad_blast' in results:
             my_msg.append(['danger','BLAST server has been busy for the last 10 hours. We cannot process your query now. Please submit your query again later.'])
             return render(request, 'results.html', {'my_object':my_object,'result':'','pending':False,'my_msg':my_msg,'species':'','nopreds':'','downloadfile':'','blast_error':'1'})
@@ -633,15 +781,13 @@ def show_results(request,job_id):
 
 def show_predictions(request):
     ip=get_client_ip(request)
-    print ip
-    qdict=dict(request.GET.iterlists())
+    qdict=dict(request.GET.lists())
     if 'term' in qdict:
         my_function=qdict['term'][0]
         form = InputForm()
         form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_function'
         form.fields['function_selected_hidden'].widget.attrs['value'] = my_function
         context={}
-        context_class=RequestContext        
         context['form']=form
         context['response']='Hi'
         term=Term.objects.filter(acc=my_function).values('name','acc')[0]
@@ -656,9 +802,8 @@ def show_predictions(request):
         infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
         my_species=qdict['taxid'][0]
         data={'species':my_species}
-        pickle.dump(data,open(infile,'w'))
-        os.system("chmod 775 %s"%infile)
-        os.system("chgrp sifter-group %s"%infile)
+        pickle_dump_file(infile, data)
+        safe_set_file_metadata(infile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
         P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
                         query_method='by_species', sifter_EXP_choices = True ,
                         n_proteins=0,species=my_species,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
@@ -677,9 +822,8 @@ def show_predictions(request):
         infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
         my_proteins=[qdict['protein'][0]] 
         data={'proteins':my_proteins}
-        pickle.dump(data,open(infile,'w'))
-        os.system("chmod 775 %s"%infile)
-        os.system("chgrp sifter-group %s"%infile)
+        pickle_dump_file(infile, data)
+        safe_set_file_metadata(infile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
         P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
                         query_method='by_protein', sifter_EXP_choices = True ,
                         n_proteins=1,species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
@@ -697,7 +841,6 @@ def show_predictions(request):
         form.fields['active_tab_hidden'].widget.attrs['value'] = 'by_species'
         form.fields['sp_selected_hidden'].widget.attrs['value'] = my_species
         context={}
-        context_class=RequestContext        
         context['form']=form
         context['response']='Hi'
         taxid=Taxid.objects.filter(tax_id=my_species).values('tax_name','tax_id')[0]
@@ -726,7 +869,6 @@ def show_predictions(request):
                 else:
                     form.fields['function_selected_hidden'].widget.attrs['value']=my_functions_string
                     context['function_selected']=my_functions_string
-        context_class=RequestContext        
         context['form']=form
         context['response']='Hi'
         taxid=Taxid.objects.filter(tax_id=my_species).values('tax_name','tax_id')[0]
@@ -734,27 +876,37 @@ def show_predictions(request):
         return render(request, 'home.html', context)
 
 def autocomplete(request):
-    sqs=SearchQuerySet()
     dbs=request.GET.get('dbs', '')
     if dbs=='all':
         search_in=['term','taxid','unip']
     else:
         search_in=[dbs]
-        
+    query = request.GET.get('q', '').strip()
     suggestions=[]
-    if 'term' in search_in:
-        sqs1 = sqs.autocomplete(content_auto_name=request.GET.get('q', ''))[:5]
-        sqs2 = sqs.autocomplete(content_auto_acc=request.GET.get('q', ''))[:5]    
-        sqs5 = sqs.filter(text=request.GET.get('q', ''),django_ct='term_db.term')[:5]
-        suggestions.extend([{'url':result.object.get_absolute_url(),'label':"%s (%s)"%(result.object.name,result.object.acc)} for result in sqs5+sqs1+sqs2])
-    if 'taxid' in search_in:
-        sqs3 = sqs.autocomplete(content_auto_taxname=request.GET.get('q', ''))[:5]
-        sqs4 = sqs.autocomplete(content_auto_taxid=request.GET.get('q', ''))[:5]
-        sqs6 = sqs.filter(text=request.GET.get('q', ''),django_ct='taxid_db.taxid')[:5]
-        suggestions.extend([{'url':result.object.get_absolute_url(),'label':"%s (taxid:%s)"%(result.object.tax_name,result.object.tax_id)} for result in sqs6+sqs3+sqs4])
+
+    if solr_available():
+        try:
+            sqs=SearchQuerySet()
+            if 'term' in search_in:
+                sqs1 = sqs.autocomplete(content_auto_name=query)[:5]
+                sqs2 = sqs.autocomplete(content_auto_acc=query)[:5]
+                sqs5 = sqs.filter(text=query,django_ct='term_db.term')[:5]
+                suggestions.extend([{'url':result.object.get_absolute_url(),'label':"%s (%s)"%(result.object.name,result.object.acc)} for result in sqs5+sqs1+sqs2])
+            if 'taxid' in search_in:
+                sqs3 = sqs.autocomplete(content_auto_taxname=query)[:5]
+                sqs4 = sqs.autocomplete(content_auto_taxid=query)[:5]
+                sqs6 = sqs.filter(text=query,django_ct='taxid_db.taxid')[:5]
+                suggestions.extend([{'url':result.object.get_absolute_url(),'label':"%s (taxid:%s)"%(result.object.tax_name,result.object.tax_id)} for result in sqs6+sqs3+sqs4])
+        except SearchBackendError:
+            logger.warning("Solr autocomplete failed for %s; using ORM fallback", query, exc_info=True)
+
+    if 'term' in search_in and not suggestions:
+        suggestions.extend([{'url': result.object.get_absolute_url(), 'label': "%s (%s)" % (result.object.name, result.object.acc)} for result in fallback_term_results(query, limit=5)])
+    if 'taxid' in search_in and not [item for item in suggestions if 'taxid:' in item['label']]:
+        suggestions.extend([{'url': result.object.get_absolute_url(), 'label': "%s (taxid:%s)" % (result.object.tax_name, result.object.tax_id)} for result in fallback_taxid_results(query, limit=5)])
     if 'unip' in search_in:
-        if len(request.GET.get('q', ''))>7:
-            sqs7=list(set(SifterResultsReady.objects.filter(uniprot_id=request.GET.get('q', '')).values_list('uniprot_id',flat=True)))
+        if len(query)>7:
+            sqs7=list(set(SifterResultsReady.objects.filter(uniprot_id=query).values_list('uniprot_id',flat=True)))
             suggestions.extend([{'url':'/predictions/?protein=%s'%w,'label':w} for w in sqs7])
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
@@ -772,7 +924,11 @@ def show_domain_predictions(request,job_id,my_protein):
         my_msg.append(['danger','Error in the job_id. Number of hits=%s'%(len(my_object))])       
         return render(request, 'domain_preds.html', {'protein':'','domian_result':'','uniprot_acc':'','main_res':'','my_msg':my_msg})
     my_object=my_object[0]
-    main_res0=pickle.load(open(my_object.output_file))['result']
+    output_file = resolve_output_artifact(my_object.output_file)
+    if not os.path.exists(output_file):
+        my_msg.append(['danger','Historical result artifact is missing from the migrated output directory.'])
+        return render(request, 'domain_preds.html', {'protein':'','domian_result':'','uniprot_acc':'','main_res':'','my_msg':my_msg})
+    main_res0=pickle_load_file(output_file)['result']
     main_res=[]
     if not my_object.query_method=='by_sequence':
         for w in main_res0:

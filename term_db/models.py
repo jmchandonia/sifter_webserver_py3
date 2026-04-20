@@ -14,9 +14,9 @@ from django.db import models
 
 class Term(models.Model):
     acc = models.TextField(primary_key=True, blank=True)
-    term_id = models.IntegerField(primary_key=True, blank=True)
+    term_id = models.IntegerField(blank=True)
     name = models.TextField(blank=True)
-    ic = models.FloatField(primary_key=True, blank=True)
+    ic = models.FloatField(blank=True)
     eps = models.FloatField(blank=True)
     descendants = models.BinaryField(blank=True, null=True)
     ancestors = models.BinaryField(blank=True, null=True)
@@ -24,17 +24,18 @@ class Term(models.Model):
     class Meta:
         managed = False
         db_table = 'term'
+        unique_together = (('acc', 'term_id', 'ic'),)
 
     def get_absolute_url(self):
         return "/predictions/?term=%s" % self.acc
 		
-    def __unicode__(self):
+    def __str__(self):
         return '%s (%s)'%(self.name, self.acc)
 
 
 class Term2Term(models.Model):
     parent_id = models.IntegerField(primary_key=True, blank=True)
-    child_id = models.IntegerField(primary_key=True, blank=True)
+    child_id = models.IntegerField(blank=True)
     #parent_id = models.ForeignKey(Term, related_name='term2term_parent_id')
     #child_id = models.ForeignKey(Term, related_name='term2term_child_id')
     
@@ -42,6 +43,7 @@ class Term2Term(models.Model):
     class Meta:
         managed = False
         db_table = 'term2term'
+        unique_together = (('parent_id', 'child_id'),)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s-%s'%(self.parent_id,self.child_id)

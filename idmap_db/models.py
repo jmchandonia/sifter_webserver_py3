@@ -14,12 +14,13 @@ from django.db import models
 
 class Idmap(models.Model):
     other_id = models.TextField(primary_key=True, blank=True)
-    db = models.TextField(primary_key=True, blank=True)
-    unip_id = models.TextField(primary_key=True, blank=True)
+    db = models.TextField(blank=True)
+    unip_id = models.TextField(blank=True)
 
     class Meta:
         managed = False
         db_table = 'idmap'
+        unique_together = (('other_id', 'db', 'unip_id'),)
     
-    def __unicode__(self):
+    def __str__(self):
         return '%s'%self.unip_id

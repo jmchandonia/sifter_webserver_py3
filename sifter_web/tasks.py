@@ -1,8 +1,9 @@
 from __future__ import absolute_import
 
-from sifter_web.celery import app
 import os
-os.environ['DJANGO_SETTINGS_MODULE'] = 'sifter_web.settings'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sifter_web.settings')
+
+from sifter_web.celery import app
 
 
 

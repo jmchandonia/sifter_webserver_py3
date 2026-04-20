@@ -6,8 +6,9 @@ from results.models import SIFTER_Output
 from idmap_db.models import Idmap
 from pfamdb.models import Pfam
 from django.db import connection
-import cPickle,zlib
+import logging
 import pickle
+import zlib
 import numpy as np
 import math
 import os
@@ -15,23 +16,142 @@ import datetime
 import django
 from Bio.Blast import NCBIWWW,NCBIXML
 import operator
+import re
 from taxid_db.models import Taxid
 import time
-import grp
-import pwd
 from django.core.mail import send_mail
+from django.conf import settings
+from sifter_web.fileops import resolve_runtime_artifact, safe_set_file_metadata
 
 django.setup()
 
-OUTPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"output")
-INPUT_DIR=os.path.join(os.path.dirname(os.path.dirname(__file__)),"input")
+OUTPUT_DIR=getattr(settings, 'SIFTER_OUTPUT_DIR', os.path.join(os.path.dirname(os.path.dirname(__file__)),"output"))
+INPUT_DIR=getattr(settings, 'SIFTER_INPUT_DIR', os.path.join(os.path.dirname(os.path.dirname(__file__)),"input"))
+FILE_OWNER = getattr(settings, 'SIFTER_FILE_OWNER', None)
+FILE_GROUP = getattr(settings, 'SIFTER_FILE_GROUP', None)
+logger = logging.getLogger(__name__)
+BLAST_EXPECT = getattr(settings, 'SIFTER_BLAST_EXPECT', 1e-2)
+BLAST_HITLIST_SIZE = getattr(settings, 'SIFTER_BLAST_HITLIST_SIZE', 100)
+BLAST_MAX_RETRIES = getattr(settings, 'SIFTER_BLAST_MAX_RETRIES', 600)
+BLAST_RETRY_SLEEP = getattr(settings, 'SIFTER_BLAST_RETRY_SLEEP', 60)
 
-stat_info = os.stat(os.path.dirname(__file__))
-uuid = stat_info.st_uid
-ggid = stat_info.st_gid
 
-file_user_id = pwd.getpwuid(uuid)[0]
-file_group_id = grp.getgrgid(ggid)[0]
+def loads_legacy_pickle(payload):
+    if payload is None:
+        return None
+    if isinstance(payload, memoryview):
+        payload = payload.tobytes()
+    if isinstance(payload, str):
+        payload = payload.encode('latin1')
+    try:
+        return pickle.loads(payload, encoding='latin1')
+    except TypeError:
+        return pickle.loads(payload)
+
+
+def loads_compressed_pickle(payload):
+    return loads_legacy_pickle(zlib.decompress(payload))
+
+
+def pickle_dump_file(path, data):
+    with open(path, 'wb') as handle:
+        pickle.dump(data, handle)
+
+
+def pickle_load_file(path):
+    resolved_path = resolve_runtime_artifact(path, INPUT_DIR if path.endswith('_input.pickle') else OUTPUT_DIR)
+    with open(resolved_path, 'rb') as handle:
+        try:
+            return pickle.load(handle, encoding='latin1')
+        except TypeError:
+            return pickle.load(handle)
+
+
+def extract_blast_hit_candidates(alignment):
+    hit_id = getattr(alignment, 'hit_id', '') or ''
+    title = getattr(alignment, 'title', '') or ''
+    accession = getattr(alignment, 'accession', '') or ''
+
+    candidates = []
+
+    def add_candidate(value):
+        if not value:
+            return
+        if value not in candidates:
+            candidates.append(value)
+        if '.' in value:
+            base = value.split('.', 1)[0]
+            if base and base not in candidates:
+                candidates.append(base)
+
+    add_candidate(accession)
+
+    parts = [part for part in hit_id.split('|') if part]
+    for part in parts:
+        if part.lower() in {'gi', 'sp', 'tr', 'ref', 'gb', 'emb', 'dbj', 'pdb'}:
+            continue
+        add_candidate(part)
+
+    for match in re.finditer(r'(?:^|[>| ])(?:sp|tr|ref|gb|emb|dbj)\|([^|]+)\|?([^| >]*)', title):
+        add_candidate(match.group(1))
+        add_candidate(match.group(2))
+
+    return candidates
+
+
+def map_blast_candidates_to_uniprot(candidates):
+    if not candidates:
+        return None
+    rows = Idmap.objects.filter(other_id__in=candidates).values_list('other_id', 'db', 'unip_id')
+    by_other_id = {}
+    for other_id, db, unip_id in rows:
+        by_other_id.setdefault(other_id, []).append((db, unip_id))
+
+    preferred_dbs = ['GI', 'ID', 'ACC', 'SP_ACC', 'REFSEQ', 'P_REFSEQ_AC']
+    for candidate in candidates:
+        entries = by_other_id.get(candidate, [])
+        if not entries:
+            continue
+        entries = sorted(entries, key=lambda item: preferred_dbs.index(item[0]) if item[0] in preferred_dbs else len(preferred_dbs))
+        return entries[0][1]
+    return None
+
+
+def run_remote_qblast(my_sequences):
+    return NCBIWWW.qblast(
+        "blastp",
+        "nr",
+        my_sequences,
+        alignments=0,
+        expect=BLAST_EXPECT,
+        hitlist_size=BLAST_HITLIST_SIZE,
+        ncbi_gi=True,
+        format_type='XML',
+    )
+
+
+def parse_blast_file(my_blast_file):
+    blast_hits = {}
+    q_genes = []
+    with open(my_blast_file) as handle:
+        for record in NCBIXML.parse(handle):
+            if not record.alignments:
+                continue
+            query_name = record.query
+            blast_hits[query_name] = []
+            for alignment in record.alignments:
+                hit = alignment.hsps[0]
+                mapped_uniprot = map_blast_candidates_to_uniprot(extract_blast_hit_candidates(alignment))
+                if mapped_uniprot and mapped_uniprot not in q_genes:
+                    blast_hits[query_name].append([
+                        mapped_uniprot,
+                        hit.bits,
+                        hit.expect,
+                        round(hit.identities / float(hit.align_length) * 100),
+                        round(abs(float(hit.query_end - hit.query_start)) / record.query_length * 100),
+                    ])
+                    q_genes.append(mapped_uniprot)
+    return blast_hits, q_genes
 
     
 def find_go_ancs(ts):
@@ -42,7 +162,7 @@ def find_go_ancs(ts):
         ancs0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('ancestors','term_id'))    
     ancs={}
     for w in ancs0:
-        ancs[w['term_id']]=cPickle.loads(zlib.decompress(w['ancestors']).encode('ascii','ignore'))
+        ancs[w['term_id']]=loads_compressed_pickle(w['ancestors'])
     return ancs
 
 def find_go_decs(ts):
@@ -53,7 +173,7 @@ def find_go_decs(ts):
         decs0.extend(Term.objects.filter(term_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values('descendants','term_id'))    
     decs={}
     for w in decs0:
-        decs[w['term_id']]=cPickle.loads(zlib.decompress(w['descendants']).encode('ascii','ignore'))
+        decs[w['term_id']]=loads_compressed_pickle(w['descendants'])
     return decs
 
 def find_go_decs_ancs(ts):
@@ -65,8 +185,8 @@ def find_go_decs_ancs(ts):
     ancs={}
     decs={}
     for w in res0:
-        decs[w['term_id']]=cPickle.loads(zlib.decompress(w['descendants']).encode('ascii','ignore'))
-        ancs[w['term_id']]=cPickle.loads(zlib.decompress(w['ancestors']).encode('ascii','ignore'))        
+        decs[w['term_id']]=loads_compressed_pickle(w['descendants'])
+        ancs[w['term_id']]=loads_compressed_pickle(w['ancestors'])
     return decs,ancs
 
 def find_go_childs(ts):
@@ -74,7 +194,7 @@ def find_go_childs(ts):
     res0=[]
     batchs=100
     for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
-        res0.extend(Term2Term.objects.filter(parent_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values_list(flat=True))    
+        res0.extend(Term2Term.objects.filter(parent_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values_list('parent_id', 'child_id'))    
     childs={}
     for w in res0:
         if w[0] not in childs:
@@ -89,7 +209,7 @@ def find_go_parents(ts):
     res0=[]
     batchs=100
     for i in range(0,int(np.ceil(float(len(ts))/float(batchs)))):
-        res0.extend(Term2Term.objects.filter(child_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values_list(flat=True))    
+        res0.extend(Term2Term.objects.filter(child_id__in=ts[batchs*i:min(len(ts),batchs*(i+1))]).values_list('parent_id', 'child_id'))    
     parents={}
     for w in res0:
         if w[1] not in parents:
@@ -129,15 +249,15 @@ def map_scores_goa(res):
     bad_flag=0
     mn=min(res.values())    
     if mn<0:
-        res={k:(v-mn) for k,v in res.iteritems()}
+        res={k:(v-mn) for k,v in res.items()}
         bad_flag=1
     mx=max(res.values())    
     if mx>1:
-        res={k:(v/float(mx)) for k,v in res.iteritems()}        
+        res={k:(v/float(mx)) for k,v in res.items()}
         bad_flag=1
     if bad_flag==1:
-        res={k:(v*.3) for k,v in res.iteritems()}        
-    terms=res.keys()
+        res={k:(v*.3) for k,v in res.items()}
+    terms=list(res.keys())
     ancs=find_go_ancs(terms)
     terms2=set([v for w in ancs.values() for v in w])|set(terms)
     parents=find_go_parents(terms2)
@@ -146,7 +266,7 @@ def map_scores_goa(res):
     eps=find_eps(terms2)
     all_anc=set([v for w in ancs.values() for v in w])
     anc_dict={}
-    for t,a in ancs.iteritems():
+    for t,a in ancs.items():
         for t2 in a:
             if t2 not in anc_dict:
                 anc_dict[t2]=[]
@@ -165,24 +285,24 @@ def map_scores_goa(res):
         todo_list.extend(parents[t])
     
     for t in order_list:
-        if t in res.keys():
+        if t in res:
             continue
         ch=childs[t]
         known=set(ch)&set(res.keys())
         zerochilds=set(ch)-set(res.keys())
         unknown=set(ch)&set(all_anc)-known
         if unknown:
-            print 'error'
+            logger.warning("Unexpected unknown GO children while propagating scores: %s", sorted(unknown))
         ps=[res[w] for w in known]
         ps.extend([0 for w in zerochilds])
         res[t]=1+(eps[t]-1)*np.prod(1-np.array(ps))
-    return {k:v for k,v in res.iteritems()}
+    return {k:v for k,v in res.items()}
 
 def merge_results(results):
     final_res={}
     for res in results:
         w=res[1][0]*res[0] 
-        for term,score in res[1][1].iteritems():
+        for term,score in res[1][1].items():
             if term not in final_res:
                 final_res[term]=0
             final_res[term]+=score*w
@@ -192,22 +312,22 @@ def find_res_multidomain(results):
     n_domain=len(results)
     wt=-0.07*np.log(n_domain)+1
     terms_res={}
-    for gid,res in results.iteritems():
+    for gid,res in results.items():
         for term in res.keys():
             if term not in terms_res:
                 terms_res[term]=[]
             terms_res[term].append(res[term])
     final_res={}
-    for term,res in terms_res.iteritems():
+    for term,res in terms_res.items():
         final_res[term]=1-np.prod(1-np.array(res))
-    final_res={k:v*wt for k,v in final_res.iteritems()}
+    final_res={k:v*wt for k,v in final_res.items()}
     return final_res
 
 def filter_results(input_res,real_terms):
     output_res={}
-    for gene,res in input_res.iteritems():
+    for gene,res in input_res.items():
         filtered_res={}
-        for t,v in res.iteritems():
+        for t,v in res.items():
             if v>=0.005:
                 filtered_res[t]=v
             else:
@@ -254,7 +374,7 @@ def find_db_ready_results(method,q_genes={},mode=1,species=''):
         unip_accs={}
         for q_res in q_results0:
             q_gene=q_res.uniprot_id
-            q_results[q_gene]=cPickle.loads(zlib.decompress(q_res.preds).encode('ascii','ignore'))
+            q_results[q_gene]=loads_compressed_pickle(q_res.preds)
             taxids[q_gene]=q_res.tax_id
             unip_accs[q_gene]=q_res.uniprot_acc
     
@@ -267,7 +387,7 @@ def find_db_ready_results(method,q_genes={},mode=1,species=''):
         unip_accs={}
         for q_res in q_results0:
             q_gene=q_res['uniprot_id']
-            q_results[q_gene]=cPickle.loads(zlib.decompress(q_res['preds']).encode('ascii','ignore'))
+            q_results[q_gene]=loads_compressed_pickle(q_res['preds'])
             taxids[q_gene]=q_res['tax_id']
             unip_accs[q_gene]=q_res['uniprot_acc']
     
@@ -277,7 +397,7 @@ def find_db_ready_results(method,q_genes={},mode=1,species=''):
 
 def find_processed_results(q_results):
     bads_rn=[]
-    q_genes=q_results.keys()
+    q_genes=list(q_results.keys())
     my_res={}
     for q_gene in q_genes:
         my_res[q_gene]={}
@@ -291,8 +411,8 @@ def find_processed_results(q_results):
                 my_res[q_gene][fam][conf_code]={}
             if pos not in my_res[q_gene][fam][conf_code]:
                 my_res[q_gene][fam][conf_code][pos]={}
-            pred=cPickle.loads(zlib.decompress(res.preds).encode('ascii','ignore'))
-            for goid,score in pred.iteritems():
+            pred=loads_compressed_pickle(res.preds)
+            for goid,score in pred.items():
                 if (not score is None) and (score>1e-3):
                     my_res[q_gene][fam][conf_code][pos][goid]=score
     
@@ -300,9 +420,9 @@ def find_processed_results(q_results):
     for i,gene in enumerate(q_genes):
         for fam in my_res[gene].keys():
             my_res_all[gene][fam]={}
-            for code,rr in my_res[gene][fam].iteritems():
+            for code,rr in my_res[gene][fam].items():
                 my_res_all[gene][fam][code]={}
-                for pos,res in rr.iteritems():
+                for pos,res in rr.items():
                     r=my_res[gene][fam][code][pos]
                     if len(r)==0:
                         bads_rn.append([gene,code,pos,''])
@@ -321,9 +441,9 @@ def find_processed_results(q_results):
     for gene in my_res_all.keys():
         results={}
         for fam in my_res_all[gene].keys():
-            for code,rr in my_res_all[gene][fam].iteritems():
+            for code,rr in my_res_all[gene][fam].items():
                 code0=code[0:3]
-                for pos,res in rr.iteritems():
+                for pos,res in rr.items():
                     gid=pos
                     if gid not in results:
                         results[gid]={}
@@ -340,7 +460,7 @@ def find_processed_results(q_results):
                     results[gid][code0].append([weights_all[fam][code0],res,fam])
         SIFTER_results[gene]=results
     if bads:
-        print 'bads',bads
+        logger.warning("Missing family weights for %d domain prediction groups", len(bads))
 
     SIFTER_results2={}
     for gene in SIFTER_results.keys():
@@ -434,14 +554,14 @@ def find_Model1_results(SIFTER_results2,real_terms,we=0.7,wr=0.95,wc=0.55,return
 
     if not return_domiand_preds:
         MODEL1_my_results={}
-        for gene,res in SIFTER_results_merged_MODEL1.iteritems():
+        for gene,res in SIFTER_results_merged_MODEL1.items():
             MODEL1_my_results[gene]=find_res_multidomain(res)
         MODEL1_my_results_filtered=filter_results(MODEL1_my_results,real_terms)
 
         return MODEL1_my_results_filtered
     else:
         SIFTER_results_merged_MODEL1_filtered={}
-        for gene,res in SIFTER_results_merged_MODEL1.iteritems():
+        for gene,res in SIFTER_results_merged_MODEL1.items():
             SIFTER_results_merged_MODEL1_filtered[gene]=filter_results(SIFTER_results_merged_MODEL1[gene],real_terms)
 
         return SIFTER_results_merged_MODEL1_filtered
@@ -488,14 +608,14 @@ def find_Model2_results(SIFTER_results2,real_terms,wc=0.55,return_domiand_preds=
  
     if not return_domiand_preds:
         MODEL2_my_results={}
-        for gene,res in SIFTER_results_merged_MODEL2.iteritems():
+        for gene,res in SIFTER_results_merged_MODEL2.items():
             MODEL2_my_results[gene]=find_res_multidomain(res)
         MODEL2_my_results_filtered=filter_results(MODEL2_my_results,real_terms)
 
         return MODEL2_my_results_filtered
     else:
         SIFTER_results_merged_MODEL2_filtered={}
-        for gene,res in SIFTER_results_merged_MODEL2.iteritems():
+        for gene,res in SIFTER_results_merged_MODEL2.items():
             SIFTER_results_merged_MODEL2_filtered[gene]=filter_results(SIFTER_results_merged_MODEL2[gene],real_terms)
 
         return SIFTER_results_merged_MODEL2_filtered
@@ -506,8 +626,8 @@ def find_top_preds(preds,thr):
     top_preds={}
     all_terms=list(set([v for w in preds.values() for v in w.keys()]))
     decs=find_go_decs(all_terms)
-    for g,pred in preds.iteritems():
-        terms=pred.keys()
+    for g,pred in preds.items():
+        terms=list(pred.keys())
         leaves=[w for w in terms if not(set(decs[w])&(set(terms)-set([w])))]
         tp={w:pred[w] for w in leaves}
         mx=max(tp.values())*thr
@@ -517,7 +637,7 @@ def find_top_preds(preds,thr):
 
 def find_top_preds_func(preds,thr):
     top_preds={}
-    for g,pred in preds.iteritems():
+    for g,pred in preds.items():
         mx=max(pred.values())*thr
         top_preds[g]={w:pred[w] for w in pred if pred[w]>mx}        
     return top_preds
@@ -525,9 +645,9 @@ def find_top_preds_func(preds,thr):
 
 def trim_results(res):
     res_trimmed={}
-    for gene,v in res.iteritems():
+    for gene,v in res.items():
         r={}
-        for t,s in v.iteritems():
+        for t,s in v.items():
             ss=round(s,2)
             if ss>0:
                 r[t]=ss
@@ -540,8 +660,8 @@ def find_leave_preds(preds):
     all_terms=set([v for w in preds.values() for v in w])
     decs=find_go_decs(all_terms)
     leaves={}
-    for g,pred in preds.iteritems():
-        terms=pred.keys()
+    for g,pred in preds.items():
+        terms=list(pred.keys())
         leaves[g]=[w for w in terms if not(set(decs[w])&(set(terms)-set([w])))]        
     return leaves
     
@@ -553,10 +673,8 @@ def find_sifter_preds_byprotein(q_genes,my_form_data,job_id):
     q_genes=[accs_ids_maps[w] if w in accs_ids_maps else w for w in q_genes]
     data={'proteins':q_genes}
     infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
-    pickle.dump(data,open(infile,'w'))
-    os.system("chmod 775 %s"%infile)
-    os.system('chown %s %s'%(file_user_id,infile))
-    os.system('chgrp %s %s'%(file_group_id,infile))
+    pickle_dump_file(infile, data)
+    safe_set_file_metadata(infile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
     sifter_choices=my_form_data['sifter_choices']
     ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
     if ((sifter_choices=='EXP-Model') or ((sifter_choices=='ALL-Model')and(ExpWeight_hidden==0.7))):
@@ -575,7 +693,7 @@ def find_sifter_preds_byprotein(q_genes,my_form_data,job_id):
             res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
         trimmed_res=trim_results(res_filtered)
         leaves=find_leave_preds(trimmed_res)
-        res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
+        res={gene:{k:v for k,v in pred.items() if k in leaves[gene]} for gene,pred in trimmed_res.items()}
         return res,taxids,unip_accs
 
 def find_sifter_preds_byspecies(species,my_form_data):
@@ -597,7 +715,7 @@ def find_sifter_preds_byspecies(species,my_form_data):
             res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
         trimmed_res=trim_results(res_filtered)
         leaves=find_leave_preds(trimmed_res)
-        res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
+        res={gene:{k:v for k,v in pred.items() if k in leaves[gene]} for gene,pred in trimmed_res.items()}
         return res,taxids,unip_accs
 
 def find_sifter_preds_byfunction(species,functions,my_form_data):
@@ -618,7 +736,7 @@ def find_sifter_preds_byfunction(species,functions,my_form_data):
             res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
         trimmed_res=trim_results(res_filtered)
         leaves=find_leave_preds(trimmed_res)
-        res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}
+        res={gene:{k:v for k,v in pred.items() if k in leaves[gene]} for gene,pred in trimmed_res.items()}
     
     top_preds=find_top_preds_func(res,thr=.75)
     decs=set(find_go_decs(functions))
@@ -626,32 +744,33 @@ def find_sifter_preds_byfunction(species,functions,my_form_data):
     for gene in top_preds:
         if set(top_preds[gene].keys())&decs:
             res_top[gene]=res[gene]                
-    taxids={k:v for k,v in taxids.iteritems() if k in res_top}
-    unip_accs={k:v for k,v in unip_accs.iteritems() if k in res_top}    
+    taxids={k:v for k,v in taxids.items() if k in res_top}
+    unip_accs={k:v for k,v in unip_accs.items() if k in res_top}
     return res_top,taxids,unip_accs
 
-def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
+def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id, blast_runner=None):
    
     blast_hits={}
     connected=0
     cnt=0
+    blast_runner = blast_runner or run_remote_qblast
     while connected==0:
         try:
-            qblast_output = NCBIWWW.qblast("blastp", "nr", my_sequences,alignments=0,expect=1e-2,hitlist_size=100,ncbi_gi=True)            
+            qblast_output = blast_runner(my_sequences)
             connected=1
             my_blast_msg_file=os.path.join(OUTPUT_DIR,"%s_output.blast.msg"%job_id)
             save_file = open(my_blast_msg_file, "w")
             save_file.write("We have successful submitted your query to NCBI-BLAST server. Results will be ready soon.")
             save_file.close()            
-        except:
-            if cnt<600:
+        except Exception:
+            if cnt<BLAST_MAX_RETRIES:
                 if np.mod(cnt,60)==0:
-                    print("NCBI-BLAST Server has been busy for the last %s mins. We keep trying to connect."%(cnt))
+                    logger.warning("NCBI-BLAST server has been busy for %s minutes; retrying", cnt)
                 my_blast_msg_file=os.path.join(OUTPUT_DIR,"%s_output.blast.msg"%job_id)
                 save_file = open(my_blast_msg_file, "w")
                 save_file.write("NCBI-BLAST Server has been busy for the last %s mins. We keep trying to connect."%(cnt))
                 save_file.close()            
-                time.sleep(60)
+                time.sleep(BLAST_RETRY_SLEEP)
             else:
                 break
             cnt+=1
@@ -664,40 +783,8 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
         save_file.write(qblast_output.read())
         save_file.close()
         qblast_output.close()
-        os.system("chmod 775 %s"%my_blast_file)
-        os.system('chown %s %s'%(file_user_id,my_blast_file))
-        os.system('chgrp %s %s'%(file_group_id,my_blast_file))
-        gis=[]
-        hits={}
-        for record in NCBIXML.parse(open(my_blast_file)):
-            if record.alignments :
-                hits[record.query]=[]
-                for aa in record.alignments:
-                    gi=aa.hit_id.split('gi|')
-                    if len(gi)>0:
-                        gi_num=gi[1].split('|')[0]
-                        gis.append(gi_num)
-                        hit_id={'P_GI':gi_num}
-                    else:
-                        hit_id={'all':aa.hit_id}
-                    hits[record.query].append({'hit_id':hit_id,'bits':aa.hsps[0].bits,'eval':aa.hsps[0].expect,
-                                               'ident':round(aa.hsps[0].identities/float(aa.hsps[0].align_length)*100),
-                                               'Q_cov':round(abs(float(aa.hsps[0].query_end-aa.hsps[0].query_start))/record.query_length*100)
-                                               })
-        mapped_gis=Idmap.objects.filter(other_id__in=gis, db='GI').values_list('other_id','unip_id')
-        mapped_gis={w[0]:w[1] for w in mapped_gis}
-        #mapped_gis=uni.map(gis, f='P_GI', t='ID') # map single id
-        #mapped_gis={k:list(v)[0] for k,v in mapped_gis.iteritems() if v}
-        q_genes=[]
-        for record in hits:
-            blast_hits[record]=[]
-            for hit in hits[record]:
-                if hit['hit_id'].keys()[0]=='P_GI':
-                    gi=hit['hit_id']['P_GI']
-                    if gi in mapped_gis:
-                        if mapped_gis[gi] not in q_genes:
-                            blast_hits[record].append([mapped_gis[gi],hit['bits'],hit['eval'],hit['ident'],hit['Q_cov']])
-                            q_genes.append(mapped_gis[gi])
+        safe_set_file_metadata(my_blast_file, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+        blast_hits, q_genes = parse_blast_file(my_blast_file)
 
         sifter_choices=my_form_data['sifter_choices']
         ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
@@ -717,7 +804,7 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id):
                 res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden)
             trimmed_res=trim_results(res_filtered)
             leaves=find_leave_preds(trimmed_res)
-            res={gene:{k:v for k,v in pred.iteritems() if k in leaves[gene]} for gene,pred in trimmed_res.iteritems()}    
+            res={gene:{k:v for k,v in pred.items() if k in leaves[gene]} for gene,pred in trimmed_res.items()}
             return res,taxids,unip_accs,blast_hits,1
 
     
@@ -754,7 +841,7 @@ def make_results_ready(job_id,activ_tab,my_data):
         result=[]
         for j,gene in enumerate(res):
             preds=[]            
-            res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
+            res_sorted=sorted(res[gene].items(),key=operator.itemgetter(1),reverse=True)
             tax_name=taxid_2_name[taxids[gene]]
             if len(res_sorted)<=3:
                 end_i=len(res)
@@ -775,7 +862,7 @@ def make_results_ready(job_id,activ_tab,my_data):
         result=sorted(result,key=lambda x:float(x[4][0][2]),reverse=True)
         if activ_tab == 'by_protein':
             infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
-            data=pickle.load(open(infile))
+            data=pickle_load_file(infile)
             my_genes=data['proteins']
             rest=list(set(my_genes)-set(res.keys()))
             if rest:
@@ -783,9 +870,7 @@ def make_results_ready(job_id,activ_tab,my_data):
                 nopred_file_o=open(nopred_file,'w')
                 nopred_file_o.write('List of genes with no predictions: \n'+'\n'.join(rest))
                 nopred_file_o.close()
-                os.system('chmod 775 %s'%nopred_file)
-                os.system('chown %s %s'%(file_user_id,nopred_file))
-                os.system('chgrp %s %s'%(file_group_id,nopred_file))
+                safe_set_file_metadata(nopred_file, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
                 results['nopreds']=[nopred_file,len(rest)]
                 
                 
@@ -800,9 +885,7 @@ def make_results_ready(job_id,activ_tab,my_data):
                 output_download_file_o.write('\t\t%s\t%s\t%s\n'%(pred[0],pred[1],pred[2]))        
             output_download_file_o.write('\n')                                    
         output_download_file_o.close()
-        os.system("chmod 775 %s"%output_download_file)
-        os.system('chown %s %s'%(file_user_id,output_download_file))
-        os.system('chgrp %s %s'%(file_group_id,output_download_file))        
+        safe_set_file_metadata(output_download_file, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
         results['downloadfile']=output_download_file
     else:
         res,taxids,unip_accs,blast_hits,connected=my_data        
@@ -810,14 +893,14 @@ def make_results_ready(job_id,activ_tab,my_data):
         idx_to_go_name=find_go_name_acc(terms)
         taxid_2_name=find_name_taxids(list(set(taxids.values())))
         result=[]
-        for query, hits in blast_hits.iteritems():
+        for query, hits in blast_hits.items():
             result_q=[]
             for j,hit in enumerate(hits):
                 preds=[]
                 gene=hit[0]
                 if gene not in res:
                     continue
-                res_sorted=sorted(res[gene].iteritems(),key=operator.itemgetter(1),reverse=True)
+                res_sorted=sorted(res[gene].items(),key=operator.itemgetter(1),reverse=True)
                 tax_name=taxid_2_name[taxids[gene]]
                 if len(res_sorted)<=3:
                     end_i=len(res)
@@ -854,9 +937,7 @@ def make_results_ready(job_id,activ_tab,my_data):
             output_download_file_o.write('\n')                                    
 
         output_download_file_o.close()
-        os.system("chmod 775 %s"%output_download_file)
-        os.system('chown %s %s'%(file_user_id,output_download_file))
-        os.system('chgrp %s %s'%(file_group_id,output_download_file))
+        safe_set_file_metadata(output_download_file, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
         results['downloadfile']=output_download_file
             
     results['result']=result
@@ -867,16 +948,14 @@ def make_results_ready(job_id,activ_tab,my_data):
 def find_results(my_form_data,job_id):
     active_tab=my_form_data['active_tab_hidden']
     input_file=SIFTER_Output.objects.filter(job_id=job_id).values_list('input_file',flat=True)[0]
-    data=pickle.load(open(input_file,'r'))
+    data=pickle_load_file(input_file)
     if active_tab == 'by_protein':
         my_genes=data['proteins']
         res,taxids,unip_accs=find_sifter_preds_byprotein(my_genes,my_form_data,job_id)
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        pickle.dump(results,open(outfile,'w'))
-        os.system("chmod 775 %s"%outfile)
-        os.system('chown %s %s'%(file_user_id,outfile))
-        os.system('chgrp %s %s'%(file_group_id,outfile))
+        pickle_dump_file(outfile, results)
+        safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -887,10 +966,8 @@ def find_results(my_form_data,job_id):
         res,taxids,unip_accs=find_sifter_preds_byspecies(my_species,my_form_data)
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        pickle.dump(results,open(outfile,'w'))
-        os.system("chmod 775 %s"%outfile)
-        os.system('chown %s %s'%(file_user_id,outfile))
-        os.system('chgrp %s %s'%(file_group_id,outfile))        
+        pickle_dump_file(outfile, results)
+        safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -902,10 +979,8 @@ def find_results(my_form_data,job_id):
         res,taxids,unip_accs=find_sifter_preds_byfunction(my_species,my_functions,my_form_data)
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-        pickle.dump(results,open(outfile,'w'))
-        os.system("chmod 775 %s"%outfile)
-        os.system('chown %s %s'%(file_user_id,outfile))
-        os.system('chgrp %s %s'%(file_group_id,outfile))        
+        pickle_dump_file(outfile, results)
+        safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -917,10 +992,8 @@ def find_results(my_form_data,job_id):
         if not connected==0:
             results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs,blast_hits,connected])        
             outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
-            pickle.dump(results,open(outfile,'w'))
-            os.system("chmod 775 %s"%outfile)
-            os.system('chown %s %s'%(file_user_id,outfile))
-            os.system('chgrp %s %s'%(file_group_id,outfile))       
+            pickle_dump_file(outfile, results)
+            safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
             my_object=SIFTER_Output.objects.filter(job_id=job_id)
             my_object=my_object[0]        
             my_object.result_date=datetime.date.today()        
@@ -930,10 +1003,8 @@ def find_results(my_form_data,job_id):
             outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
             results={}
             results['bad_blast']=True
-            pickle.dump(results,open(outfile,'w'))
-            os.system("chmod 775 %s"%outfile)
-            os.system('chown %s %s'%(file_user_id,outfile))
-            os.system('chgrp %s %s'%(file_group_id,outfile))       
+            pickle_dump_file(outfile, results)
+            safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
             my_object=SIFTER_Output.objects.filter(job_id=job_id)
             my_object=my_object[0]        
             my_object.result_date=datetime.date.today()        
@@ -960,13 +1031,13 @@ def find_results(my_form_data,job_id):
 def find_results_domain(q_gene,sifter_EXP_choices,ExpWeight_hidden):
     q_results,taxids,unip_accs=find_db_results('by_protein',q_genes=[q_gene])
     my_res,my_res_all,SIFTER_results,SIFTER_results2,real_terms=find_processed_results(q_results)
-    gid_to_fam={k:v.values()[0][2].split('_')[0] for k,v in SIFTER_results2[q_gene].iteritems()}
+    gid_to_fam={k:list(v.values())[0][2].split('_')[0] for k,v in SIFTER_results2[q_gene].items()}
     real_terms={k:real_terms[q_gene] for k in gid_to_fam.keys()}
     fam_to_name={}
     fams=Pfam.objects.filter(pfam_acc__in=set(gid_to_fam.values())).values('pfam_acc','pfam_id')
     for w in fams:
         fam_to_name[w['pfam_acc']]=w['pfam_id']
-    found_fams=fam_to_name.keys()
+    found_fams=list(fam_to_name.keys())
     for w in set(gid_to_fam.values())-set(found_fams):
         fam_to_name[w]=''
 
@@ -976,13 +1047,13 @@ def find_results_domain(q_gene,sifter_EXP_choices,ExpWeight_hidden):
         res_filtered=find_Model1_results(SIFTER_results2,real_terms,we=ExpWeight_hidden,return_domiand_preds=True)
     trimmed_res=trim_results(res_filtered[q_gene])
     leaves=find_leave_preds(trimmed_res)
-    res={gid:{k:v for k,v in pred.iteritems() if k in leaves[gid]} for gid,pred in trimmed_res.iteritems()}
+    res={gid:{k:v for k,v in pred.items() if k in leaves[gid]} for gid,pred in trimmed_res.items()}
     terms=list(set([v for w in res.values() for v in w]))
     idx_to_go_name=find_go_name_acc(terms)
     result=[]
     for j,gid in enumerate(res):
         preds=[]
-        res_sorted=sorted(res[gid].iteritems(),key=operator.itemgetter(1),reverse=True)
+        res_sorted=sorted(res[gid].items(),key=operator.itemgetter(1),reverse=True)
         if len(res_sorted)<=3:
             end_i=len(res)
         else:

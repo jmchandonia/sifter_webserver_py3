@@ -14,12 +14,13 @@ from django.db import models
 
 class Weight(models.Model):
     pfam = models.TextField(primary_key=True, blank=True)
-    conf_code = models.TextField(primary_key=True, blank=True)
+    conf_code = models.TextField(blank=True)
     weight = models.FloatField(blank=True)
 
     class Meta:
         managed = False
         db_table = 'weight'
+        unique_together = (('pfam', 'conf_code'),)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s'%self.pfam

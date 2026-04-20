@@ -1,12 +1,6 @@
 {% extends 'base.html' %}
-{% load chartit %}
 
 {% block get_input %}
-{% if displayHist %}
-   {{ histograms|load_charts:chartContainers }}
-{% endif %}
-
-
 <div class="container custom-container">
    <!-- Example row of columns -->
   <div class="row">

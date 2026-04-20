@@ -1,0 +1,16 @@
+[Unit]
+Description=SIFTER Celery Worker
+After=network.target redis-server.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/sifter/app
+EnvironmentFile=/etc/sifter/sifter.env
+ExecStart=/usr/local/bin/uv run celery -A sifter_web.celery:app worker --loglevel=INFO
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

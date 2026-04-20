@@ -19,7 +19,7 @@ class SIFTER_Output(models.Model):
     deleted=models.BooleanField(default=False)
     ip=models.CharField(max_length=45)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s'%self.job_id
     
     def was_submitted_recently(self):

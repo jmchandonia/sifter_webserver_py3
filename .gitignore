@@ -1,9 +1,11 @@
 *.pyc
 __pycache__/
 .codex/
+.env
 
 db.sqlite3
 db.sqlite3_old_sifter
+my_dbs/
 
 sifter_web/input/
 sifter_web/output/

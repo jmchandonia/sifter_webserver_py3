@@ -1,7 +1,12 @@
 #from scipy import misc
 import numpy as np
-from chartit import DataPool, Chart
 from estimatedb.models import Allsifterdata, Errorhistogrambars, Percentiles
+
+try:
+    from chartit import DataPool, Chart
+except ImportError:
+    DataPool = None
+    Chart = None
 
 # PARAMSDICT[CRIT] is an array of parameters of the least squares regression line
 # for estimating processing time for criteria CRIT
@@ -59,7 +64,7 @@ def comb(N, k, exact=False, repetition=False):
         if (k > N) or (N < 0) or (k < 0):
             return 0
         val = 1
-        for j in xrange(min(k, N-k)):
+        for j in range(min(k, N-k)):
             val = (val*(N-j))//(j+1)
         return val
     else:
@@ -146,6 +151,9 @@ def format_times(times):
 # Plots the estimated time distribution by scaling the error distribution of category CAT
 # by estimated time ETIME.
 def plot_histogram(eTime, cat):
+    if DataPool is None or Chart is None:
+        return None
+
     def xScale(err):
         return round(eTime * err * factor, 1)
         
@@ -254,7 +262,9 @@ def estimate_time(numTerms, famSize):
         else:
             stop_next+=1
         tableBody.append(row)
-        histograms.append(plot_histogram(eTime, cat))
+        histogram = plot_histogram(eTime, cat)
+        if histogram is not None:
+            histograms.append(histogram)
         if stop_next==1:
             break
     

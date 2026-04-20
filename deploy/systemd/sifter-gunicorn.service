@@ -1,0 +1,16 @@
+[Unit]
+Description=SIFTER Gunicorn
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/sifter/app
+EnvironmentFile=/etc/sifter/sifter.env
+ExecStart=/usr/local/bin/uv run gunicorn sifter_web.wsgi:application --bind 127.0.0.1:8000 --workers 4 --timeout 120
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

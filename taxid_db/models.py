@@ -24,5 +24,5 @@ class Taxid(models.Model):
     def get_absolute_url(self):
         return "/predictions/?taxid=%s" % self.tax_id
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s (taxid:%s)'%(self.tax_name,self.tax_id)

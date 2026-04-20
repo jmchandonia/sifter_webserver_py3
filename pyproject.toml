@@ -1,0 +1,26 @@
+[project]
+name = "sifter-webserver"
+version = "0.1.0"
+description = "Migration scaffold for the SIFTER webserver"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "Django>=4.2,<5.0",
+    "celery>=5.4,<6.0",
+    "biopython>=1.84,<2.0",
+    "gunicorn>=22,<24",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3,<9.0",
+    "ruff>=0.11,<0.12",
+]
+migration = [
+    "django-haystack>=3.3,<4.0",
+    "pysolr>=3.10,<4.0",
+    "redis>=5.2,<6.0",
+]
+
+[tool.uv]
+package = false
+

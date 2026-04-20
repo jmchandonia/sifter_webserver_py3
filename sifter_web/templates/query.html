@@ -26,13 +26,9 @@
         .hidden {
             display: none;
         }
-	</style>
+    </style>
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/highcharts.js"></script>
-    {% load chartit %}
-    {% if displayHist %}
-        {{ histograms|load_charts:chartContainers }}
-    {% endif %}
 </head>
 <body>
 
