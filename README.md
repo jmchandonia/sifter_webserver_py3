@@ -6,6 +6,23 @@ It is not the original large-scale SIFTER pipeline repository. This repo contain
 
 This webserver upgrade and deployment modernization were carried out at the direction of the current repository owner.
 
+## Provenance
+
+The Python 3 migration and deployment modernization in this repository were carried out on April 20, 2026 using OpenAI Codex in a local Codex CLI environment:
+
+- Codex CLI version: `codex-cli 0.119.0`
+- agent/runtime: GPT-5-based Codex coding agent
+- working style: local repository edits, iterative validation, and live-site verification against `https://sifter.berkeley.edu`
+
+For practical replication, the useful pieces are:
+
+- the archival Python 2 baseline tag: `working-py2-2026-04-20`
+- the Python 3 migration and deployment commits in this repository history
+- the Ubuntu 24 deployment runbook in [`docs/deployment-ubuntu24.md`](docs/deployment-ubuntu24.md)
+- the checked-in Apache and systemd service files under [`deploy/`](deploy)
+
+The migration work preserved the historical SQLite-backed result databases and adapted the webserver to run on a modern Ubuntu stack using Apache2, Gunicorn, Celery, Redis, Solr, and `uv`.
+
 ## What This Repository Contains
 
 - the migrated Django web application for the SIFTER website
