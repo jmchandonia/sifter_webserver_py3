@@ -18,7 +18,8 @@ from results.models import SIFTER_Output
 from sifter_web.scripts import sqlite_query
 
 
-SAMPLE_BLAST_FILE = os.path.join(REPO_ROOT, 'sifter_web', 'output', '8563541_output.blast')
+OUTPUT_DIR = os.environ.get('SIFTER_OUTPUT_DIR', os.path.join(REPO_ROOT, 'sifter_web', 'output'))
+SAMPLE_BLAST_FILE = os.path.join(OUTPUT_DIR, '8563541_output.blast')
 FASTA_QUERY = '>seq1\nMNNNKSLAAAVATLSNNAQA\n'
 
 
