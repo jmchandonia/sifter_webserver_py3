@@ -271,6 +271,7 @@ else:
     MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
     STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(BASE_DIR,"staticfiles"))
     MEDIA_ROOT = os.environ.get('MEDIA_ROOT', get_data_dir('media'))
+    STATICFILES_DIRS = (os.environ.get('STATICFILES_DIR', os.path.join(BASE_DIR, "sifter_web", "static", "static")),)
     
 SERVER_EMAIL= 'sifter@compbio.berkeley.edu'
 SESSION_COOKIE_SECURE = get_env_bool('SESSION_COOKIE_SECURE', True)
