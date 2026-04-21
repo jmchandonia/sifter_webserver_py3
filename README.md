@@ -4,6 +4,8 @@ This repository contains the Python 3 / modern deployment version of the histori
 
 It is not the original large-scale SIFTER pipeline repository. This repo contains the web application, deployment configuration, and migration work needed to run the public SIFTER site on a modern Ubuntu server with Apache2, Gunicorn, Celery, Redis, Solr, and `uv`.
 
+This webserver upgrade and deployment modernization were carried out at the direction of the current repository owner.
+
 ## What This Repository Contains
 
 - the migrated Django web application for the SIFTER website
