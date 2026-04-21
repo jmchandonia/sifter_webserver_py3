@@ -269,11 +269,11 @@ class InputForm(forms.Form):
             seq_data=cleaned_data.get('input_sequence')
             n_seq=seq_data.count('>')
             if n_seq==0 and len(seq_data)>0:
-                self._errors['input_sequence'] = ErrorList(["Your inpur is in wrong format. Please use FASTA format input."])
+                self._errors['input_sequence'] = ErrorList(["Your input is in the wrong format. Please use FASTA format."])
             elif n_seq>10:
-                self._errors['input_sequence'] = ErrorList(["You cannot entered more than 10 sequences."]) 
+                self._errors['input_sequence'] = ErrorList(["You cannot enter more than 10 sequences."]) 
             elif len(seq_data)>1000000:
-                self._errors['input_sequence'] = ErrorList(["You input sequences are too big."]) 
+                self._errors['input_sequence'] = ErrorList(["Your input sequences are too long."]) 
             else:
                 lines=seq_data.split('\n')
                 lines=[w.strip() for w in lines if w.strip()]
@@ -537,7 +537,7 @@ def get_input(request,context={}):
                     if len(same_ip_today_seq)>20:
                         context['form']=form
                         context['response']=form.cleaned_data['ExpWeight_hidden']        
-                        context['error_same_ip_sq']="You can only submit upto 20 'Search by Sequences' requests (each with upto 10 sequences) from a same IP in a same day. "
+                        context['error_same_ip_sq']="You can submit up to 20 'Search by Sequences' requests (each with up to 10 sequences) from the same IP address in a single day."
                         return render(request, 'home.html', context)
                     
                     
@@ -744,7 +744,7 @@ def show_results(request,job_id):
     if my_object.output_file=='':
         my_msg.append(['warning','Thanks! You have successfully submitted your SIFTER query.'])
         if my_object.query_method == 'by_sequence':
-            my_msg.append(['warning','We are trying to connet to the NCBI-BLAST server.'])
+            my_msg.append(['warning','We are trying to connect to the NCBI BLAST server.'])
         my_blast_msg_file_path=OUTPUT_DIR+"/%s_output.blast.msg"%job_id
         if os.path.exists(my_blast_msg_file_path):
             read_file = open(my_blast_msg_file_path, "r")

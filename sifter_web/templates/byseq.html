@@ -1,14 +1,14 @@
 <div class="query-info">
 <h2>Predict for homologs of given <b>Sequences</b></h2>
-<h4>Find SIFTER predictions fo the closest homologs of the query sequences.</h4>
+<h4>Find SIFTER predictions for the closest homologs of the query sequences.</h4>
 <ul class="list-unstyled">
-    <li>We BLAST search across 16,853,547 proteins (wihich already has SIFTER predictions) to identify close homologs to the query sequences.</li>
+    <li>We perform a BLAST search across 16,853,547 proteins that already have SIFTER predictions to identify close homologs of the query sequences.</li>
 </ul>
 </div>
 
 {% if error_same_ip_sq %}
 <div class="alert alert-danger"><p>{{ error_same_ip_sq  }}</p>
-<p>We cannot complete you request at this time. Please wait 24 hours and try again.</p>
+<p>We cannot complete your request at this time. Please wait 24 hours and try again.</p>
 <p>You can also download our database and scripts from the <a href="/download/">Download</a> page and run your query locally.</p></div>
 {% endif %}
 

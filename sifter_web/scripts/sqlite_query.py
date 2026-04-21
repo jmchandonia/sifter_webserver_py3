@@ -760,7 +760,7 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id, blast_runner=
             connected=1
             my_blast_msg_file=os.path.join(OUTPUT_DIR,"%s_output.blast.msg"%job_id)
             with open(my_blast_msg_file, "w") as save_file:
-                save_file.write("We have successful submitted your query to NCBI-BLAST server. Results will be ready soon.")
+                save_file.write("We have successfully submitted your query to the NCBI BLAST server. Results will be ready soon.")
             safe_set_file_metadata(my_blast_msg_file, mode=0o640, user=FILE_OWNER, group=FILE_GROUP)
         except Exception:
             if cnt<BLAST_MAX_RETRIES:
@@ -768,7 +768,7 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id, blast_runner=
                     logger.warning("NCBI-BLAST server has been busy for %s minutes; retrying", cnt)
                 my_blast_msg_file=os.path.join(OUTPUT_DIR,"%s_output.blast.msg"%job_id)
                 with open(my_blast_msg_file, "w") as save_file:
-                    save_file.write("NCBI-BLAST Server has been busy for the last %s mins. We keep trying to connect."%(cnt))
+                    save_file.write("The NCBI BLAST server has been busy for the last %s minutes. We will keep trying to connect." % (cnt))
                 safe_set_file_metadata(my_blast_msg_file, mode=0o640, user=FILE_OWNER, group=FILE_GROUP)
                 time.sleep(BLAST_RETRY_SLEEP)
             else:
