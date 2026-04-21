@@ -31,7 +31,7 @@
           <h3 class="panel-title">SIFTER Querying in Progress for Job ID: {{my_object.job_id}}</h3>
         </div>
         <div class="panel-body">
-        <p>You may check here or the following address to see your SIFTER results once it is ready:</p>
+        <p>You may check this page or the following address to see your SIFTER results once they are ready:</p>
         <p><a href="http://sifter.berkeley.edu/results-id={{my_object.job_id}}">http://sifter.berkeley.edu/results-id={{my_object.job_id}}</a></p>
         <p>This page is reloaded every 10 seconds.</p>
 <!--        <p>If you have provided your email address, the result will be send to you once it is ready. </p> -->
@@ -61,9 +61,9 @@
                 {% if my_object.query_method == 'by_function'%}<li><label>Number of Query Functions:</label> {{my_object.n_functions}}</li>
                 <li><label>Species:</label> {{species}}</li>{%endif%}
                 {% if my_object.query_method == 'by_sequence'%}<li><label>Number of Query Sequences:</label> {{my_object.n_sequences}}</li>{%endif%}
-                {% if not my_object.output_file == '' and not my_object.query_method == 'by_sequence'%}              
+                {% if not my_object.output_file == '' and not my_object.query_method == 'by_sequence'%}
                 <li><label>Number of Proteins with Predictions:</label> {{result.paginator.count}}</li>                
-                {% if nopreds %}<li><label>Number of Proteins without Predictions:</label>{{nopreds.1}} (available <a href="{{nopreds.0}}">here</a>){%endif%}                
+                {% if nopreds %}<li><label>Number of Proteins without Predictions:</label> {{nopreds.1}} (available <a href="{{nopreds.0}}">here</a>)</li>{%endif%}                
                 {%endif%}
               </ul>                      
             </div>
@@ -87,7 +87,7 @@
       
   <div class="row">
     <div class="col-md-offset-2 col-md-8 col-sm-12  col-xs-12 ">
-          <div class="alert alert-info"><h4>Here we report the SIFTER predictions for the homologs (found by top BLAST hits) of your query sequences. </h4></div>
+          <div class="alert alert-info"><h4>Here we report the SIFTER predictions for the homologs found by the top BLAST hits to your query sequences.</h4></div>
 	</div>
   </div>
     {%endif%}

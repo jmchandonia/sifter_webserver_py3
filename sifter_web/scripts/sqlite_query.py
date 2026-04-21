@@ -878,7 +878,7 @@ def make_results_ready(job_id,activ_tab,my_data):
         output_download_file_o=open(output_download_file,'w')
         output_download_file_o.write('SIFTER Predictions for Job ID %s: \n\n'%job_id)        
         for r in result:
-            output_download_file_o.write('Uniprot ID: %s\n'%r[0])        
+            output_download_file_o.write('UniProt ID: %s\n'%r[0])        
             output_download_file_o.write('Species: %s\n'%r[2])
             output_download_file_o.write('Predictions:\tGO ID\tTerm name\tConfidence Score\n')
             for pred in r[4]:
@@ -927,7 +927,7 @@ def make_results_ready(job_id,activ_tab,my_data):
             output_download_file_o.write('Predictions for homologs of the query sequence: %s\n'%q[0])        
             output_download_file_o.write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n')        
             for r in q[1]:
-                output_download_file_o.write('Uniprot ID: %s\n'%r[0])        
+                output_download_file_o.write('UniProt ID: %s\n'%r[0])        
                 output_download_file_o.write('Species: %s\n'%r[2])
                 output_download_file_o.write('BLAST Hit Information: (Bit-Score: %s, E-val:%s, Identitiy:%s, Query Coverage:%s\n'%(r[4],r[5],r[6],r[7]))
                 output_download_file_o.write('Predictions:\tGO ID\tTerm name\tConfidence Score\n')
