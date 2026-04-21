@@ -21,8 +21,11 @@ if importlib.util.find_spec('djcelery') is not None:
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-def get_secret_key(default='development-only-insecure-secret-key'):
-    return os.environ.get('DJANGO_SECRET_KEY', default)
+def get_secret_key(default=None):
+    value = os.environ.get('DJANGO_SECRET_KEY', default)
+    if not value:
+        raise RuntimeError('DJANGO_SECRET_KEY must be set in production')
+    return value
 
 
 def get_env_bool(name, default=False):
@@ -93,6 +96,7 @@ CELERY_TASK_EAGER_PROPAGATES = get_env_bool('CELERY_TASK_EAGER_PROPAGATES', DEBU
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = get_env_list('ALLOWED_HOSTS', ["sifter.berkeley.edu"])
+CSRF_TRUSTED_ORIGINS = get_env_list('CSRF_TRUSTED_ORIGINS', [])
 
 
 # Application definition
@@ -150,6 +154,7 @@ SIFTER_BLAST_EXPECT = float(os.environ.get('SIFTER_BLAST_EXPECT', '1e-2'))
 SIFTER_BLAST_HITLIST_SIZE = get_env_int('SIFTER_BLAST_HITLIST_SIZE', 100)
 SIFTER_BLAST_MAX_RETRIES = get_env_int('SIFTER_BLAST_MAX_RETRIES', 600)
 SIFTER_BLAST_RETRY_SLEEP = get_env_int('SIFTER_BLAST_RETRY_SLEEP', 60)
+SIFTER_TRUSTED_PROXY_IPS = set(get_env_list('SIFTER_TRUSTED_PROXY_IPS', ['127.0.0.1', '::1']))
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -268,6 +273,21 @@ else:
     MEDIA_ROOT = os.environ.get('MEDIA_ROOT', get_data_dir('media'))
     
 SERVER_EMAIL= 'sifter@compbio.berkeley.edu'
+SESSION_COOKIE_SECURE = get_env_bool('SESSION_COOKIE_SECURE', True)
+CSRF_COOKIE_SECURE = get_env_bool('CSRF_COOKIE_SECURE', True)
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = get_env_bool('CSRF_COOKIE_HTTPONLY', False)
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = os.environ.get('SECURE_REFERRER_POLICY', 'same-origin')
+X_FRAME_OPTIONS = os.environ.get('X_FRAME_OPTIONS', 'DENY')
+SECURE_SSL_REDIRECT = get_env_bool('SECURE_SSL_REDIRECT', False)
+SECURE_PROXY_SSL_HEADER_NAME = os.environ.get('SECURE_PROXY_SSL_HEADER_NAME')
+SECURE_PROXY_SSL_HEADER_VALUE = os.environ.get('SECURE_PROXY_SSL_HEADER_VALUE', 'https')
+if SECURE_PROXY_SSL_HEADER_NAME:
+    SECURE_PROXY_SSL_HEADER = (SECURE_PROXY_SSL_HEADER_NAME, SECURE_PROXY_SSL_HEADER_VALUE)
+SECURE_HSTS_SECONDS = get_env_int('SECURE_HSTS_SECONDS', 0)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = get_env_bool('SECURE_HSTS_INCLUDE_SUBDOMAINS', False)
+SECURE_HSTS_PRELOAD = get_env_bool('SECURE_HSTS_PRELOAD', False)
    
     
 #SEND_BROKEN_LINK_EMAILS=True    

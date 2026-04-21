@@ -71,6 +71,15 @@ Minimal example:
 DJANGO_SECRET_KEY=replace-me
 DJANGO_SETTINGS_MODULE=sifter_web.settings_prod
 ALLOWED_HOSTS=sifter.berkeley.edu,testserver,localhost,127.0.0.1
+CSRF_TRUSTED_ORIGINS=https://sifter.berkeley.edu
+SIFTER_TRUSTED_PROXY_IPS=127.0.0.1,::1
+SESSION_COOKIE_SECURE=true
+CSRF_COOKIE_SECURE=true
+SECURE_PROXY_SSL_HEADER_NAME=HTTP_X_FORWARDED_PROTO
+SECURE_PROXY_SSL_HEADER_VALUE=https
+SECURE_HSTS_SECONDS=31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS=false
+SECURE_HSTS_PRELOAD=false
 CELERY_BROKER_URL=redis://127.0.0.1:6379/0
 CELERY_RESULT_BACKEND=redis://127.0.0.1:6379/1
 SIFTER_DB_DIR=/data/sifter/my_dbs
@@ -157,7 +166,12 @@ sudo systemctl enable --now sifter-celery
 
 ## Apache
 
-The checked-in vhost example lives at [deploy/apache/sifter.conf](/scratch/jmc/sifter/deploy/apache/sifter.conf:1).
+The checked-in vhost example lives at `deploy/apache/sifter.conf`.
+
+Important hardening note:
+
+- do not publish `/data/sifter/output` directly through Apache
+- `/downloads/...` should be proxied to Django so only the explicit text download endpoints are reachable
 
 Install it:
 

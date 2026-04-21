@@ -2,7 +2,7 @@ from django.shortcuts import render
 #from django.template import  Context
 #from django.template.loader import get_template
 from django import forms
-from django.http import HttpResponseRedirect,HttpResponse,Http404
+from django.http import FileResponse, HttpResponseRedirect, HttpResponse, Http404
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
 from sifter_web.fileops import resolve_runtime_artifact, safe_set_file_metadata
@@ -421,12 +421,27 @@ def delete_old_results():
             os.remove(outfile)
     
 def get_client_ip(request):
+    remote_addr = request.META.get('REMOTE_ADDR')
+    trusted_proxies = set(getattr(settings, 'SIFTER_TRUSTED_PROXY_IPS', []))
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+    if remote_addr in trusted_proxies and x_forwarded_for:
+        return x_forwarded_for.split(',')[0].strip()
+    return remote_addr
+
+
+def download_result_file(request, job_id, suffix):
+    if suffix not in ('download.txt', 'nopreds.txt'):
+        raise Http404("No such download")
+
+    output_name = f"{job_id}_{suffix}"
+    path = resolve_output_artifact(os.path.join(OUTPUT_DIR, output_name))
+    if not os.path.exists(path):
+        raise Http404("No such download")
+
+    response = FileResponse(open(path, 'rb'), as_attachment=True, filename=output_name)
+    response['X-Content-Type-Options'] = 'nosniff'
+    response['Cache-Control'] = 'private, max-age=300'
+    return response
     
 
 def get_input(request,context={}):
@@ -527,7 +542,7 @@ def get_input(request,context={}):
                     
                     
                 pickle_dump_file(infile, data)
-                safe_set_file_metadata(infile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+                safe_set_file_metadata(infile, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
                 P=SIFTER_Output(job_id=job_id,exp_weight=form.cleaned_data['ExpWeight_hidden'], email = form.cleaned_data['input_email'],
                                 query_method=active_tab, sifter_EXP_choices = True if sifter_choices_val=='EXP-Model' else False,
                                 n_proteins=len(my_proteins),species=my_species,n_functions=len(my_functions),n_sequences=n_sequences,submission_date=datetime.date.today(),
@@ -803,7 +818,7 @@ def show_predictions(request):
         my_species=qdict['taxid'][0]
         data={'species':my_species}
         pickle_dump_file(infile, data)
-        safe_set_file_metadata(infile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+        safe_set_file_metadata(infile, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
         P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
                         query_method='by_species', sifter_EXP_choices = True ,
                         n_proteins=0,species=my_species,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),
@@ -823,7 +838,7 @@ def show_predictions(request):
         my_proteins=[qdict['protein'][0]] 
         data={'proteins':my_proteins}
         pickle_dump_file(infile, data)
-        safe_set_file_metadata(infile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+        safe_set_file_metadata(infile, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
         P=SIFTER_Output(job_id=job_id,exp_weight='0.7', email = '',
                         query_method='by_protein', sifter_EXP_choices = True ,
                         n_proteins=1,species=0,n_functions=0,n_sequences=0,submission_date=datetime.date.today(),

@@ -2,11 +2,9 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import re_path
-from django.views.static import serve
-
-import os
 from sifter_web.views import (
     autocomplete,
+    download_result_file,
     get_complexity,
     get_input,
     show_about,
@@ -18,8 +16,6 @@ from sifter_web.views import (
     show_results,
     show_search_options,
 )
-
-OUTPUT_DIR=getattr(settings, 'SIFTER_OUTPUT_DIR', os.path.join(os.path.dirname(__file__),"output"))
 
 urlpatterns = [
     re_path(r'^$', get_input, name='home'),
@@ -35,7 +31,7 @@ urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^search/$', get_input, name='search'),
     re_path(r'^search/autocomplete$', autocomplete),
-    re_path(r'^downloads/(?P<path>.*)$', serve, {'document_root': OUTPUT_DIR}),
+    re_path(r'^downloads/(?P<job_id>\d{7})_(?P<suffix>download\.txt|nopreds\.txt)$', download_result_file, name='download_result_file'),
 ]
 
 if settings.DEBUG:

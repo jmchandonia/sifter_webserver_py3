@@ -674,7 +674,7 @@ def find_sifter_preds_byprotein(q_genes,my_form_data,job_id):
     data={'proteins':q_genes}
     infile=os.path.join(INPUT_DIR,"%s_input.pickle"%job_id)
     pickle_dump_file(infile, data)
-    safe_set_file_metadata(infile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+    safe_set_file_metadata(infile, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
     sifter_choices=my_form_data['sifter_choices']
     ExpWeight_hidden=float(my_form_data['ExpWeight_hidden'])
     if ((sifter_choices=='EXP-Model') or ((sifter_choices=='ALL-Model')and(ExpWeight_hidden==0.7))):
@@ -759,17 +759,17 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id, blast_runner=
             qblast_output = blast_runner(my_sequences)
             connected=1
             my_blast_msg_file=os.path.join(OUTPUT_DIR,"%s_output.blast.msg"%job_id)
-            save_file = open(my_blast_msg_file, "w")
-            save_file.write("We have successful submitted your query to NCBI-BLAST server. Results will be ready soon.")
-            save_file.close()            
+            with open(my_blast_msg_file, "w") as save_file:
+                save_file.write("We have successful submitted your query to NCBI-BLAST server. Results will be ready soon.")
+            safe_set_file_metadata(my_blast_msg_file, mode=0o640, user=FILE_OWNER, group=FILE_GROUP)
         except Exception:
             if cnt<BLAST_MAX_RETRIES:
                 if np.mod(cnt,60)==0:
                     logger.warning("NCBI-BLAST server has been busy for %s minutes; retrying", cnt)
                 my_blast_msg_file=os.path.join(OUTPUT_DIR,"%s_output.blast.msg"%job_id)
-                save_file = open(my_blast_msg_file, "w")
-                save_file.write("NCBI-BLAST Server has been busy for the last %s mins. We keep trying to connect."%(cnt))
-                save_file.close()            
+                with open(my_blast_msg_file, "w") as save_file:
+                    save_file.write("NCBI-BLAST Server has been busy for the last %s mins. We keep trying to connect."%(cnt))
+                safe_set_file_metadata(my_blast_msg_file, mode=0o640, user=FILE_OWNER, group=FILE_GROUP)
                 time.sleep(BLAST_RETRY_SLEEP)
             else:
                 break
@@ -783,7 +783,7 @@ def find_sifter_preds_bysequence(my_sequences,my_form_data,job_id, blast_runner=
         save_file.write(qblast_output.read())
         save_file.close()
         qblast_output.close()
-        safe_set_file_metadata(my_blast_file, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+        safe_set_file_metadata(my_blast_file, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
         blast_hits, q_genes = parse_blast_file(my_blast_file)
 
         sifter_choices=my_form_data['sifter_choices']
@@ -870,7 +870,7 @@ def make_results_ready(job_id,activ_tab,my_data):
                 nopred_file_o=open(nopred_file,'w')
                 nopred_file_o.write('List of genes with no predictions: \n'+'\n'.join(rest))
                 nopred_file_o.close()
-                safe_set_file_metadata(nopred_file, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+                safe_set_file_metadata(nopred_file, mode=0o640, user=FILE_OWNER, group=FILE_GROUP)
                 results['nopreds']=[nopred_file,len(rest)]
                 
                 
@@ -885,7 +885,7 @@ def make_results_ready(job_id,activ_tab,my_data):
                 output_download_file_o.write('\t\t%s\t%s\t%s\n'%(pred[0],pred[1],pred[2]))        
             output_download_file_o.write('\n')                                    
         output_download_file_o.close()
-        safe_set_file_metadata(output_download_file, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+        safe_set_file_metadata(output_download_file, mode=0o640, user=FILE_OWNER, group=FILE_GROUP)
         results['downloadfile']=output_download_file
     else:
         res,taxids,unip_accs,blast_hits,connected=my_data        
@@ -937,7 +937,7 @@ def make_results_ready(job_id,activ_tab,my_data):
             output_download_file_o.write('\n')                                    
 
         output_download_file_o.close()
-        safe_set_file_metadata(output_download_file, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+        safe_set_file_metadata(output_download_file, mode=0o640, user=FILE_OWNER, group=FILE_GROUP)
         results['downloadfile']=output_download_file
             
     results['result']=result
@@ -955,7 +955,7 @@ def find_results(my_form_data,job_id):
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle_dump_file(outfile, results)
-        safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+        safe_set_file_metadata(outfile, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -967,7 +967,7 @@ def find_results(my_form_data,job_id):
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle_dump_file(outfile, results)
-        safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+        safe_set_file_metadata(outfile, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -980,7 +980,7 @@ def find_results(my_form_data,job_id):
         results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs])        
         outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
         pickle_dump_file(outfile, results)
-        safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+        safe_set_file_metadata(outfile, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
         my_object=SIFTER_Output.objects.filter(job_id=job_id)
         my_object=my_object[0]        
         my_object.result_date=datetime.date.today()        
@@ -993,7 +993,7 @@ def find_results(my_form_data,job_id):
             results=make_results_ready(job_id,active_tab,[res,taxids,unip_accs,blast_hits,connected])        
             outfile=os.path.join(OUTPUT_DIR,"%s_output.pickle"%job_id)
             pickle_dump_file(outfile, results)
-            safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+            safe_set_file_metadata(outfile, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
             my_object=SIFTER_Output.objects.filter(job_id=job_id)
             my_object=my_object[0]        
             my_object.result_date=datetime.date.today()        
@@ -1004,7 +1004,7 @@ def find_results(my_form_data,job_id):
             results={}
             results['bad_blast']=True
             pickle_dump_file(outfile, results)
-            safe_set_file_metadata(outfile, mode=0o775, user=FILE_OWNER, group=FILE_GROUP)
+            safe_set_file_metadata(outfile, mode=0o600, user=FILE_OWNER, group=FILE_GROUP)
             my_object=SIFTER_Output.objects.filter(job_id=job_id)
             my_object=my_object[0]        
             my_object.result_date=datetime.date.today()        
